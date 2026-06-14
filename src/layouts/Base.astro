@@ -125,6 +125,9 @@ const nav = [
       }
     </script>
 
+    <!-- Safety net: if JS is disabled/fails, reveal content is always visible. -->
+    <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+
     <style>
       .sr-skip {
         position: absolute; left: -9999px; top: 0; z-index: 100;
