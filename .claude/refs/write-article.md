@@ -95,7 +95,7 @@ original-post seeds, so each must read well with zero surrounding context and mu
 Explicitly confirm and WRITE OUT in your report:
 - **No invented metrics** — every number/award/role traces to a real source, or it's not in the piece.
 - **Collaborations credited** — TreAxe co-built with Barrat Mohammad; FredGPT a CMU team practicum
-  for client Launchpad Edge. Never imply sole authorship.
+  for an industry client (economic-data domain). Never imply sole authorship.
 - **Confidentiality** — nothing from FredGPT's `Private/` folder (client SOW/TOS/budget/sponsor);
   no FredGPT public code link. Co-owned repos OK.
 - **Grounded** — each substantive claim points to a real repo/doc, not a generality.
