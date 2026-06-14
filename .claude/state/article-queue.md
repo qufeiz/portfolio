@@ -23,7 +23,7 @@ and are listed by the collection-driven "Agent Systems" section. See `src/conten
 - [ ] **Context engineering** — bounded context, unbounded work: the long-lived orchestrator holds the plan, throwaway subagents do the grunt work and are discarded so context never accumulates.
 - [ ] **Compiled knowledge & the self-ingest loop** — turning years of raw chat logs into a queryable, deduped wiki (life-wiki); knowledge as a compiled, regenerable artifact, not a transcript pile.
 - [ ] **Honest automation** — agents that ship real, unsupervised work without overclaiming: fail-closed gates, "never claim a post you can't see," confidentiality, and the human-approval floor.
-- [ ] **Two ways to package an agent** — a repo-level capability model (flat `.claude/refs/` how-to docs run via generic subagents, like this portfolio agent + x-agent) vs. a standing PM/engineer/verifier team; when each shape fits.
+- [ ] **Two ways to package an agent** — a repo-level capability model (project-level subagents in `.claude/agents/`, each pointed at a `.claude/refs/` how-to, like this portfolio agent + x-agent) vs. a standing PM/engineer/verifier team; when each shape fits.
 
 ## Done
 - [x] **The hub: "My Agent Teams"** → `src/content/articles/my-agent-teams.md` (`kind: hub`, order 0) → `/notes/my-agent-teams`. Concise v1: the two teams (build team + fleet) + the orchestrate→gate→ratchet thesis, links the concept articles. Deeper per-team sections marked to-be-expanded.

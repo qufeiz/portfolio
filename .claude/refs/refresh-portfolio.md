@@ -1,7 +1,9 @@
 # Ref — refresh the portfolio from projects
 
-> A flat how-to the lead points a fresh throwaway subagent at:
-> *"Read and follow `.claude/refs/refresh-portfolio.md` exactly; do one unit; `npm run build`; report; do NOT deploy."*
+> The how-to for the **`portfolio-refresh`** worker subagent (`.claude/agents/portfolio-refresh.md`).
+> The lead spawns that named subagent with a high-level goal ("Refresh the site from recent project
+> changes"); its def points it here, and you follow this ref exactly: do one scan-and-update pass,
+> `npm run build`, report, do NOT deploy.
 > Scan the owner's `~/Projects/*` for real changes since the cursor and update the portfolio site to
 > match — case studies, `src/data/*`, screenshots — then prove the build still passes. Use whenever
 > the task is to bring the site up to date with what the owner has actually shipped. ONE

@@ -1,7 +1,9 @@
 # Ref — write/refresh an article
 
-> A flat how-to the lead points a fresh throwaway subagent at:
-> *"Read and follow `.claude/refs/write-article.md` exactly; do one unit; `npm run build`; report; do NOT deploy."*
+> The how-to for the **`portfolio-writer`** worker subagent (`.claude/agents/portfolio-writer.md`).
+> The lead spawns that named subagent with a high-level goal ("Write the next queued article"); its
+> def points it here, and you follow this ref exactly: write/refresh ONE article, `npm run build`,
+> report, do NOT deploy.
 > Write or refresh ONE article/blog for the portfolio's "Agent Systems" section, grounded in REAL
 > project work + the agent docs, behind an honesty gate, ending in `## Key takes` (X-agent post
 > seeds), and wired into the site. Use whenever the task is to draft/refresh an article (not sync
