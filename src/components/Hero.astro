@@ -1,0 +1,84 @@
+---
+import { site } from '../data/site';
+import { link } from '../lib/url';
+
+// Ticker words drawn from the two real case studies — no invented claims.
+const ticker = [
+  'construction operations', 'agentic RAG', 'multi-tenant', 'row-level security',
+  'Stripe payments', 'LangGraph agents', 'Supabase', 'AWS Bedrock',
+  'shipped to production', 'honest tests',
+];
+---
+<section class="hero" aria-label="Introduction">
+  <div class="shell hero-shell">
+    <!-- left rail: spec sheet -->
+    <aside class="hero-rail rise" style="animation-delay: .55s">
+      <div class="rail-row"><span class="rail-k">ROLE</span><span class="rail-v">{site.role}</span></div>
+      <div class="rail-row"><span class="rail-k">FOCUS</span><span class="rail-v">Full-stack · AI systems</span></div>
+      <div class="rail-row"><span class="rail-k">STATUS</span><span class="rail-v"><span class="dot" aria-hidden="true"></span>Open to work</span></div>
+      {site.location && <div class="rail-row"><span class="rail-k">BASED</span><span class="rail-v">{site.location}</span></div>}
+    </aside>
+
+    <div class="hero-main">
+      <p class="kicker rise" style="animation-delay: .05s">Portfolio · {site.handle}</p>
+
+      <h1 class="display hero-h">
+        <span class="rise hero-line" style="animation-delay: .12s">Engineer who</span>
+        <span class="rise hero-line hero-em" style="animation-delay: .22s">ships real</span>
+        <span class="rise hero-line" style="animation-delay: .32s">products<span class="hero-dot">.</span></span>
+      </h1>
+
+      <p class="hero-sub rise" style="animation-delay: .44s">
+        {site.tagline}
+      </p>
+
+      <div class="hero-cta rise" style="animation-delay: .58s">
+        <a href="#work" class="btn btn-primary">View work <span aria-hidden="true">↓</span></a>
+        <a href={site.github} target="_blank" rel="noopener" class="btn btn-ghost">GitHub <span aria-hidden="true">↗</span></a>
+        <a href={`mailto:${site.email}`} class="btn btn-ghost">Email <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ticker rule -->
+  <div class="hero-ticker rise" style="animation-delay: .75s" aria-hidden="true">
+    <div class="ticker-track">
+      {[...ticker, ...ticker].map((t) => (
+        <span class="ticker-item font-mono">{t}<span class="ticker-sep">◇</span></span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; z-index: 2; padding-top: clamp(3.5rem, 9vw, 7rem); padding-bottom: 0; }
+  .hero-shell { display: grid; grid-template-columns: 220px 1fr; gap: clamp(1.5rem, 5vw, 4.5rem); align-items: start; }
+  @media (max-width: 880px) { .hero-shell { grid-template-columns: 1fr; } }
+
+  /* spec rail */
+  .hero-rail { border-left: 2px solid var(--color-amber); padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.9rem; margin-top: 0.6rem; }
+  @media (max-width: 880px) { .hero-rail { order: 2; flex-direction: row; flex-wrap: wrap; gap: 0.6rem 1.6rem; margin-top: 2.5rem; } }
+  .rail-row { display: flex; flex-direction: column; gap: 0.2rem; }
+  .rail-k { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.22em; color: var(--color-paper-mute); }
+  .rail-v { font-family: var(--font-mono); font-size: 0.82rem; color: var(--color-paper); display: inline-flex; align-items: center; gap: 0.5rem; }
+  .rail-todo { color: var(--color-paper-mute); font-size: 0.72rem; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-spark); box-shadow: 0 0 10px var(--color-spark); }
+
+  /* headline */
+  .hero-main { min-width: 0; }
+  .hero-h { font-size: clamp(3.2rem, 12vw, 8.5rem); margin: 1.4rem 0 0; color: var(--color-paper); }
+  .hero-line { display: block; }
+  .hero-em { color: var(--color-amber); font-style: italic; font-weight: 460; }
+  .hero-dot { color: var(--color-rust); }
+
+  .hero-sub {
+    max-width: 46ch; margin: 1.8rem 0 0; color: var(--color-paper-dim);
+    font-size: clamp(1.02rem, 1.6vw, 1.22rem); line-height: 1.55;
+  }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.4rem; }
+
+  /* ticker */
+  .hero-ticker { margin-top: clamp(3.5rem, 8vw, 6rem); border-block: 1px solid var(--color-line); overflow: hidden; padding-block: 0.9rem; }
+  .ticker-item { font-size: 0.82rem; color: var(--color-paper-mute); letter-spacing: 0.04em; }
+  .ticker-sep { color: var(--color-amber); margin-inline: 1.4rem; opacity: 0.7; }
+</style>

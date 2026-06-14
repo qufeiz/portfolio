@@ -1,0 +1,49 @@
+---
+import { asset } from '../lib/url';
+
+interface Shot {
+  src: string;       // relative to public/, e.g. 'fredgpt/screenshots/01.png'
+  alt: string;
+  caption?: string;
+}
+
+interface Props {
+  shots: Shot[];
+  label?: string;
+}
+
+const { shots, label = 'Screens' } = Astro.props;
+---
+{shots.length > 0 && (
+  <section class="gallery reveal" aria-label={label}>
+    <p class="kicker gal-kicker">/ {label}</p>
+    <div class="gal-grid">
+      {shots.map((s, i) => (
+        <figure class={`gal-fig ${i % 3 === 0 ? 'gal-wide' : ''}`}>
+          <img
+            src={asset(s.src)}
+            alt={s.alt}
+            loading="lazy"
+            decoding="async"
+            class="gal-img"
+          />
+          {s.caption && <figcaption class="gal-cap font-mono">{s.caption}</figcaption>}
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .gallery { margin-top: clamp(3rem, 7vw, 5rem); }
+  .gal-kicker { margin-bottom: 1.5rem; }
+  .gal-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(0.8rem, 2vw, 1.4rem); }
+  @media (max-width: 640px) { .gal-grid { grid-template-columns: 1fr; } }
+  .gal-wide { grid-column: 1 / -1; }
+  @media (max-width: 640px) { .gal-wide { grid-column: auto; } }
+
+  .gal-fig { margin: 0; border: 1px solid var(--color-line); border-radius: 2px; overflow: hidden; background: var(--color-ink-2); transition: border-color 0.3s ease, transform 0.3s ease; }
+  .gal-fig:hover { border-color: var(--color-line-2); transform: translateY(-3px); }
+  .gal-img { display: block; width: 100%; height: auto; }
+  .gal-cap { padding: 0.7rem 0.9rem; font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.04em; border-top: 1px solid var(--color-line); }
+</style>

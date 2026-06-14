@@ -1,0 +1,181 @@
+---
+import Base from '../../layouts/Base.astro';
+import CaseHeader from '../../components/CaseHeader.astro';
+import CaseSection from '../../components/CaseSection.astro';
+import Gallery from '../../components/Gallery.astro';
+import { getProject } from '../../data/projects';
+import { asset, link } from '../../lib/url';
+import { site } from '../../data/site';
+
+const project = getProject('fredgpt')!;
+
+// FredGPT product screenshots, copied into public/fredgpt/screenshots/.
+const shots = [
+  { src: 'fredgpt/screenshots/01-chat-fomc-policy-answer.png', alt: 'FredGPT chat answering a question about FOMC policy changes', caption: 'Natural-language Q&A on FOMC policy' },
+  { src: 'fredgpt/screenshots/02-demographic-data-exploration.png', alt: 'FredGPT exploring unemployment data by demographic', caption: 'Demographic time-series exploration' },
+  { src: 'fredgpt/screenshots/03-source-citations-provenance.png', alt: 'FredGPT showing source citations and provenance for an answer', caption: 'Source citations & provenance' },
+  { src: 'fredgpt/screenshots/04-agentic-tool-calls.png', alt: 'FredGPT agent showing its tool calls while assembling an answer', caption: 'Agentic tool calls, made visible' },
+  { src: 'fredgpt/screenshots/05-guardrails-in-action.png', alt: 'FredGPT Bedrock guardrails blocking an unsafe request', caption: 'Guardrails in action' },
+  { src: 'fredgpt/screenshots/06-federal-deficit-data.png', alt: 'FredGPT charting federal deficit data', caption: 'Charted federal deficit data' },
+];
+
+// Architecture rows for the diagram-style breakdown.
+const arch = [
+  { layer: 'Frontend', detail: 'React chat experience served via AWS CloudFront.' },
+  { layer: 'Agent backend', detail: 'LangGraph / LangChain orchestrates conversation state and tool calls, iterating until it can assemble a grounded answer.' },
+  { layer: 'Tooling', detail: 'An MCP server on AWS Lambda exposes the data tools to the agent over a standardized, transport-agnostic interface.' },
+  { layer: 'Retrieval (core)', detail: 'BM25 keyword search in parallel with semantic vector search (Bedrock Titan Embed Text v2, 1024-d) over Amazon OpenSearch, fused with Reciprocal Rank Fusion. ~3,500 LOC TypeScript/Express, Dockerized, with API-key auth, rate limiting, health checks.' },
+  { layer: 'Safety', detail: 'AWS Bedrock guardrails block harmful or ungrounded responses while still allowing factual economic Q&A.' },
+];
+---
+<Base
+  title={`FredGPT — Agentic system for Federal Reserve data · ${site.name}`}
+  description="An agent-based GenAI platform that unifies fragmented Federal Reserve sources behind a single chat interface, returning charted, cited, source-traceable answers. CMU graduate practicum, team project."
+>
+  <CaseHeader project={project} />
+
+  <div class="shell case-wrap">
+    <!-- Demo video: the centerpiece. Poster preview, controls, muted, playsinline. -->
+    <section id="demo" class="demo-video reveal" aria-label="Demo video">
+      <div class="dv-frame">
+        <video
+          controls
+          muted
+          playsinline
+          preload="none"
+          poster={asset('fredgpt/poster.jpg')}
+          class="dv-el"
+        >
+          <source src={asset('fredgpt/demo.mp4')} type="video/mp4" />
+          Your browser does not support the video tag.
+          <a href={asset('fredgpt/demo.mp4')}>Download the demo (MP4)</a>.
+        </video>
+      </div>
+      <p class="dv-cap font-mono">▶ Silent screen capture — a real session, end to end.</p>
+    </section>
+
+    <CaseSection num="01" title="The problem">
+      <p>
+        The Federal Reserve publishes some of the most authoritative economic data and history
+        in the world, but it is scattered across many disconnected systems: live time series in
+        FRED, scanned historical documents in FRASER, working papers in Fed in Print, and policy
+        history on FederalReserveHistory.org.
+      </p>
+      <p>
+        To answer a single real question — <em>"What were the latest FOMC policy changes, and
+        why?"</em> — a user has to know which system holds the data, search each one separately,
+        then manually stitch the numbers together with the surrounding policy context. The
+        information is public, but it is not <strong>usable</strong>.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="02" title="What it does">
+      <p>
+        FredGPT is an agent-based GenAI platform that unifies and reasons over these diverse
+        Federal Reserve sources behind a single chat interface. A user asks in natural language
+        and gets back an accurate, explainable answer that combines:
+      </p>
+      <ul>
+        <li><strong>Structured time series</strong> — the actual numbers pulled live from FRED (rates, unemployment by demographic, deficits, GDP, yield-curve indicators).</li>
+        <li><strong>Unstructured history</strong> — relevant policy text and FOMC documents retrieved from FRASER and the Fed corpus.</li>
+        <li><strong>Charts, citations, and metadata</strong> — every answer traceable back to its authoritative source, with the underlying series IDs and document provenance shown on demand.</li>
+      </ul>
+      <p>
+        It lowers the bar to economic literacy and raises transparency: answers are grounded in,
+        and traceable to, official Federal Reserve sources. It serves researchers, educators,
+        students, and the general public.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="03" title="How it works">
+      <p>
+        FredGPT is a modular <strong>multi-agent system</strong> built on retrieval-augmented
+        generation. The core idea: a hybrid retriever that gets both keyword precision and
+        semantic recall, fused into one ranked result the agent can reason over.
+      </p>
+      <div class="arch">
+        {arch.map((row, i) => (
+          <div class="arch-row">
+            <span class="arch-num font-mono tnum">{String(i + 1).padStart(2, '0')}</span>
+            <span class="arch-layer font-mono">{row.layer}</span>
+            <span class="arch-detail">{row.detail}</span>
+          </div>
+        ))}
+      </div>
+      <p>
+        Guardrail testing and retrieval benchmarking were treated as first-class concerns, not
+        afterthoughts.
+      </p>
+    </CaseSection>
+
+    <Gallery shots={shots} label="Product screens" />
+
+    <CaseSection num="04" title="Outcome">
+      <p>
+        FredGPT demonstrates an end-to-end agentic pipeline that turns fragmented, expert-only
+        Federal Reserve data into conversational, charted, source-cited answers. It improves
+        economic literacy by explaining data in context, increases transparency by making every
+        answer traceable to an authoritative source, and shows a credible, cloud-native
+        deployment path on AWS for serving that capability to researchers, educators, students,
+        and the public.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="05" title="Role & context">
+      <!-- TODO: confirm exact role — which components/workstreams the owner personally
+           led (retrieval service, agent backend, guardrails, frontend). Team project;
+           do not overclaim sole authorship. -->
+      <p>
+        CMU <strong>14-798</strong> Fall-2025 graduate practicum — a <strong>team project</strong>
+        for client <strong>Launchpad Edge</strong>. This was collaborative work.
+      </p>
+    </CaseSection>
+
+    <nav class="case-next reveal" aria-label="Next project">
+      <a href={link('work/treaxe')} class="next-link">
+        <span class="next-k font-mono">Next →</span>
+        <span class="next-title display">TreAxe</span>
+      </a>
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .case-wrap { position: relative; z-index: 2; padding-top: clamp(2rem, 5vw, 3.5rem); }
+
+  .demo-video { margin-bottom: clamp(3rem, 7vw, 5rem); }
+  .dv-frame {
+    border: 1px solid var(--color-line-2); border-radius: 3px; overflow: hidden;
+    background: #000;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9), 0 0 0 1px rgba(90,209,196,0.06);
+    position: relative;
+  }
+  .dv-frame::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    box-shadow: inset 0 0 120px -40px rgba(90,209,196,0.18);
+  }
+  .dv-el { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
+  .dv-cap { margin-top: 0.9rem; font-size: 0.76rem; color: var(--color-paper-mute); letter-spacing: 0.04em; }
+
+  .arch { margin: 0.5rem 0 1.6rem; border-top: 1px solid var(--color-line); }
+  .arch-row { display: grid; grid-template-columns: 40px 130px 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line); align-items: baseline; }
+  @media (max-width: 600px) { .arch-row { grid-template-columns: 1fr; gap: 0.3rem; } }
+  .arch-num { color: var(--color-spark); font-size: 0.74rem; }
+  .arch-layer { color: var(--color-paper); font-size: 0.82rem; letter-spacing: 0.02em; }
+  .arch-detail { color: var(--color-paper-dim); font-size: 0.96rem; line-height: 1.55; }
+
+  .role-todo { color: var(--color-paper-mute); font-size: 0.82rem; border-left: 2px solid var(--color-line-2); padding-left: 0.8rem; }
+
+  .case-next { margin-top: clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--color-line); padding-top: 2.5rem; }
+  .next-link { display: inline-flex; flex-direction: column; gap: 0.5rem; transition: transform 0.3s ease; }
+  .next-link:hover { transform: translateX(8px); }
+  .next-k { font-size: 0.78rem; color: var(--color-paper-mute); letter-spacing: 0.1em; }
+  .next-title { font-size: clamp(2rem, 5vw, 3rem); color: var(--color-paper); }
+  .next-link:hover .next-title { color: var(--color-spark); }
+
+  code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--color-ink-3); border: 1px solid var(--color-line);
+    padding: 0.08em 0.38em; border-radius: 2px; color: var(--color-paper);
+  }
+</style>

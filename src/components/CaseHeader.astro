@@ -1,0 +1,74 @@
+---
+import type { Project } from '../data/projects';
+import { link } from '../lib/url';
+
+interface Props { project: Project; }
+const { project: p } = Astro.props;
+---
+<header class={`case-head accent-${p.accent}`}>
+  <div class="shell">
+    <a href={link('/#work')} class="case-back font-mono">← All work</a>
+
+    <div class="case-top rise">
+      <span class="case-index font-mono tnum">{p.index}</span>
+      <div>
+        <p class="kicker case-status">{p.status} · {p.year}</p>
+        <h1 class="display case-title">{p.title}</h1>
+      </div>
+    </div>
+
+    <p class="case-tag rise" style="animation-delay:.1s">{p.tagline}</p>
+
+    <!-- Honest context line. Rendered, easy to edit. -->
+    <!-- TODO: confirm role — see HTML comment near the role/context strings. -->
+    <p class="case-context font-mono rise" style="animation-delay:.16s">↳ {p.context}</p>
+
+    <div class="case-actions rise" style="animation-delay:.24s">
+      {p.links.map((l) => (
+        <a
+          href={l.href}
+          class={`btn ${l.kind === 'primary' ? 'btn-primary' : 'btn-ghost'}`}
+          target={l.href.startsWith('http') ? '_blank' : undefined}
+          rel={l.href.startsWith('http') ? 'noopener' : undefined}
+        >
+          {l.label}
+          <span aria-hidden="true">{l.href.startsWith('http') ? '↗' : '↓'}</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="case-stack rise" style="animation-delay:.32s">
+      <span class="case-stack-k font-mono">STACK</span>
+      <div class="case-stack-chips">
+        {p.stack.map((s) => <span class="chip">{s}</span>)}
+      </div>
+    </div>
+  </div>
+  <div class="shell"><div class="rule case-rule"></div></div>
+</header>
+
+<style>
+  .case-head { position: relative; z-index: 2; padding-top: clamp(2.5rem, 6vw, 4.5rem); }
+  .case-back { display: inline-block; font-size: 0.8rem; color: var(--color-paper-mute); margin-bottom: clamp(2rem, 5vw, 3.5rem); transition: color 0.2s ease; }
+  .case-back:hover { color: var(--color-amber); }
+
+  .case-top { display: flex; align-items: flex-start; gap: clamp(1rem, 3vw, 2rem); }
+  .case-index { font-size: clamp(2rem, 5vw, 3.4rem); color: var(--color-paper-mute); line-height: 1; }
+  .accent-amber .case-index { color: var(--color-amber); }
+  .accent-spark .case-index { color: var(--color-spark); }
+  .case-status { color: var(--color-paper-mute); }
+  .accent-amber .case-status { color: var(--color-amber); }
+  .accent-spark .case-status { color: var(--color-spark); }
+  .case-title { font-size: clamp(3rem, 11vw, 7rem); color: var(--color-paper); margin: 0.6rem 0 0; }
+
+  .case-tag { margin: 1.8rem 0 0; font-size: clamp(1.2rem, 2.6vw, 1.8rem); color: var(--color-paper); max-width: 30ch; line-height: 1.25; font-family: var(--font-display); font-style: italic; font-weight: 380; }
+  .case-context { margin: 1rem 0 0; color: var(--color-paper-mute); font-size: 0.82rem; max-width: 64ch; }
+
+  .case-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 2.2rem; }
+
+  .case-stack { display: flex; align-items: baseline; gap: 1.2rem; margin-top: 2.4rem; flex-wrap: wrap; }
+  .case-stack-k { font-size: 0.66rem; letter-spacing: 0.22em; color: var(--color-paper-mute); }
+  .case-stack-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+  .case-rule { margin-top: clamp(3rem, 7vw, 5rem); }
+</style>

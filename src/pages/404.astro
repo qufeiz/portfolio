@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { link } from '../lib/url';
+---
+<Base title="404 — Not found">
+  <section class="nf shell">
+    <p class="kicker">/ Error 404</p>
+    <h1 class="display nf-h">This page<br />doesn't exist<span style="color:var(--color-rust)">.</span></h1>
+    <p class="nf-sub">The link may be broken, or the page may have moved.</p>
+    <a href={link('/')} class="btn btn-primary">← Back home</a>
+  </section>
+</Base>
+
+<style>
+  .nf { position: relative; z-index: 2; padding-block: clamp(5rem, 14vw, 11rem); }
+  .nf-h { font-size: clamp(3rem, 11vw, 7rem); color: var(--color-paper); margin: 1rem 0; }
+  .nf-sub { color: var(--color-paper-dim); margin-bottom: 2rem; font-size: 1.1rem; }
+</style>

@@ -1,0 +1,191 @@
+---
+import '../styles/global.css';
+import { site } from '../data/site';
+import { link } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} — ${site.role}`,
+  description = site.tagline,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(link('og-image.svg'), Astro.site).href;
+
+const nav = [
+  { label: 'Work', href: '#work' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={link('favicon.svg')} type="image/svg+xml" />
+    <link rel="sitemap" href={link('sitemap-index.xml')} />
+    <link rel="canonical" href={canonical} />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <meta name="theme-color" content="#0c0b09" />
+  </head>
+  <body>
+    <a href="#main" class="sr-skip">Skip to content</a>
+
+    <!-- ===== Header ===== -->
+    <header class="site-head">
+      <div class="shell head-inner">
+        <a href={link('/')} class="brand" aria-label={`${site.name} — home`}>
+          <span class="brand-mark" aria-hidden="true">◣</span>
+          <span class="brand-name font-mono">{site.handle}</span>
+          <span class="brand-slash" aria-hidden="true">/</span>
+          <span class="brand-role font-mono">portfolio</span>
+        </a>
+        <nav class="head-nav" aria-label="Primary">
+          {nav.map((n, i) => (
+            <a href={n.href} class="head-link font-mono">
+              <span class="tnum head-link-num">{String(i + 1).padStart(2, '0')}</span>
+              {n.label}
+            </a>
+          ))}
+          <a href={`mailto:${site.email}`} class="head-cta font-mono">Get in touch</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <!-- ===== Footer ===== -->
+    <footer id="contact" class="site-foot">
+      <div class="shell">
+        <div class="foot-grid">
+          <div class="foot-lead">
+            <p class="kicker">/ Contact</p>
+            <h2 class="display foot-h">
+              Building something<br />real? <a href={`mailto:${site.email}`} class="foot-mail">Let's talk.</a>
+            </h2>
+          </div>
+          <div class="foot-links">
+            {site.socials.map((s) => (
+              <a href={s.href} class="foot-row" target={s.href.startsWith('http') ? '_blank' : undefined} rel={s.href.startsWith('http') ? 'noopener' : undefined}>
+                <span class="foot-row-label font-mono">{s.label}</span>
+                <span class="foot-row-val link-spark">{s.handle}</span>
+                <span class="foot-row-arr" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="rule foot-rule"></div>
+        <div class="foot-base font-mono">
+          <span>© {new Date().getFullYear()} {site.name}</span>
+          {site.location && <span>{site.location}</span>}
+          <span>Built with Astro · hosted on GitHub Pages</span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scroll reveal: progressive enhancement, respects reduced-motion. -->
+    <script>
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const els = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-in');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+
+    <style>
+      .sr-skip {
+        position: absolute; left: -9999px; top: 0; z-index: 100;
+        background: var(--color-amber); color: var(--color-ink);
+        padding: 0.6rem 1rem; font-family: var(--font-mono); font-size: 0.8rem;
+      }
+      .sr-skip:focus { left: 1rem; top: 1rem; }
+
+      .shell { width: 100%; max-width: 1180px; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 3.5rem); }
+
+      /* Header */
+      .site-head {
+        position: sticky; top: 0; z-index: 40;
+        backdrop-filter: blur(12px);
+        background: color-mix(in srgb, var(--color-ink) 72%, transparent);
+        border-bottom: 1px solid var(--color-line);
+      }
+      .head-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+      .brand { display: inline-flex; align-items: baseline; gap: 0.4rem; }
+      .brand-mark { color: var(--color-amber); font-size: 0.85rem; transform: translateY(-1px); }
+      .brand-name { font-size: 0.92rem; font-weight: 600; color: var(--color-paper); letter-spacing: 0.02em; }
+      .brand-slash, .brand-role { color: var(--color-paper-mute); font-size: 0.82rem; }
+      .head-nav { display: flex; align-items: center; gap: clamp(0.9rem, 2.5vw, 2rem); }
+      .head-link {
+        font-size: 0.82rem; color: var(--color-paper-dim);
+        display: inline-flex; align-items: baseline; gap: 0.4rem;
+        transition: color 0.2s ease;
+      }
+      .head-link:hover { color: var(--color-paper); }
+      .head-link-num { color: var(--color-amber); font-size: 0.66rem; }
+      .head-cta {
+        font-size: 0.8rem; color: var(--color-ink);
+        background: var(--color-amber); padding: 0.45rem 0.85rem; border-radius: 2px;
+        transition: background 0.2s ease;
+      }
+      .head-cta:hover { background: var(--color-amber-deep); }
+      @media (max-width: 680px) {
+        .head-link { display: none; }
+        .head-link-num { display: inline; }
+      }
+
+      /* Footer */
+      .site-foot { position: relative; z-index: 2; padding-block: clamp(4rem, 9vw, 7rem) 2.5rem; border-top: 1px solid var(--color-line); margin-top: clamp(4rem, 10vw, 8rem); }
+      .foot-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 6vw, 5rem); align-items: end; }
+      @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+      .foot-h { font-size: clamp(2.2rem, 7vw, 4rem); margin: 1rem 0 0; color: var(--color-paper); }
+      .foot-mail { color: var(--color-amber); font-style: italic; }
+      .foot-mail:hover { color: var(--color-amber-deep); }
+      .foot-links { display: flex; flex-direction: column; }
+      .foot-row {
+        display: grid; grid-template-columns: 88px 1fr auto; align-items: baseline; gap: 1rem;
+        padding: 1rem 0; border-top: 1px solid var(--color-line);
+        transition: padding-left 0.25s ease;
+      }
+      .foot-row:last-child { border-bottom: 1px solid var(--color-line); }
+      .foot-row:hover { padding-left: 0.5rem; }
+      .foot-row-label { font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.12em; text-transform: uppercase; }
+      .foot-row-val { font-size: 0.95rem; }
+      .foot-row-arr { color: var(--color-paper-mute); }
+      .foot-rule { margin-block: 3rem 1.5rem; }
+      .foot-base { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-size: 0.72rem; color: var(--color-paper-mute); }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+---
+import { projects } from '../data/projects';
+import { link } from '../lib/url';
+---
+<section id="work" class="work">
+  <div class="shell">
+    <header class="work-head reveal">
+      <p class="kicker">/ Selected work</p>
+      <h2 class="display work-title">Two products,<br />built end&#8209;to&#8209;end.</h2>
+      <p class="work-note">
+        Both are collaborations — credited honestly below. Click through for the full
+        problem → approach → architecture breakdown.
+      </p>
+    </header>
+
+    <ol class="work-list">
+      {projects.map((p) => (
+        <li class={`work-item reveal accent-${p.accent}`}>
+          <a href={link(`work/${p.slug}`)} class="work-link" aria-label={`Open case study: ${p.title}`}>
+            <div class="wi-index font-mono tnum">{p.index}</div>
+
+            <div class="wi-body">
+              <div class="wi-top">
+                <h3 class="display wi-name">{p.title}</h3>
+                <span class="wi-status font-mono">{p.status}</span>
+              </div>
+              <p class="wi-tag">{p.tagline}</p>
+              <p class="wi-context font-mono">↳ {p.context}</p>
+              <div class="wi-stack">
+                {p.stack.slice(0, 6).map((s) => <span class="chip">{s}</span>)}
+                {p.stack.length > 6 && <span class="chip chip-more">+{p.stack.length - 6}</span>}
+              </div>
+            </div>
+
+            <div class="wi-go" aria-hidden="true">
+              <span class="wi-go-label font-mono">{p.year}</span>
+              <span class="wi-arrow">→</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .work { position: relative; z-index: 2; padding-top: clamp(5rem, 11vw, 9rem); }
+  .work-head { max-width: 640px; margin-bottom: clamp(2.5rem, 6vw, 4.5rem); }
+  .work-title { font-size: clamp(2.4rem, 7vw, 4.5rem); margin: 1rem 0 0; color: var(--color-paper); }
+  .work-note { margin-top: 1.4rem; color: var(--color-paper-dim); max-width: 52ch; font-size: 1.02rem; }
+
+  .work-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-line); }
+  .work-item { border-bottom: 1px solid var(--color-line); }
+
+  .work-link {
+    display: grid;
+    grid-template-columns: 84px 1fr auto;
+    gap: clamp(1rem, 4vw, 3rem);
+    align-items: start;
+    padding: clamp(1.8rem, 4vw, 3rem) 0;
+    position: relative;
+    transition: padding-left 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .work-link::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--color-amber); transform: scaleY(0); transform-origin: top;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .accent-spark .work-link::before { background: var(--color-spark); }
+  .work-link:hover { padding-left: 1.5rem; }
+  .work-link:hover::before { transform: scaleY(1); }
+
+  .wi-index { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--color-paper-mute); line-height: 1; padding-top: 0.35rem; }
+  .accent-spark .work-link:hover .wi-index { color: var(--color-spark); }
+  .accent-amber .work-link:hover .wi-index { color: var(--color-amber); }
+
+  .wi-body { min-width: 0; }
+  .wi-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .wi-name { font-size: clamp(2rem, 5vw, 3.2rem); color: var(--color-paper); line-height: 1; }
+  .wi-status {
+    font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-ink); background: var(--color-amber); padding: 0.22rem 0.55rem; border-radius: 2px;
+  }
+  .accent-spark .wi-status { background: var(--color-spark); }
+  .wi-tag { margin: 1rem 0 0; color: var(--color-paper); font-size: clamp(1.05rem, 2vw, 1.32rem); max-width: 40ch; line-height: 1.35; }
+  .wi-context { margin: 0.8rem 0 0; color: var(--color-paper-mute); font-size: 0.8rem; max-width: 60ch; }
+  .wi-stack { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
+  .chip-more { color: var(--color-paper-mute); }
+
+  .wi-go { display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; padding-top: 0.5rem; }
+  .wi-go-label { font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.1em; }
+  .wi-arrow { font-size: 1.6rem; color: var(--color-paper-dim); transition: transform 0.3s ease, color 0.2s ease; }
+  .work-link:hover .wi-arrow { transform: translateX(6px); color: var(--color-amber); }
+  .accent-spark .work-link:hover .wi-arrow { color: var(--color-spark); }
+
+  @media (max-width: 720px) {
+    .work-link { grid-template-columns: 1fr; gap: 0.5rem; }
+    .wi-index { font-size: 1.1rem; }
+    .wi-go { flex-direction: row; align-items: center; justify-content: space-between; margin-top: 1.2rem; }
+  }
+</style>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  num: string;
+  title: string;
+}
+const { num, title } = Astro.props;
+---
+<section class="cs reveal">
+  <div class="cs-aside">
+    <span class="cs-num font-mono tnum">{num}</span>
+    <h2 class="cs-title">{title}</h2>
+  </div>
+  <div class="cs-body">
+    <slot />
+  </div>
+</section>
+
+<style>
+  .cs { display: grid; grid-template-columns: 240px 1fr; gap: clamp(1.5rem, 5vw, 4rem); padding-block: clamp(2.5rem, 6vw, 4rem); border-top: 1px solid var(--color-line); }
+  .cs:first-of-type { border-top: 0; }
+  @media (max-width: 820px) { .cs { grid-template-columns: 1fr; gap: 1rem; } }
+
+  .cs-aside { display: flex; flex-direction: column; gap: 0.6rem; position: sticky; top: 92px; align-self: start; }
+  @media (max-width: 820px) { .cs-aside { position: static; flex-direction: row; align-items: baseline; gap: 1rem; } }
+  .cs-num { font-size: 0.8rem; color: var(--color-amber); letter-spacing: 0.1em; }
+  .cs-title { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.1rem); color: var(--color-paper); margin: 0; line-height: 1.05; letter-spacing: -0.02em; }
+
+  .cs-body :global(p) { color: var(--color-paper-dim); font-size: clamp(1.02rem, 1.5vw, 1.16rem); line-height: 1.65; margin: 0 0 1.1rem; max-width: 66ch; }
+  .cs-body :global(p:last-child) { margin-bottom: 0; }
+  .cs-body :global(strong) { color: var(--color-paper); font-weight: 600; }
+  .cs-body :global(em) { color: var(--color-amber); font-style: italic; }
+  .cs-body :global(a) { color: var(--color-spark); }
+  .cs-body :global(a:hover) { text-decoration: underline; text-underline-offset: 3px; }
+
+  .cs-body :global(ul) { list-style: none; margin: 0 0 1.1rem; padding: 0; max-width: 70ch; }
+  .cs-body :global(li) { position: relative; padding-left: 1.5rem; margin-bottom: 0.9rem; color: var(--color-paper-dim); font-size: clamp(1rem, 1.5vw, 1.1rem); line-height: 1.6; }
+  .cs-body :global(li::before) { content: "▸"; position: absolute; left: 0; color: var(--color-amber); }
+  .cs-body :global(li strong) { color: var(--color-paper); }
+</style>
