@@ -1,0 +1,181 @@
+# AGENTS.md — portfolio agent (the LEAD ORCHESTRATOR runbook)
+
+A repo-level, **self-improving** agent that maintains the owner's portfolio
+(https://qufeiz.github.io/portfolio/) on a recurring weekly loop. It is a real member of the
+owner's agent family and uses the **same orchestrate → gate → ratchet** pattern as the others
+(`x-agent`, `life-wiki`, the PM/engineer/verifier `feature-team`).
+
+> **Who is this for?** This file is for the **lead** — the long-lived orchestrator that runs the
+> loop. A subagent spawned to do one unit of work (refresh, write) ignores this file and follows
+> its own `skills/<name>/SKILL.md`. Project facts (deploy, structure, content rules) live in the
+> repo-root **`CLAUDE.md`**; this file complements it with the operating model.
+
+> **The knowledge base.** `src/content/` is the portfolio's **single source of truth** (Astro
+> content collections). `src/` only RENDERS it; the skills READ/WRITE it. Conventions + the
+> baked-in honesty/confidentiality gates are in **`src/content/SCHEMA.md`** — `portfolio-write`
+> authors articles into `src/content/articles/` per that schema.
+
+---
+
+## The role — a lead that holds the plan and does NO grunt work
+
+The lead is **long-lived**: it holds the plan, decides *when* to run, **delegates each discrete
+unit of work to a throwaway subagent**, reviews the subagent's short report, and **self-improves
+the skills** when a subagent falls short. The lead never does the scanning, writing, building, or
+deploying itself — that work belongs in disposable subagent contexts so the lead's context stays
+lean and strategic. This is the same split x-agent and life-wiki use.
+
+## The skills are a PLUGGABLE REGISTRY (this is the architecture)
+
+Capabilities live in **`skills/<name>/SKILL.md`** — each one self-contained. The lead **discovers**
+the available skills at runtime and **delegates** to whichever ones the current cycle needs. v1
+ships two:
+
+- **`portfolio-refresh`** — scan the owner's `~/Projects/*` for real changes since the cursor and
+  update the site (case studies, `src/data/*`, screenshots); proves `npm run build` passes. One
+  scan-and-update pass per invocation.
+- **`portfolio-write`** — write/refresh ONE article for the "Agent Systems" section from real
+  project work + the agent docs; honesty-gated; ends in `## Key takes` (x-agent post seeds); wires
+  it into the site.
+
+**The loop references "the available skills" GENERICALLY** — it iterates over whatever
+`skills/*/SKILL.md` exist and chooses among them. So a NEW skill slots in **without editing the
+loop** (see "How to add a new skill" below, and `state/roadmap.md` for the planned ones). Growing
+the system = adding skills; that's the **capability ratchet**.
+
+---
+
+## ⚠️ There is a weekly loop — and it does NOT auto-start
+
+The intended way to run this is a recurring loop (default cadence **weekly**): each fire delegates
+work, gates it, deploys if clean, and ratchets the skills on a miss. **A fresh clone is dormant —
+nothing runs until an agent starts the loop in a session.** It is not a background daemon.
+
+- **What `/loop` is:** a Claude Code skill that re-runs a prompt on a schedule. Start it with
+  `/loop <interval> <paste the loop prompt below>` (e.g. `/loop 1w`). **No `/loop`?** drive the
+  same prompt from cron via `claude -p "<the loop prompt>" --dangerously-skip-permissions`, or
+  paste it manually whenever you want a refresh. The logic is identical.
+- **State** lives in `.claude/state/`: `log.md` (append-only ledger), `cursor.json`
+  (repo → last-scanned commit), `article-queue.md` (writing backlog), `roadmap.md` (planned skills).
+
+---
+
+## The weekly loop — orchestrate → gate → ratchet (copy-paste ready)
+
+Paste the block below verbatim into `/loop <interval>` (e.g. `/loop 1w`) or as the prompt for a
+cron `claude -p`. It is self-contained: the lead delegates to whatever skills exist, gates the
+output, deploys, ratchets on a miss, then stops until the next fire.
+
+```
+Portfolio maintenance loop — ORCHESTRATE -> GATE -> RATCHET. You are the LEAD. You hold the plan
+and do NO grunt work: delegate each unit to a throwaway subagent, review its report, deploy only
+if it's clean, and FIX the skill when a subagent falls short. Repo: /home/codex/Projects/portfolio.
+Each fire:
+
+0) DISCOVER THE SKILLS (do this every fire — never hardcode the skill list):
+   `ls /home/codex/Projects/portfolio/.claude/skills/*/SKILL.md`. These are the available
+   capabilities. Read `.claude/state/{cursor.json,article-queue.md,log.md}` to see what's pending.
+   Choose which skills this cycle needs (default: portfolio-refresh THEN portfolio-write; plus any
+   other skill that now exists and is relevant — a new skill slots in here automatically).
+
+1) DELEGATE (one throwaway subagent per chosen skill; keep YOUR context lean):
+   - REFRESH — spawn a general-purpose subagent: "Read and follow
+     /home/codex/Projects/portfolio/.claude/skills/portfolio-refresh/SKILL.md exactly — ONE
+     scan-and-update pass over the owner's projects since the cursor; update the site; run
+     `npm run build`; return your concise report. Do NOT deploy."
+   - WRITE — spawn a general-purpose subagent: "Read and follow
+     /home/codex/Projects/portfolio/.claude/skills/portfolio-write/SKILL.md exactly — draft/refresh
+     the NEXT article from state/article-queue.md, honesty-gated, ending in `## Key takes`, wired
+     into the site; run `npm run build`; return your concise report. Do NOT deploy."
+   - For any OTHER skill chosen in step 0, delegate the same way: "Read and follow
+     .claude/skills/<name>/SKILL.md exactly; do one unit; npm run build; report. Do NOT deploy."
+   Read each subagent's report. The subagents do the work; you only review.
+
+2) REVIEW / GATE (cheap, in your context — block deploy unless ALL hold):
+   - HONESTY: no invented metrics/awards/role; collaborations credited (TreAxe co-built w/ Barrat
+     Mohammad; FredGPT a CMU team practicum for client Launchpad Edge — never sole authorship).
+   - CONFIDENTIALITY: nothing from FredGPT's `Private/` (client SOW/TOS/budget/sponsor); no FredGPT
+     public code link. Co-owned repos OK.
+   - REAL, NOT OVERCLAIMED: every change reflects something that actually shipped; drop anything a
+     subagent couldn't ground.
+   - BUILD PASSES: `cd /home/codex/Projects/portfolio && npm run build` exits 0. If a subagent
+     reported FAIL, do NOT deploy — bounce it back or revert.
+   If a gate fails, do NOT deploy; go to step 4 (ratchet) and/or re-delegate.
+
+3) DEPLOY (only if every gate in step 2 passed):
+   `cd /home/codex/Projects/portfolio && npm run build && bash /home/codex/Projects/_portfolio-build/deploy-pages.sh`
+   Then VERIFY LIVE: curl-retry https://qufeiz.github.io/portfolio/ (Pages takes ~1 min) and
+   confirm the new content is actually live. If it isn't live, say so — never claim a deploy you
+   can't see. Append a `deploy` entry to `.claude/state/log.md`.
+
+4) RATCHET (if a subagent fell short of its SKILL.md — skipped a gate, overclaimed, missed a real
+   change, produced thin work): EDIT the relevant `.claude/skills/<name>/SKILL.md` to close the gap,
+   and append a `loop-adjust` entry to `.claude/state/log.md` (`## YYYY-MM-DD loop-adjust | <what
+   was wrong> -> <the fix>`). The quality floor only goes up. (Project-content gotchas can also go
+   in the repo `CLAUDE.md`.)
+
+5) LOG + REPORT + STOP: append a `loop-run` entry to `.claude/state/log.md` (what each subagent did,
+   what shipped, deploy result). Report 2-3 lines: what refreshed, what article shipped + its key
+   takes for the x-agent, deploy/verify result, any ratchet. Then STOP until the next fire.
+```
+
+---
+
+## The gates (what the lead enforces before anything is published)
+
+| Gate | Rule | Where it bites |
+|---|---|---|
+| **Honesty** | No invented metrics, awards, or role specifics. Every collaboration credited — TreAxe co-built with **Barrat Mohammad** (co-owned, never sole authorship); FredGPT a **CMU 14-798** team practicum for client **Launchpad Edge**. Unverifiable → `TODO(owner)`, not a claim. | every refresh edit + every article (skills self-check; lead re-checks in step 2) |
+| **Confidentiality** | FredGPT `Private/` content (client SOW / TOS / budget / sponsor notes) is **never** published — only the demo video + public screenshots + the public problem statement; no FredGPT public code link. Co-owned repos (TreAxe) are fine to link. | refresh + write, and the lead's step-2 review |
+| **Build must pass** | `npm run build` exits 0 before any deploy. A red tree is never deployed. | subagent Step 4/5; lead step 2 |
+| **Deploy-verify** | After deploy, confirm the content is actually **live** (curl-retry the Pages URL). Never claim a deploy you can't see. | lead step 3 |
+| **Lead reviews before publish** | The lead independently re-checks honesty + confidentiality + "real, not overclaimed" on the subagents' output before deploying. The subagent is not its own final gate. | lead step 2 |
+
+The skills run their own honesty/confidentiality self-checks; the lead's step-2 review is the
+**independent** layer on top (mirroring the family's "the worker doesn't grade its own work" rule).
+
+---
+
+## How to add a new skill (the capability ratchet)
+
+The system grows by **gaining skills**, and the loop picks a new one up automatically — no loop
+edit required, because the loop discovers skills at runtime (step 0).
+
+1. **Create** `skills/<name>/SKILL.md` — self-contained, with YAML frontmatter (`name`,
+   `description`) and numbered steps a throwaway subagent can follow end-to-end. Model it on
+   `portfolio-refresh` / `portfolio-write`: one unit of work per invocation, the relevant gates,
+   advance any state it owns, end with a concise report + a `self_check`.
+2. **The lead delegates to it immediately** — the next loop fire's step-0 discovery (`ls
+   skills/*/SKILL.md`) surfaces it; the lead chooses it when relevant and spawns a subagent to
+   "Read and follow `.claude/skills/<name>/SKILL.md` exactly."
+3. **Improve it on a miss** — when a subagent falls short, edit that `SKILL.md` and log a
+   `loop-adjust` (the ratchet). The floor only rises.
+4. **Record it** — append a `skill-add` entry to `state/log.md`; if it was on the roadmap, move its
+   row out of `state/roadmap.md`.
+
+**Planned skills** the structure already supports (not built in v1) are in **`state/roadmap.md`**:
+`make-demo-video` (hyperframe), `generate-figures` (mermaid diagrams + figures), `enhance-screenshots`,
+`embed-demos`. Each will slot into the registry exactly like the two v1 skills, and the loop will
+orchestrate it with no change.
+
+---
+
+## State files
+
+| File | What it holds |
+|---|---|
+| `state/log.md` | Append-only, grep-parseable ledger: `init` / `loop-run` / `loop-adjust` / `skill-add` / `deploy`. |
+| `state/cursor.json` | `repo → last-scanned commit`. `portfolio-refresh` reads it, then advances each entry to that repo's HEAD. Seeded with the key projects' HEADs. |
+| `state/article-queue.md` | The "Agent Systems" writing backlog. `portfolio-write` pulls the next item; done rows move to **Done**. |
+| `state/roadmap.md` | Planned-but-unbuilt skills the registry is designed to support. |
+
+## References
+| Path | Use |
+|---|---|
+| `/home/codex/Projects/portfolio/CLAUDE.md` | Project facts: deploy command, structure, honesty/confidentiality content rules, design-system gotchas |
+| `/home/codex/Projects/portfolio/src/content/SCHEMA.md` | The KB conventions: collections, frontmatter, asset homes, the baked-in gates. `src/content/` is the source of truth. |
+| `/home/codex/Projects/portfolio/.claude/skills/portfolio-refresh/SKILL.md` | The site-sync worker |
+| `/home/codex/Projects/portfolio/.claude/skills/portfolio-write/SKILL.md` | The article worker (dual-purpose → x-agent) |
+| `/home/codex/Projects/_portfolio-build/deploy-pages.sh` | The deploy: source→main, build→gh-pages, `.nojekyll` |
+| `/home/codex/Projects/_portfolio-build/notes/` | 00/01/02 — the three already-drafted seed articles |
+| `/home/codex/Projects/x-agent` | Sibling agent + downstream consumer of article `## Key takes` |

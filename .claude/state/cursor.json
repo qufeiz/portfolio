@@ -1,0 +1,17 @@
+{
+  "_doc": "Per-repo last-scanned commit for portfolio-refresh. After a refresh pass scans `git -C <repo> log <last>..HEAD`, it ADVANCES each entry to that repo's current HEAD. Seeded with the HEADs of the key showcased projects on 2026-06-14. Add a repo here when it earns a place on the site.",
+  "updated": "2026-06-14T00:00:00Z",
+  "repos": {
+    "/home/codex/Projects/TreAxe": "23ce81f299f3b797428a763583b1c23dfb283ded",
+    "/home/codex/Projects/_fredgpt-build": null,
+    "/home/codex/Projects/x-agent": "482b3bbd424fd05bfb28359af33f0ddc60c2405c",
+    "/home/codex/Projects/life-wiki": "34283df574c4bea45da6e142b2f782b22fbb3310",
+    "/home/codex/Projects/jobright-agent": "49ce064a6cdb794b027eda1412b1d848d35f0731",
+    "/home/codex/Projects/feature-team": "dd8a34df97e292fb08309903f92dba2fed62a26b",
+    "/home/codex/Projects/portfolio": "2c97d62c95137ed499a04364a520899b397c6803"
+  },
+  "_notes": {
+    "/home/codex/Projects/_fredgpt-build": "Not a git repo on this box (null = scan its working tree / case-study source rather than git log). FredGPT confidentiality rules apply — see AGENTS.md.",
+    "/home/codex/Projects/TreAxe": "Co-owned with Barrat Mohammad. Prefer TreAxe's own official screenshots from docs/features/*/images/ over re-captures."
+  }
+}

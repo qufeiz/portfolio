@@ -16,8 +16,11 @@ const {
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(link('og-image.svg'), Astro.site).href;
 
+// "Agents" routes to the index anchor (base-pathed) so it works from article
+// pages too; the others stay as on-page fragments (index-only, as before).
 const nav = [
   { label: 'Work', href: '#work' },
+  { label: 'Agents', href: link('/#agents') },
   { label: 'About', href: '#about' },
   { label: 'Contact', href: '#contact' },
 ];
