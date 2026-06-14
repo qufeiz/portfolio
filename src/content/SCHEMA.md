@@ -176,7 +176,7 @@ Gates). Authoring into `src/content/` is **gated**, not free-form:
 ### Honesty
 - **No invented metrics, awards, or role specifics.** If a number/claim can't be grounded in a real
   repo or doc, it does not go in — leave a `TODO(owner)` instead.
-- **TreAxe** is **co-built with Barrat Mohammad** (co-owned codebase). Never imply sole authorship.
+- **TreAxe** is **co-built/co-owned with a collaborator** (co-owned codebase). Never imply sole authorship.
 - **FredGPT** is a **CMU 14-798 (Fall 2025) team practicum for an industry client (economic-data domain).** Never imply
   sole authorship; it is collaborative academic work.
 

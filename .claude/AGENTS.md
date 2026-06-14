@@ -117,8 +117,8 @@ subagents). Each fire:
    Read each subagent's report. The subagents do the work; you only review.
 
 2) REVIEW / GATE (cheap, in your context — block deploy unless ALL hold):
-   - HONESTY: no invented metrics/awards/role; collaborations credited (TreAxe co-built w/ Barrat
-     Mohammad; FredGPT a CMU team practicum for an industry client (economic-data domain) — never sole authorship).
+   - HONESTY: no invented metrics/awards/role; collaborations credited (TreAxe co-built/co-owned w/ a
+     collaborator; FredGPT a CMU team practicum for an industry client (economic-data domain) — never sole authorship).
    - CONFIDENTIALITY: nothing from FredGPT's `Private/` (client SOW/TOS/budget/sponsor); no FredGPT
      public code link. Co-owned repos OK.
    - REAL, NOT OVERCLAIMED: every change reflects something that actually shipped; drop anything a
@@ -150,7 +150,7 @@ subagents). Each fire:
 
 | Gate | Rule | Where it bites |
 |---|---|---|
-| **Honesty** | No invented metrics, awards, or role specifics. Every collaboration credited — TreAxe co-built with **Barrat Mohammad** (co-owned, never sole authorship); FredGPT a **CMU 14-798** team practicum for **an industry client (economic-data domain)**. Unverifiable → `TODO(owner)`, not a claim. | every refresh edit + every article (the worker's self-check; lead re-checks in step 2) |
+| **Honesty** | No invented metrics, awards, or role specifics. Every collaboration credited — TreAxe co-built/co-owned **with a collaborator** (never sole authorship); FredGPT a **CMU 14-798** team practicum for **an industry client (economic-data domain)**. Unverifiable → `TODO(owner)`, not a claim. | every refresh edit + every article (the worker's self-check; lead re-checks in step 2) |
 | **Confidentiality** | FredGPT `Private/` content (client SOW / TOS / budget / sponsor notes) is **never** published — only the demo video + public screenshots + the public problem statement; no FredGPT public code link. Co-owned repos (TreAxe) are fine to link. | refresh + write, and the lead's step-2 review |
 | **Build must pass** | `npm run build` exits 0 before any deploy. A red tree is never deployed. | subagent before reporting; lead step 2 |
 | **Deploy-verify** | After deploy, confirm the content is actually **live** (curl-retry the Pages URL). Never claim a deploy you can't see. | lead step 3 |

@@ -39,7 +39,7 @@ export const projects: Project[] = [
     tagline: 'From first lead to final payment: the operating system for small construction firms.',
     status: 'Live in production',
     year: '2025—',
-    context: 'Co-built with Barrat Mohammad — co-owned codebase. Not a solo project.',
+    context: 'Co-built with a collaborator — co-owned codebase. Not a solo project.',
     summary:
       'A production construction-operations platform — ~42 screens spanning CRM, estimating with e-signatures, scheduling, procurement, field docs, invoicing and a client portal. Multi-tenant, row-level-secured, continuously deployed.',
     stack: [

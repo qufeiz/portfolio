@@ -84,7 +84,7 @@ Prefer a project's **own official screenshots** over re-captures (e.g. TreAxe's
 
 Edit only files under `/home/codex/Projects/portfolio/`. On EVERY edit:
 - **Honesty** — no invented metrics, awards, or role specifics. Collaborations stay credited
-  (TreAxe co-built with Barrat Mohammad — never imply sole authorship). If you can't verify a
+  (TreAxe co-built/co-owned with a collaborator — never imply sole authorship). If you can't verify a
   number, don't write it; leave a `TODO(owner)` comment.
 - **Confidentiality** — FredGPT: never publish anything from the source `Private/` folder
   (client SOW / TOS / budget / sponsor notes); only the demo video + public screenshots + the
