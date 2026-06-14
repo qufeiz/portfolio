@@ -7,7 +7,7 @@ const { project: p } = Astro.props;
 ---
 <header class={`case-head accent-${p.accent}`}>
   <div class="shell">
-    <a href={link('/#work')} class="case-back font-mono">← All work</a>
+    <a href={link('/work')} class="case-back font-mono">← All work</a>
 
     <div class="case-top rise">
       <span class="case-index font-mono tnum">{p.index}</span>
@@ -43,6 +43,15 @@ const { project: p } = Astro.props;
         {p.stack.map((s) => <span class="chip">{s}</span>)}
       </div>
     </div>
+
+    {p.tags.length > 0 && (
+      <div class="case-tags rise" style="animation-delay:.38s">
+        <span class="case-stack-k font-mono">TAGS</span>
+        <div class="case-tags-chips">
+          {p.tags.map((t) => <span class="tag-chip font-mono">#{t}</span>)}
+        </div>
+      </div>
+    )}
   </div>
   <div class="shell"><div class="rule case-rule"></div></div>
 </header>
@@ -69,6 +78,10 @@ const { project: p } = Astro.props;
   .case-stack { display: flex; align-items: baseline; gap: 1.2rem; margin-top: 2.4rem; flex-wrap: wrap; }
   .case-stack-k { font-size: 0.66rem; letter-spacing: 0.22em; color: var(--color-paper-mute); }
   .case-stack-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+  .case-tags { display: flex; align-items: baseline; gap: 1.2rem; margin-top: 1.1rem; flex-wrap: wrap; }
+  .case-tags-chips { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; }
+  .tag-chip { font-family: var(--font-mono); font-size: 0.74rem; color: var(--color-paper-mute); letter-spacing: 0.02em; }
 
   .case-rule { margin-top: clamp(3rem, 7vw, 5rem); }
 </style>

@@ -23,3 +23,26 @@ export const site = {
     // {{TODO: add LinkedIn / X / other socials if the owner wants them}}
   ],
 };
+
+// The writing section's display name. It lives HERE, in one place, so renaming
+// the section to "Blog" (or anything else) later is a one-word swap — nav,
+// home section, /writing index, and article back-links all read from this.
+// (The route /writing and the `articles` collection name are stable internals.)
+export const WRITING_SECTION = 'Writing';
+
+// The `category` taxonomy for articles — the primary browse axis on /writing.
+// Ordering here drives the filter rail order (agent systems first = the thesis).
+// `value` matches the Zod enum in src/content.config.ts. Adding a category =
+// add a value here AND to that enum.
+export const CATEGORIES = [
+  { value: 'agent-systems', label: 'Agent systems' },
+  { value: 'projects', label: 'Projects' },
+  { value: 'life', label: 'Life' },
+  { value: 'essays', label: 'Essays' },
+] as const;
+
+export type ArticleCategory = (typeof CATEGORIES)[number]['value'];
+
+/** Display label for a category value (falls back to the raw value). */
+export const categoryLabel = (v: string): string =>
+  CATEGORIES.find((c) => c.value === v)?.label ?? v;

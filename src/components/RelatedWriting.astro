@@ -1,0 +1,57 @@
+---
+// "Related writing" on a project case page. Surfaces articles whose `tags`
+// include this project's slug — the article lives ONCE in /writing; it is only
+// SURFACED here (no duplication). Renders NOTHING when there are no matches.
+// See src/content/SCHEMA.md › "Project ↔ article cross-link".
+import { relatedArticles } from '../lib/content';
+import { link } from '../lib/url';
+
+interface Props { slug: string; }
+const { slug } = Astro.props;
+
+const related = await relatedArticles(slug);
+---
+{related.length > 0 && (
+  <section class="related reveal" aria-label="Related writing">
+    <p class="kicker rel-kicker">/ Related writing</p>
+    <ul class="rel-list">
+      {related.map((a) => (
+        <li class="rel-item">
+          <a href={link(`notes/${a.id}`)} class="rel-link" aria-label={`Read: ${a.data.title}`}>
+            <div class="rel-body">
+              <h3 class="display rel-name">{a.data.title}</h3>
+              <p class="rel-deck">{a.data.deck}</p>
+            </div>
+            <span class="rel-arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+)}
+
+<style>
+  .related { margin-top: clamp(3rem, 7vw, 5rem); }
+  .rel-kicker { color: var(--color-spark); margin-bottom: 1.4rem; }
+  .rel-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-line); }
+  .rel-item { border-bottom: 1px solid var(--color-line); }
+
+  .rel-link {
+    display: grid; grid-template-columns: 1fr auto; gap: 1.2rem; align-items: center;
+    padding: clamp(1.2rem, 3vw, 1.8rem) 0; position: relative;
+    transition: padding-left 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .rel-link::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--color-spark); transform: scaleY(0); transform-origin: top;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .rel-link:hover { padding-left: 1.2rem; }
+  .rel-link:hover::before { transform: scaleY(1); }
+
+  .rel-body { min-width: 0; }
+  .rel-name { font-size: clamp(1.3rem, 3vw, 1.9rem); color: var(--color-paper); line-height: 1.05; }
+  .rel-deck { margin: 0.6rem 0 0; color: var(--color-paper-dim); font-size: clamp(0.95rem, 1.6vw, 1.08rem); max-width: 56ch; line-height: 1.4; }
+  .rel-arrow { font-size: 1.4rem; color: var(--color-paper-dim); transition: transform 0.3s ease, color 0.2s ease; }
+  .rel-link:hover .rel-arrow { transform: translateX(6px); color: var(--color-spark); }
+</style>

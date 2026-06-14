@@ -1,20 +1,27 @@
 ---
-import { projects } from '../data/projects';
+// Home-page "Featured Work" — a CURATED slice (top featured projects only), not
+// the full list. The full index lives at /work; the "View all" link below sends
+// readers there. This keeps the home a fixed, curated size regardless of how
+// many projects exist.
+import { featuredProjects, projects } from '../data/projects';
 import { link } from '../lib/url';
+
+const featured = featuredProjects(3);
+const total = projects.length;
 ---
 <section id="work" class="work">
   <div class="shell">
     <header class="work-head reveal">
-      <p class="kicker">/ Selected work</p>
-      <h2 class="display work-title">Two products,<br />built end&#8209;to&#8209;end.</h2>
+      <p class="kicker">/ Featured work</p>
+      <h2 class="display work-title">Products, built<br />end&#8209;to&#8209;end.</h2>
       <p class="work-note">
-        Both are collaborations — credited honestly below. Click through for the full
+        A few I'm proud of — collaborations, credited honestly. Click through for the full
         problem → approach → architecture breakdown.
       </p>
     </header>
 
     <ol class="work-list">
-      {projects.map((p) => (
+      {featured.map((p) => (
         <li class={`work-item reveal accent-${p.accent}`}>
           <a href={link(`work/${p.slug}`)} class="work-link" aria-label={`Open case study: ${p.title}`}>
             <div class="wi-index font-mono tnum">{p.index}</div>
@@ -30,6 +37,11 @@ import { link } from '../lib/url';
                 {p.stack.slice(0, 6).map((s) => <span class="chip">{s}</span>)}
                 {p.stack.length > 6 && <span class="chip chip-more">+{p.stack.length - 6}</span>}
               </div>
+              {p.tags.length > 0 && (
+                <div class="wi-tags" aria-label="Tags">
+                  {p.tags.map((t) => <span class="tag-chip font-mono">#{t}</span>)}
+                </div>
+              )}
             </div>
 
             <div class="wi-go" aria-hidden="true">
@@ -40,6 +52,11 @@ import { link } from '../lib/url';
         </li>
       ))}
     </ol>
+
+    <a href={link('work')} class="view-all reveal link-spark">
+      View all work <span aria-hidden="true">→</span>
+      {total > featured.length && <span class="view-all-n font-mono">({total})</span>}
+    </a>
   </div>
 </section>
 
@@ -86,6 +103,15 @@ import { link } from '../lib/url';
   .wi-context { margin: 0.8rem 0 0; color: var(--color-paper-mute); font-size: 0.8rem; max-width: 60ch; }
   .wi-stack { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
   .chip-more { color: var(--color-paper-mute); }
+  .wi-tags { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; margin-top: 1rem; }
+  .tag-chip { font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.02em; }
+
+  .view-all {
+    display: inline-flex; align-items: baseline; gap: 0.5rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    font-family: var(--font-mono); font-size: 0.86rem; letter-spacing: 0.02em;
+  }
+  .view-all-n { color: var(--color-paper-mute); font-size: 0.78rem; }
 
   .wi-go { display: flex; flex-direction: column; align-items: flex-end; gap: 0.8rem; padding-top: 0.5rem; }
   .wi-go-label { font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.1em; }

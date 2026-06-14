@@ -3,6 +3,7 @@ title: "Orchestrate → Gate → Ratchet"
 deck: "The three moves behind every agent system I build."
 order: 1
 kind: concept
+category: agent-systems
 tags: ["architecture", "multi-agent", "orchestration", "gates", "ratchet"]
 keyTakes:
   - "A long-lived orchestrator should hold the plan and do none of the work — disposable subagents keep context lean so quality doesn't decay mid-job."

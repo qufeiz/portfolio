@@ -15,9 +15,13 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 // --- articles --------------------------------------------------------------
-// The "Agent Systems" writing — the hub + the concept/team pieces. Markdown
-// body + frontmatter. `portfolio-write` authors new files into
-// `src/content/articles/` following SCHEMA.md.
+// The "Writing" — the general blog/notes collection. Started as agent-systems
+// essays (the hub + concept pieces) and now spans more: project write-ups, life
+// updates, general essays. The `category` field is the primary browse axis on
+// /writing; the section itself is named "Writing" (see WRITING_SECTION in
+// src/data/site.ts — a one-place swap to "Blog" later). Markdown body +
+// frontmatter. `portfolio-write` authors new files into `src/content/articles/`
+// following SCHEMA.md.
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/articles' }),
   schema: z.object({
@@ -31,6 +35,13 @@ const articles = defineCollection({
     //   'concept' — a cross-cutting idea (orchestrate / verification / ratchet)
     //   'team'    — a specific team/agent write-up (future)
     kind: z.enum(['hub', 'concept', 'team']),
+    // The PRIMARY browse axis on /writing — what the piece is ABOUT, broadly:
+    //   'agent-systems' — essays on the agent systems I build (the thesis)
+    //   'projects'      — write-ups of a specific project I shipped/worked on
+    //   'life'          — life updates, personal notes
+    //   'essays'        — general writing that fits none of the above
+    // Rendered as a badge on each article and as the category filter rail.
+    category: z.enum(['agent-systems', 'projects', 'life', 'essays']).default('essays'),
     tags: z.array(z.string()).default([]),
     // 3-6 standalone one-liners. Dual-purpose: also the x-agent's post seeds.
     keyTakes: z.array(z.string()).default([]),

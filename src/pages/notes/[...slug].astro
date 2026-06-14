@@ -4,7 +4,7 @@
 // source of truth; this file only renders it.
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import { site } from '../../data/site';
+import { site, WRITING_SECTION, categoryLabel } from '../../data/site';
 import { link } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -32,16 +32,17 @@ const kindLabel: Record<string, string> = {
 };
 ---
 <Base
-  title={`${article.data.title} — Agent Systems · ${site.name}`}
+  title={`${article.data.title} — ${WRITING_SECTION} · ${site.name}`}
   description={article.data.deck}
 >
   <article class="note">
     <!-- Header -->
     <header class="note-head">
       <div class="shell">
-        <a href={link('/#agents')} class="note-back font-mono">← Agent Systems</a>
+        <a href={link('writing')} class="note-back font-mono">← {WRITING_SECTION}</a>
 
         <div class="note-top">
+          <span class="note-cat font-mono">{categoryLabel(article.data.category)}</span>
           <span class="note-kind font-mono">{kindLabel[article.data.kind] ?? article.data.kind}</span>
           <h1 class="display note-title">{article.data.title}</h1>
           <p class="note-deck">{article.data.deck}</p>
@@ -90,6 +91,11 @@ const kindLabel: Record<string, string> = {
   .note-back:hover { color: var(--color-spark); }
 
   .note-top { max-width: 760px; }
+  .note-cat {
+    font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-amber); border: 1px solid color-mix(in srgb, var(--color-amber) 45%, transparent);
+    padding: 0.24rem 0.55rem; border-radius: 2px; margin-right: 0.5rem;
+  }
   .note-kind {
     font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--color-spark); border: 1px solid var(--color-line-2);

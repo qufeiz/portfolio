@@ -3,6 +3,7 @@ title: "My Agent Teams"
 deck: "Two shapes of agent system — a standing build team and a repo-embedded fleet — built on one architecture."
 order: 0
 kind: hub
+category: agent-systems
 tags: ["agents", "multi-agent", "overview", "hub"]
 keyTakes:
   - "I run agents in two shapes: a standing PM → engineer → verifier build team, and a fleet of repo-embedded agents that each maintain one project on a loop."

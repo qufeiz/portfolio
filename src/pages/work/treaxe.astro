@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CaseHeader from '../../components/CaseHeader.astro';
 import CaseSection from '../../components/CaseSection.astro';
 import Gallery from '../../components/Gallery.astro';
+import RelatedWriting from '../../components/RelatedWriting.astro';
 import { getProject } from '../../data/projects';
 import { treaxeShots } from '../../data/treaxeShots';
 import { site } from '../../data/site';
@@ -137,6 +138,10 @@ const flow = [
     <!-- Screenshot gallery — empty until the orchestrator fills treaxeShots.ts.
          Renders nothing while the array is empty (see Gallery component). -->
     <Gallery shots={treaxeShots} label="Product screens" />
+
+    <!-- Related writing: articles tagged `treaxe`. The article lives in /writing;
+         it only surfaces here. Renders nothing if there are no matches. -->
+    <RelatedWriting slug="treaxe" />
 
     <nav class="case-next reveal" aria-label="Next project">
       <a href={import.meta.env.BASE_URL.replace(/\/$/, '') + '/work/fredgpt'} class="next-link">

@@ -3,7 +3,8 @@ title: "Independent verification"
 deck: "Killing \"looks-done-but-isn't\" — why the checker is never the author."
 order: 2
 kind: concept
-tags: ["verification", "testing", "journey-tests", "quality", "multi-agent"]
+category: agent-systems
+tags: ["verification", "testing", "journey-tests", "quality", "multi-agent", "treaxe"]
 keyTakes:
   - "The most dangerous state for software isn't broken — it's looks done: every signal says success and the feature does nothing."
   - "A green test suite proves the assertions you chose currently pass — not that the feature works. Those are different claims."

@@ -13,6 +13,7 @@ export interface ProjectLink {
 export interface Project {
   slug: string;
   index: string;          // ledger index, e.g. "01"
+  order: number;          // sort order within /work (ascending; lower = earlier)
   title: string;
   tagline: string;
   status: string;
@@ -20,6 +21,10 @@ export interface Project {
   context: string;        // one-line honest framing (collab / team / academic)
   summary: string;        // short card blurb
   stack: string[];
+  // Cross-cutting taxonomy. Surfaced as chips on the index + case pages and used
+  // to cross-link articles to projects (an article tagged with a project's slug
+  // surfaces in that project's "Related writing" block). See src/content/SCHEMA.md.
+  tags: string[];
   links: ProjectLink[];
   featured: boolean;
   accent: 'amber' | 'spark';
@@ -29,6 +34,7 @@ export const projects: Project[] = [
   {
     slug: 'treaxe',
     index: '01',
+    order: 1,
     title: 'TreAxe',
     tagline: 'From first lead to final payment: the operating system for small construction firms.',
     status: 'Live in production',
@@ -41,6 +47,9 @@ export const projects: Project[] = [
       'Supabase (Postgres + RLS)', 'Edge Functions (Deno)',
       'Stripe', 'Gmail API', 'Playwright',
     ],
+    // Topical taxonomy + the project's own slug (`treaxe`) so articles tagged
+    // `treaxe` surface in this project's "Related writing".
+    tags: ['saas', 'full-stack', 'production', 'multi-tenant', 'payments'],
     links: [
       { label: 'Live product', href: 'https://www.treaxe.io', kind: 'primary', note: 'treaxe.io' },
       // Demo credentials surfaced in the page body, not just here.
@@ -52,6 +61,7 @@ export const projects: Project[] = [
   {
     slug: 'fredgpt',
     index: '02',
+    order: 2,
     title: 'FredGPT',
     tagline: 'Ask the Federal Reserve a question in plain English — get a charted, cited, source-traceable answer.',
     status: 'Graduate practicum',
@@ -64,6 +74,7 @@ export const projects: Project[] = [
       'LangGraph / LangChain', 'AWS Bedrock', 'Amazon OpenSearch',
       'ECS Fargate', 'Lambda', 'Docker',
     ],
+    tags: ['ai', 'agents', 'rag', 'genai', 'academic'],
     links: [
       // No public code repo for FredGPT (client/academic). Demo is the video on its page.
       { label: 'Watch the demo', href: '#demo', kind: 'primary' },
@@ -74,3 +85,17 @@ export const projects: Project[] = [
 ];
 
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
+
+// Scale-ready ordering for the /work index: featured first, then by `order`
+// (ascending). Built to read cleanly at 2 projects and at 50 — the home page
+// shows only the top `featuredProjects`, so total count never bloats it.
+export const sortedProjects = (): Project[] =>
+  [...projects].sort(
+    (a, b) => Number(b.featured) - Number(a.featured) || a.order - b.order,
+  );
+
+// Home-page curation: the top few featured projects (curated, fixed size).
+export const featuredProjects = (n = 3): Project[] =>
+  sortedProjects()
+    .filter((p) => p.featured)
+    .slice(0, n);

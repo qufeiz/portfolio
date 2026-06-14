@@ -1,13 +1,19 @@
 ---
-// "Agent Systems" section — lists the articles from the `articles` content
-// collection (the KB). Mirrors WorkIndex.astro's structure/feel, but reads
-// `src/content/` instead of `src/data/`. Hub first (order 0), then concepts.
-import { getCollection } from 'astro:content';
+// Home-page "Writing" highlight — a CURATED slice (top few articles, hub first)
+// of the writing, NOT the full list. The full index lives at /writing; the
+// "View all writing" link below sends readers there. Reads the `articles`
+// content collection (the KB). Keeps the home a fixed, curated size.
+//
+// The section is GENERAL "Writing" (essays, project write-ups, life, notes) —
+// its name lives in WRITING_SECTION (src/data/site.ts) so it's a one-word swap
+// to "Blog" later. The currently-featured pieces happen to be the agent-systems
+// essays (that's the current content + the thesis), but the framing is general.
+import { recentArticles, publishedArticles } from '../lib/content';
 import { link } from '../lib/url';
+import { WRITING_SECTION, categoryLabel } from '../data/site';
 
-const articles = (await getCollection('articles', ({ data }) => !data.draft)).sort(
-  (a, b) => a.data.order - b.data.order,
-);
+const articles = await recentArticles(3);
+const total = (await publishedArticles()).length;
 
 const kindLabel: Record<string, string> = {
   hub: 'Hub',
@@ -15,14 +21,15 @@ const kindLabel: Record<string, string> = {
   team: 'Team',
 };
 ---
-<section id="agents" class="agents">
+<section id="writing" class="agents">
   <div class="shell">
     <header class="agents-head reveal">
-      <p class="kicker">/ Agent Systems</p>
-      <h2 class="display agents-title">Agents I build,<br />and how they work.</h2>
+      <p class="kicker">/ {WRITING_SECTION}</p>
+      <h2 class="display agents-title">{WRITING_SECTION} —<br />essays &amp; notes.</h2>
       <p class="agents-note">
-        Two shapes — a standing PM&nbsp;→&nbsp;engineer&nbsp;→&nbsp;verifier build team, and a
-        fleet of repo-embedded agents — built on one architecture: orchestrate&nbsp;→&nbsp;gate&nbsp;→&nbsp;ratchet.
+        Writing on the systems I build, the projects I ship, and what I'm learning
+        along the way. The throughline right now is agent systems — built on one
+        architecture: orchestrate&nbsp;→&nbsp;gate&nbsp;→&nbsp;ratchet.
       </p>
     </header>
 
@@ -35,6 +42,7 @@ const kindLabel: Record<string, string> = {
             <div class="ag-body">
               <div class="ag-top">
                 <h3 class="display ag-name">{a.data.title}</h3>
+                <span class="ag-cat font-mono">{categoryLabel(a.data.category)}</span>
                 <span class={`ag-kind font-mono kind-${a.data.kind}`}>{kindLabel[a.data.kind] ?? a.data.kind}</span>
               </div>
               <p class="ag-deck">{a.data.deck}</p>
@@ -52,6 +60,11 @@ const kindLabel: Record<string, string> = {
         </li>
       ))}
     </ol>
+
+    <a href={link('writing')} class="view-all reveal link-spark">
+      View all writing <span aria-hidden="true">→</span>
+      {total > articles.length && <span class="view-all-n font-mono">({total})</span>}
+    </a>
   </div>
 </section>
 
@@ -91,6 +104,12 @@ const kindLabel: Record<string, string> = {
   .ag-body { min-width: 0; }
   .ag-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
   .ag-name { font-size: clamp(1.8rem, 4.5vw, 2.9rem); color: var(--color-paper); line-height: 1; }
+  /* Category badge — the primary axis; amber-tinted to read as the framing. */
+  .ag-cat {
+    font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-amber); border: 1px solid color-mix(in srgb, var(--color-amber) 45%, transparent);
+    padding: 0.22rem 0.5rem; border-radius: 2px;
+  }
   .ag-kind {
     font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
     color: var(--color-paper-mute); border: 1px solid var(--color-line-2);
@@ -100,6 +119,13 @@ const kindLabel: Record<string, string> = {
   .kind-concept { color: var(--color-spark); border-color: var(--color-line-2); }
   .ag-deck { margin: 1rem 0 0; color: var(--color-paper); font-size: clamp(1.02rem, 2vw, 1.25rem); max-width: 50ch; line-height: 1.35; }
   .ag-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
+
+  .view-all {
+    display: inline-flex; align-items: baseline; gap: 0.5rem;
+    margin-top: clamp(2rem, 5vw, 3rem);
+    font-family: var(--font-mono); font-size: 0.86rem; letter-spacing: 0.02em;
+  }
+  .view-all-n { color: var(--color-paper-mute); font-size: 0.78rem; }
 
   .ag-go { display: flex; align-items: center; padding-top: 0.6rem; }
   .ag-arrow { font-size: 1.6rem; color: var(--color-paper-dim); transition: transform 0.3s ease, color 0.2s ease; }

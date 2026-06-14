@@ -1,0 +1,304 @@
+---
+// /writing — the dedicated index of ALL articles (the "Writing" tab).
+// Source of truth: the `articles` content collection (the KB). Scale-ready: hub
+// first (order 0), then ascending. Reads cleanly at 4 articles and at 100; the
+// home page shows only the curated recent few.
+//
+// Two filter axes, both lightweight CLIENT-SIDE filters driven by the URL —
+// works on a static GitHub Pages build with no per-facet pages to maintain. All
+// articles are rendered server-side (good for SEO + no-JS); the script shows/
+// hides by the active facets.
+//   - CATEGORY (primary axis): `?category=` — what the piece is broadly ABOUT
+//     (agent systems / projects / life / essays). A rail of All · the four.
+//   - TAG (secondary): `?tag=` — fine-grained topical browse. A tag chip links
+//     to `/writing?tag=<tag>`. Category + tag combine (AND).
+//
+// TODO: paginate at N (~30). When the article count crosses that, slice into
+// pages (e.g. /writing/2). TODO (optional): promote `?category=`/`?tag=` to real
+// static pages if per-facet SEO/landing pages become worth it.
+import Base from '../../layouts/Base.astro';
+import { publishedArticles, articleTagCounts, articleCategoryCounts } from '../../lib/content';
+import { link } from '../../lib/url';
+import { site, WRITING_SECTION, CATEGORIES, categoryLabel } from '../../data/site';
+
+const articles = await publishedArticles();
+const tagCounts = await articleTagCounts();
+const categoryCounts = await articleCategoryCounts();
+
+// Category rail (primary axis): fixed CATEGORIES order (agent systems first =
+// the thesis), each with its current count (0 when empty — the rail still shows
+// the facet so the taxonomy reads as intentional).
+const categoryRail = CATEGORIES.map((c) => ({ ...c, n: categoryCounts.get(c.value) ?? 0 }));
+
+// Tag rail (secondary): most-used tags first, then alpha. Capped so it stays a
+// rail, not a wall.
+const tagRail = [...tagCounts.entries()]
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .slice(0, 12);
+
+const kindLabel: Record<string, string> = {
+  hub: 'Hub',
+  concept: 'Concept',
+  team: 'Team',
+};
+
+const writingHref = (tag?: string) =>
+  tag ? `${link('writing')}?tag=${encodeURIComponent(tag)}` : link('writing');
+const categoryHref = (cat?: string) =>
+  cat ? `${link('writing')}?category=${encodeURIComponent(cat)}` : link('writing');
+---
+<Base
+  title={`${WRITING_SECTION} — all articles · ${site.name}`}
+  description="Everything I've written — agent-systems essays, project write-ups, life updates, and general notes — filterable by category."
+>
+  <section class="writing-index">
+    <div class="shell">
+      <header class="wr-head rise">
+        <p class="kicker">/ {WRITING_SECTION} · {articles.length} {articles.length === 1 ? 'article' : 'articles'}</p>
+        <h1 class="display wr-title">{WRITING_SECTION} —<br />essays &amp; notes.</h1>
+        <p class="wr-note">
+          Writing on the agent systems I build, the projects I ship, life along
+          the way, and the odd general essay. Filter by category below.
+        </p>
+      </header>
+
+      <!-- Category rail — the PRIMARY browse axis. -->
+      <nav class="wr-catrail rise" aria-label="Filter by category">
+        <a href={categoryHref()} class="catrail-chip catrail-all" data-category="" aria-pressed="true">All</a>
+        {categoryRail.map((c) => (
+          <a href={categoryHref(c.value)} class="catrail-chip" data-category={c.value}>
+            {c.label} <span class="catrail-n font-mono">{c.n}</span>
+          </a>
+        ))}
+      </nav>
+
+      {tagRail.length > 0 && (
+        <nav class="wr-tagrail rise" aria-label="Filter by tag">
+          <span class="tagrail-lead font-mono">tags</span>
+          <a href={writingHref()} class="tagrail-chip tagrail-all" data-tag="" aria-pressed="true">All</a>
+          {tagRail.map(([t, n]) => (
+            <a href={writingHref(t)} class="tagrail-chip" data-tag={t}>
+              #{t} <span class="tagrail-n font-mono">{n}</span>
+            </a>
+          ))}
+        </nav>
+      )}
+
+      <p class="wr-empty" id="wr-empty" hidden>No articles in <span id="wr-empty-facet" class="font-mono"></span> yet.</p>
+
+      <ol class="wr-list" id="wr-list">
+        {articles.map((a) => (
+          <li
+            class={`wr-item reveal ${a.data.kind === 'hub' ? 'wr-hub' : ''}`}
+            data-tags={a.data.tags.join(' ')}
+            data-category={a.data.category}
+          >
+            <a href={link(`notes/${a.id}`)} class="wr-link" aria-label={`Read: ${a.data.title}`}>
+              <div class="wr-index font-mono tnum">{String(a.data.order).padStart(2, '0')}</div>
+
+              <div class="wr-body">
+                <div class="wr-top">
+                  <h2 class="display wr-name">{a.data.title}</h2>
+                  <span class="wr-cat font-mono">{categoryLabel(a.data.category)}</span>
+                  <span class={`wr-kind font-mono kind-${a.data.kind}`}>{kindLabel[a.data.kind] ?? a.data.kind}</span>
+                </div>
+                <p class="wr-deck">{a.data.deck}</p>
+                {a.data.tags.length > 0 && (
+                  <div class="wr-tags" aria-label="Tags">
+                    {a.data.tags.map((t) => <span class="tag-chip font-mono">#{t}</span>)}
+                  </div>
+                )}
+              </div>
+
+              <div class="wr-go" aria-hidden="true">
+                <span class="wr-arrow">→</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <script>
+    // Client-side filter driven by ?category= (primary) and ?tag= (secondary).
+    // Static-build friendly: everything is in the DOM; we just toggle visibility
+    // by the active facets (AND). Updates the URL without reload.
+    const list = document.getElementById('wr-list');
+    const items = Array.from(document.querySelectorAll<HTMLLIElement>('.wr-item'));
+    const catChips = Array.from(document.querySelectorAll<HTMLAnchorElement>('.catrail-chip'));
+    const tagChips = Array.from(document.querySelectorAll<HTMLAnchorElement>('.tagrail-chip'));
+    const empty = document.getElementById('wr-empty');
+    const emptyFacet = document.getElementById('wr-empty-facet');
+
+    function labelForCategory(value: string): string {
+      const chip = catChips.find((c) => (c.dataset.category || '') === value);
+      // Strip the trailing count span text from the chip label.
+      return chip ? (chip.childNodes[0]?.textContent || value).trim() : value;
+    }
+
+    function apply(category: string, tag: string) {
+      let shown = 0;
+      for (const li of items) {
+        const liCat = li.dataset.category || '';
+        const tags = (li.dataset.tags || '').split(' ').filter(Boolean);
+        const catMatch = !category || liCat === category;
+        const tagMatch = !tag || tags.includes(tag);
+        const match = catMatch && tagMatch;
+        li.hidden = !match;
+        if (match) shown++;
+      }
+      for (const c of catChips) {
+        c.setAttribute('aria-pressed', String((c.dataset.category || '') === category));
+      }
+      for (const c of tagChips) {
+        c.setAttribute('aria-pressed', String((c.dataset.tag || '') === tag));
+      }
+      if (empty && emptyFacet) {
+        empty.hidden = shown !== 0;
+        const parts: string[] = [];
+        if (category) parts.push(labelForCategory(category));
+        if (tag) parts.push(`#${tag}`);
+        emptyFacet.textContent = parts.join(' + ');
+      }
+    }
+
+    function facetsFromUrl(): { category: string; tag: string } {
+      const p = new URLSearchParams(window.location.search);
+      return { category: p.get('category') || '', tag: p.get('tag') || '' };
+    }
+
+    function pushAndApply(category: string, tag: string) {
+      const url = new URL(window.location.href);
+      if (category) url.searchParams.set('category', category);
+      else url.searchParams.delete('category');
+      if (tag) url.searchParams.set('tag', tag);
+      else url.searchParams.delete('tag');
+      history.pushState({ category, tag }, '', url);
+      apply(category, tag);
+      list?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Category chip → set category, keep current tag.
+    for (const c of catChips) {
+      c.addEventListener('click', (e) => {
+        e.preventDefault();
+        pushAndApply(c.dataset.category || '', facetsFromUrl().tag);
+      });
+    }
+    // Tag chip → set tag, keep current category.
+    for (const c of tagChips) {
+      c.addEventListener('click', (e) => {
+        e.preventDefault();
+        pushAndApply(facetsFromUrl().category, c.dataset.tag || '');
+      });
+    }
+
+    window.addEventListener('popstate', () => {
+      const { category, tag } = facetsFromUrl();
+      apply(category, tag);
+    });
+    const initial = facetsFromUrl();
+    apply(initial.category, initial.tag);
+  </script>
+</Base>
+
+<style>
+  .writing-index { position: relative; z-index: 2; padding-top: clamp(2.5rem, 7vw, 5rem); }
+  .wr-head { max-width: 660px; margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+  .wr-title { font-size: clamp(2.6rem, 8vw, 5rem); margin: 1rem 0 0; color: var(--color-paper); }
+  .wr-note { margin-top: 1.4rem; color: var(--color-paper-dim); max-width: 56ch; font-size: 1.02rem; }
+
+  /* Category rail — the primary axis. Bolder than the tag rail. */
+  .wr-catrail { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: clamp(1rem, 2.5vw, 1.4rem); }
+  .catrail-chip {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.02em;
+    color: var(--color-paper-dim);
+    border: 1px solid var(--color-line-2); border-radius: var(--radius);
+    padding: 0.42rem 0.85rem; background: rgba(255,255,255,0.012);
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+  }
+  .catrail-chip:hover { border-color: var(--color-amber); color: var(--color-paper); }
+  .catrail-chip[aria-pressed="true"] {
+    border-color: var(--color-amber); color: var(--color-ink); background: var(--color-amber); font-weight: 600;
+  }
+  .catrail-n { opacity: 0.6; font-size: 0.9em; }
+  .catrail-chip[aria-pressed="true"] .catrail-n { opacity: 0.8; }
+
+  /* Tag rail — secondary axis. */
+  .wr-tagrail { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-bottom: clamp(2rem, 5vw, 3rem); }
+  .tagrail-lead { font-size: 0.68rem; color: var(--color-paper-mute); letter-spacing: 0.12em; text-transform: uppercase; margin-right: 0.25rem; }
+  .tagrail-chip {
+    font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.02em;
+    color: var(--color-paper-dim);
+    border: 1px solid var(--color-line-2); border-radius: var(--radius);
+    padding: 0.34rem 0.7rem; background: rgba(255,255,255,0.012);
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+    cursor: pointer;
+  }
+  .tagrail-chip:hover { border-color: var(--color-spark); color: var(--color-paper); }
+  .tagrail-chip[aria-pressed="true"] {
+    border-color: var(--color-spark); color: var(--color-ink); background: var(--color-spark); font-weight: 600;
+  }
+  .tagrail-n { opacity: 0.65; font-size: 0.9em; }
+  .tagrail-chip[aria-pressed="true"] .tagrail-n { opacity: 0.8; }
+
+  .wr-empty { color: var(--color-paper-mute); font-size: 0.95rem; margin: 0 0 1.5rem; }
+
+  .wr-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-line); }
+  .wr-item { border-bottom: 1px solid var(--color-line); }
+
+  .wr-link {
+    display: grid;
+    grid-template-columns: 84px 1fr auto;
+    gap: clamp(1rem, 4vw, 3rem);
+    align-items: start;
+    padding: clamp(1.8rem, 4vw, 3rem) 0;
+    position: relative;
+    transition: padding-left 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .wr-link::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--color-spark); transform: scaleY(0); transform-origin: top;
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .wr-link:hover { padding-left: 1.5rem; }
+  .wr-link:hover::before { transform: scaleY(1); }
+  .wr-hub .wr-link::before { background: var(--color-amber); }
+
+  .wr-index { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--color-paper-mute); line-height: 1; padding-top: 0.35rem; }
+  .wr-link:hover .wr-index { color: var(--color-spark); }
+  .wr-hub .wr-link:hover .wr-index { color: var(--color-amber); }
+
+  .wr-body { min-width: 0; }
+  .wr-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .wr-name { font-size: clamp(1.8rem, 4.5vw, 2.9rem); color: var(--color-paper); line-height: 1; }
+  /* Category badge — the primary axis; amber-tinted to read as the framing. */
+  .wr-cat {
+    font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--color-amber); border: 1px solid color-mix(in srgb, var(--color-amber) 45%, transparent);
+    padding: 0.22rem 0.5rem; border-radius: 2px;
+  }
+  .wr-kind {
+    font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-paper-mute); border: 1px solid var(--color-line-2);
+    padding: 0.22rem 0.5rem; border-radius: 2px;
+  }
+  .kind-hub { color: var(--color-ink); background: var(--color-amber); border-color: var(--color-amber); }
+  .kind-concept { color: var(--color-spark); border-color: var(--color-line-2); }
+  .wr-deck { margin: 1rem 0 0; color: var(--color-paper); font-size: clamp(1.02rem, 2vw, 1.25rem); max-width: 52ch; line-height: 1.35; }
+  .wr-tags { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; margin-top: 1.2rem; }
+  .tag-chip { font-size: 0.72rem; color: var(--color-paper-mute); letter-spacing: 0.02em; }
+
+  .wr-go { display: flex; align-items: center; padding-top: 0.6rem; }
+  .wr-arrow { font-size: 1.6rem; color: var(--color-paper-dim); transition: transform 0.3s ease, color 0.2s ease; }
+  .wr-link:hover .wr-arrow { transform: translateX(6px); color: var(--color-spark); }
+  .wr-hub .wr-link:hover .wr-arrow { color: var(--color-amber); }
+
+  @media (max-width: 720px) {
+    .wr-link { grid-template-columns: 1fr; gap: 0.5rem; }
+    .wr-index { font-size: 1.1rem; }
+    .wr-go { display: none; }
+  }
+</style>

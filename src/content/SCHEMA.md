@@ -25,10 +25,20 @@ collection is declared with the `glob()` loader and a Zod schema.
 
 ## Collections
 
-### `articles` — the "Agent Systems" writing (LIVE)
+### `articles` — the "Writing" collection (LIVE)
 
 Markdown files in **`src/content/articles/<slug>.md`**. The filename (minus `.md`) is the slug and
 the URL: `/<base>/notes/<slug>`.
+
+This is the site's **general "Writing"** section — agent-systems essays, project write-ups, life
+updates, general notes. It started as agent-systems-only and was generalized; "Agent systems" is now
+just one `category` (below), not the name of the whole section.
+
+> **The section name lives in ONE place** — `WRITING_SECTION` in `src/data/site.ts` (currently
+> `'Writing'`). The nav, the home section, the `/writing` index, and article back-links all read
+> from it, so renaming the section to **"Blog"** (or anything else) later is a **one-word swap**.
+> The route (`/writing`) and the collection name (`articles`) are stable internals — don't churn
+> them for a label change.
 
 Frontmatter schema:
 
@@ -37,15 +47,59 @@ Frontmatter schema:
 | `title` | string | Article title (rendered as the page H1 + in the index). |
 | `deck` | string | One-line framing under the title and in the section list. |
 | `order` | number | Sort order in the section. **The hub is `0`**, concepts ascend from `1`. |
-| `kind` | `'hub' \| 'concept' \| 'team'` | `hub` = the umbrella intro; `concept` = a cross-cutting idea; `team` = a specific team/agent write-up (future). |
-| `tags` | string[] | Topical tags. Optional (defaults to `[]`). |
+| `kind` | `'hub' \| 'concept' \| 'team'` | Structural role *within the agent-systems essay series*: `hub` = the umbrella intro; `concept` = a cross-cutting idea; `team` = a specific team/agent write-up (future). Distinct from `category`. |
+| `category` | `'agent-systems' \| 'projects' \| 'life' \| 'essays'` | **The primary browse axis** — what the piece is broadly ABOUT (see taxonomy below). Defaults to `'essays'`. Rendered as a badge on each article + drives the `/writing` category filter rail. |
+| `tags` | string[] | Fine-grained topical tags + the project cross-link. Optional (defaults to `[]`). |
 | `keyTakes` | string[] | **3-6 standalone one-liners.** Dual-purpose: rendered as a "Key takes" block AND lifted by the **x-agent** as post seeds. Each must read well with zero context and must not overclaim. |
 | `draft` | boolean? | When `true`, omitted from the build/index (still in the KB). Defaults `false`. |
+
+#### `category` — the primary browse axis (READ THIS before authoring)
+
+`category` is the **broad bucket** a piece belongs to; it is the **primary filter** on `/writing` (a
+rail: All · Agent systems · Projects · Life · Essays) and a badge on every article + the home list.
+Pick exactly one. It is the coarse "what is this about" axis — `tags` stay the fine-grained axis, and
+the two combine (AND) on `/writing`.
+
+| Value | For | Examples |
+|---|---|---|
+| `agent-systems` | Essays on the agent systems I build — the thesis of the site. | `my-agent-teams`, `orchestrate-gate-ratchet`, `independent-verification`, `the-ratchet` (all 4 current articles). |
+| `projects` | A write-up centered on a specific project I shipped/worked on. | A TreAxe or FredGPT build-story (future). |
+| `life` | Life updates, personal notes. | (future) |
+| `essays` | General writing that fits none of the above (the **default**). | (future) |
+
+- The enum is defined in `src/content.config.ts`; the **labels + rail order** live in `CATEGORIES`
+  in `src/data/site.ts` (agent-systems first = the thesis stays prominent). **Adding a category =
+  add the value to the Zod enum AND to `CATEGORIES`.**
+- `category` (broad: what it's about) ≠ `kind` (structural role inside the agent-systems series). An
+  `agent-systems` piece is still a `hub`/`concept`/`team`; `kind` only really carries meaning within
+  the agent-systems series.
+- Don't mislabel to farm prominence — a piece is `agent-systems` only if it's genuinely about the
+  agent work.
 
 **Body convention:** the markdown body is the prose ONLY. Do **not** include a `## Key takes`
 heading in the body — key takes live in the `keyTakes` frontmatter array and are rendered from
 there (single source, no duplication). Do **not** include an H1 (`# Title`) in the body either; the
 page renders `title` as the heading. Start the body with the article's lede paragraph.
+
+#### Tags — the cross-cutting taxonomy (READ THIS before tagging)
+
+`tags` is a flat, lowercase, kebab-case list. It does two jobs:
+
+1. **Topical browse/filter.** Tags are surfaced as chips on `/writing` and on each article page; the
+   `/writing` tag rail filters the list (`/writing?tag=<tag>`). Keep tags reusable — prefer an
+   existing tag over a near-synonym.
+2. **The project ↔ article cross-link (the important convention).** **An article ABOUT a project is
+   tagged with that project's slug** (the `slug` field in `src/data/projects.ts`), e.g. `treaxe` or
+   `fredgpt`. That single tag is what wires the article into the project's **"Related writing"** block
+   on its case page (`/work/<slug>`). The article still **lives once** in `/writing`; it is only
+   *surfaced* on the project page — never duplicated.
+
+   - Project slugs (valid cross-link tags today): **`treaxe`**, **`fredgpt`**.
+   - A project tag is only honest when the article genuinely concerns that project (e.g.
+     `independent-verification.md` is tagged `treaxe` because its central worked example is the real
+     TreAxe Send-Invoice catastrophe). Don't tag a project just to farm a backlink.
+   - Cross-link is implemented in `src/lib/content.ts` (`relatedArticles(slug)`); the block renders
+     nothing when zero articles match.
 
 ### `projects` — case-study metadata (SCHEMA ONLY — not yet migrated)
 
@@ -53,6 +107,31 @@ The schema is defined in `src/content.config.ts` but **has no entries yet** and 
 any page**. The rich, polished case pages (`src/pages/work/treaxe.astro`,
 `src/pages/work/fredgpt.astro`) and `src/data/projects.ts` still own project rendering. See "Next
 step" below.
+
+**Note:** `src/data/projects.ts` is the source of truth for the **`/work` index** and now carries
+`tags` + `order` per project (used for the scale-ready sort: featured first, then `order`). When the
+`projects` collection is eventually migrated, the collection schema must keep `tags` so the
+project ↔ article cross-link (below) survives the move.
+
+---
+
+## Information architecture (the routes)
+
+The site scales by giving each content type its own **dedicated index page** instead of one long
+home. The home is a **curated** entry point, not the catalog.
+
+| Route | What it is | Source |
+|---|---|---|
+| `/` (home) | Curated: Hero → **Featured Work** (top ~3) → **Writing** (top ~3 recent) → About → Contact. Fixed size regardless of total count. | `WorkIndex.astro` (`featuredProjects`), `Writing.astro` (`recentArticles`) |
+| `/work` | **All** projects, scale-ready (featured first, then `order`). | `src/data/projects.ts` (`sortedProjects`) |
+| `/writing` | **All** articles, scale-ready (hub first, then `order`) + a `?category=` filter rail (primary) and a `?tag=` rail (secondary). | `articles` collection (`publishedArticles`) |
+| `/work/<slug>` | One project case page (+ tag chips + **Related writing**). | case pages + `relatedArticles(slug)` |
+| `/notes/<slug>` | One article page. | `articles` collection |
+
+Both index pages carry a `// TODO: paginate at N` note for when counts grow large. The `/writing`
+filters are client-side: a **`?category=`** rail (the primary axis — Agent systems · Projects · Life
+· Essays) and a **`?tag=`** rail (secondary, fine-grained), which combine (AND); no per-facet pages.
+A `// TODO` notes the option to promote them to static pages later.
 
 ---
 

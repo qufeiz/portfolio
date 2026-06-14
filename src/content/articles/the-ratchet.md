@@ -3,6 +3,7 @@ title: "The ratchet"
 deck: "Systems that raise their own quality floor, one rung at a time."
 order: 3
 kind: concept
+category: agent-systems
 tags: ["ratchet", "self-improving", "quality", "ci", "process"]
 keyTakes:
   - "Fix the program, not the output: patching the bug restores the floor; changing the spec that let it through raises the floor."

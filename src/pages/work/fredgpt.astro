@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import CaseHeader from '../../components/CaseHeader.astro';
 import CaseSection from '../../components/CaseSection.astro';
 import Gallery from '../../components/Gallery.astro';
+import RelatedWriting from '../../components/RelatedWriting.astro';
 import { getProject } from '../../data/projects';
 import { asset, link } from '../../lib/url';
 import { site } from '../../data/site';
@@ -130,6 +131,9 @@ const arch = [
         for <strong>an industry client in the economic-data space</strong>. This was collaborative work.
       </p>
     </CaseSection>
+
+    <!-- Related writing: articles tagged `fredgpt`. Renders nothing until one exists. -->
+    <RelatedWriting slug="fredgpt" />
 
     <nav class="case-next reveal" aria-label="Next project">
       <a href={link('work/treaxe')} class="next-link">
