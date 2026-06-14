@@ -56,7 +56,7 @@ export const projects: Project[] = [
     tagline: 'Ask the Federal Reserve a question in plain English — get a charted, cited, source-traceable answer.',
     status: 'Graduate practicum',
     year: 'Fall 2025',
-    context: 'CMU 14-798 graduate practicum — team project for client Launchpad Edge.',
+    context: 'CMU 14-798 graduate practicum — team project for an industry client in the economic-data space.',
     summary:
       'An agentic GenAI platform that unifies fragmented Federal Reserve sources (FRED, FRASER, the Fed corpus) behind one chat interface, fusing live time series with policy history into grounded, source-cited answers.',
     stack: [

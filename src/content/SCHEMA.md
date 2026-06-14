@@ -6,15 +6,16 @@ It is implemented with [Astro content collections](https://docs.astro.build/en/g
 
 ## The core rule (read this first)
 
-> **`src/content/` is the source of truth. `src/` only RENDERS it. The skills READ and WRITE
-> `src/content/`.**
+> **`src/content/` is the source of truth. `src/` only RENDERS it. The capability refs READ and
+> WRITE `src/content/`.**
 
 - `src/content/` — the **content** (the KB). Markdown + frontmatter. Edited by humans and by the
-  portfolio skills.
+  portfolio capability refs.
 - `src/` (pages, components, layouts) — the **renderer**. It reads the collections via
   `astro:content` and presents them with the design system. It must not be where content *lives*.
-- `.claude/skills/*` — the **maintainers**. `portfolio-write` authors new articles *into*
-  `src/content/articles/` following this file; `portfolio-refresh` syncs case data. They never
+- `.claude/refs/*.md` — the **maintainers**. Capabilities = `.claude/refs/` how-to docs run via
+  generic subagents (not Claude skills). `write-article.md` authors new articles *into*
+  `src/content/articles/` following this file; `refresh-portfolio.md` syncs case data. They never
   invent a parallel content store.
 
 Config lives at the project root in **`src/content.config.ts`** (Astro 6 location), where each
@@ -97,7 +98,7 @@ Gates). Authoring into `src/content/` is **gated**, not free-form:
 - **No invented metrics, awards, or role specifics.** If a number/claim can't be grounded in a real
   repo or doc, it does not go in — leave a `TODO(owner)` instead.
 - **TreAxe** is **co-built with Barrat Mohammad** (co-owned codebase). Never imply sole authorship.
-- **FredGPT** is a **CMU 14-798 (Fall 2025) team practicum for client Launchpad Edge.** Never imply
+- **FredGPT** is a **CMU 14-798 (Fall 2025) team practicum for an industry client (economic-data domain).** Never imply
   sole authorship; it is collaborative academic work.
 
 ### Confidentiality

@@ -1,13 +1,12 @@
----
-name: "portfolio-write"
-description: "Write or refresh ONE article/blog for the portfolio's 'Agent Systems' section, grounded in REAL project work + the agent docs, behind an honesty gate, ending in '## Key takes' (X-agent post seeds), and wired into the site. Use whenever the task is to draft/refresh an article (not sync the case studies — that's portfolio-refresh). Dual-purpose: each article is also consumable by the x-agent as post material."
-license: MIT
-metadata:
-  version: 1.0.0
-  author: Qufei Zhang
-  category: portfolio
-  updated: 2026-06-14
----
+# Ref — write/refresh an article
+
+> A flat how-to the lead points a fresh throwaway subagent at:
+> *"Read and follow `.claude/refs/write-article.md` exactly; do one unit; `npm run build`; report; do NOT deploy."*
+> Write or refresh ONE article/blog for the portfolio's "Agent Systems" section, grounded in REAL
+> project work + the agent docs, behind an honesty gate, ending in `## Key takes` (X-agent post
+> seeds), and wired into the site. Use whenever the task is to draft/refresh an article (not sync
+> the case studies — that's `refresh-portfolio.md`). Dual-purpose: each article is also consumable
+> by the x-agent as post material.
 
 # Portfolio Write — one honest article on how the agent systems work
 
@@ -15,7 +14,7 @@ You are a **focused single-article worker** spawned by the portfolio lead. Your 
 take the NEXT item from the article queue, write or refresh **ONE** article grounded in real
 project work + the agent docs, clear the honesty gate, end it with `## Key takes`, wire it into the
 site's "Agent Systems" section, confirm the build passes, and report. One article, then report. You
-do **NOT** run the loop, deploy, or touch the case studies (that's `portfolio-refresh`).
+do **NOT** run the loop, deploy, or touch the case studies (that's `refresh-portfolio.md`).
 
 > **Dual-purpose output.** Every article is consumed twice: by a human reader on the site, and by
 > the **x-agent** (`/home/codex/Projects/x-agent`) which lifts your `## Key takes` as post seeds.
@@ -60,7 +59,7 @@ the KB at `src/content/articles/`. Their queue rows are in **Done**. New work is
 ## Step 1 — Gather REAL source (ground the piece)
 
 An article is about how the owner's agent systems actually work. Pull from what exists:
-- the **agent docs** — `AGENTS.md` / `CLAUDE.md` / `SKILL.md` / `loop-prompt.md` across
+- the **agent docs** — `AGENTS.md` / `CLAUDE.md` / ref docs / `loop-prompt.md` across
   `/home/codex/Projects/{x-agent,life-wiki,feature-team,jobright-agent,portfolio}` and the
   feature-build team refs under `~/.claude/agents/`.
 - the **real project work** — the same repos' code/state (e.g. `posted.jsonl`, the loop prompts,
@@ -87,7 +86,7 @@ true, standalone claim drawn from the article. The page renders them as a "Key t
 **NOT** also write a `## Key takes` heading in the markdown body (that would duplicate it; see
 SCHEMA.md › body convention). These are the dual-purpose payload — the x-agent lifts them as
 original-post seeds, so each must read well with zero surrounding context and must not overclaim.
-(This is the seam between this skill and `/home/codex/Projects/x-agent`.)
+(This is the seam between this ref and `/home/codex/Projects/x-agent`.)
 
 ---
 
@@ -134,7 +133,7 @@ Then report — concise and honest:
 - **key takes**: paste them (so the lead can hand them to the x-agent).
 - **honesty gate**: the written-out PASS/FAIL for each item above.
 - **build**: PASS / FAIL.
-- **self_check**: did you follow this skill? Anything ambiguous/missing/worked-around — name it for the ratchet.
+- **self_check**: did you follow this ref? Anything ambiguous/missing/worked-around — name it for the ratchet.
 
 ## References
 | Path | Use |

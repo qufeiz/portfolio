@@ -1,20 +1,19 @@
----
-name: "portfolio-refresh"
-description: "Scan the owner's ~/Projects/* for real changes since the cursor and update the portfolio site to match — case studies, src/data/*, screenshots — then prove the build still passes. Use whenever the task is to bring the site up to date with what the owner has actually shipped. ONE scan-and-update pass per invocation; the lead runs it on the weekly loop. For WRITING an article/blog, use portfolio-write instead."
-license: MIT
-metadata:
-  version: 1.0.0
-  author: Qufei Zhang
-  category: portfolio
-  updated: 2026-06-14
----
+# Ref — refresh the portfolio from projects
+
+> A flat how-to the lead points a fresh throwaway subagent at:
+> *"Read and follow `.claude/refs/refresh-portfolio.md` exactly; do one unit; `npm run build`; report; do NOT deploy."*
+> Scan the owner's `~/Projects/*` for real changes since the cursor and update the portfolio site to
+> match — case studies, `src/data/*`, screenshots — then prove the build still passes. Use whenever
+> the task is to bring the site up to date with what the owner has actually shipped. ONE
+> scan-and-update pass per invocation; the lead runs it on the weekly loop. For WRITING an
+> article/blog, use `write-article.md` instead.
 
 # Portfolio Refresh — sync the site to what the owner actually shipped
 
 You are a **focused single-pass worker** spawned by the portfolio lead. Your ENTIRE job is: find
 what changed in the owner's projects since the cursor, reflect the *real, non-overclaimed* changes
 into the portfolio site, run `npm run build`, and return a concise report. You do **NOT** run the
-loop, deploy, or write articles (that's `portfolio-write`). One pass, then report.
+loop, deploy, or write articles (that's `write-article.md`). One pass, then report.
 
 > The owner's other repos are **READ-ONLY** to you — you only read their `git log` / files. You
 > write **only** inside `/home/codex/Projects/portfolio` (and append to `.claude/state/`). Never
@@ -72,7 +71,7 @@ Decide, per real change, where it belongs on the site (no edit if nothing is gen
 | Stack / tooling change | the `stack: [...]` array in `src/data/projects.ts` |
 | New/better official screenshots | copy into `public/<project>/`, wire via the gallery data (e.g. `src/data/treaxeShots.ts`) |
 | A new project worth showing | a new row in `src/data/projects.ts` (+ a case page) — flag to the lead first if unsure |
-| Agent-systems work (this repo, x-agent, life-wiki, feature-team) | belongs in an ARTICLE — note it for `portfolio-write`, don't force it into a case card |
+| Agent-systems work (this repo, x-agent, life-wiki, feature-team) | belongs in an ARTICLE — note it for `write-article.md`, don't force it into a case card |
 
 Prefer a project's **own official screenshots** over re-captures (e.g. TreAxe's
 `docs/features/*/images/` and `docs/product/images/`).
@@ -117,8 +116,8 @@ Then report — this is ALL the lead sees, so be concise and brutally honest:
 - **changed**: the exact site files you edited and the one-line reason for each (or "no edits — nothing portfolio-worthy shipped").
 - **gates**: honesty + confidentiality held? Any `TODO(owner)` you left? Anything you deliberately did NOT write because it would overclaim?
 - **build**: PASS / FAIL (paste the tail if it failed).
-- **for portfolio-write**: any agent-systems work that should become an article.
-- **self_check**: did you follow this skill? Anything ambiguous/missing/that you worked around — name it so the lead can ratchet this SKILL.md.
+- **for write-article**: any agent-systems work that should become an article.
+- **self_check**: did you follow this ref? Anything ambiguous/missing/that you worked around — name it so the lead can ratchet this ref.
 
 ## References
 | Path | Use |

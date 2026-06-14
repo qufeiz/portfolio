@@ -17,7 +17,7 @@ Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Fe
 
 ## Content & honesty rules
 - **TreAxe** — co-built with **Barrat Mohammad** (co-owned); never imply sole authorship. Live product: www.treaxe.io. Demo login shown on site: `staging-test@treaxe-test.com / TreAxeDemo2026!` (staging only). Gallery uses TreAxe's OWN official screenshots from `~/Projects/TreAxe/docs/features/*/images/` and `docs/product/images/` (prefer these over re-captures).
-- **FredGPT** — CMU 14-798 Fall-2025 team practicum for client **Launchpad Edge**. 🔒 Publish ONLY the demo video + screenshots + the public problem statement. NEVER the client SOW/TOS/budget/sponsor notes (the `Private/` folder in the source zip). No public code repo link.
+- **FredGPT** — CMU 14-798 Fall-2025 team practicum for **an industry client (economic-data domain)**. 🔒 Publish ONLY the demo video + screenshots + the public problem statement. NEVER the client SOW/TOS/budget/sponsor notes (the `Private/` folder in the source zip). No public code repo link.
 - Don't invent metrics, awards, or role specifics. TODO comments mark where the owner must confirm.
 
 ## Open TODOs (owner)
