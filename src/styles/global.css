@@ -212,3 +212,15 @@ a { color: inherit; text-decoration: none; }
 
 /* ---- Utility: tabular figures for the index numbers ---- */
 .tnum { font-variant-numeric: tabular-nums; }
+
+/* ---- Layout container (page gutter) ----
+   GLOBAL on purpose: Astro scopes component <style> blocks, so a `.shell`
+   defined only in Base.astro never reached the case-study components, leaving
+   their content full-bleed (flush to both edges). Defining it here applies the
+   gutter everywhere. Mobile min is 1.5rem (24px) for breathing room. */
+.shell {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 5vw, 3.5rem);
+}
