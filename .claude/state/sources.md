@@ -52,7 +52,7 @@ in the `skip-PII` zip docs above and must never reach the site.
 
 | name | what | type | status |
 |---|---|---|---|
-| EconoRAG (`econorag-frontend` + `my-langgraph-rag`) | LangGraph RAG over economic data; the public econorag frontend + the private langgraph-rag backend. Predecessor/cousin of the FredGPT line. | **blog-candidate** | pending → queued `econorag` |
+| EconoRAG (`econorag-frontend` + `my-langgraph-rag`) | LangGraph RAG over economic data; the public econorag frontend + the private langgraph-rag backend. Predecessor/cousin of the FredGPT line. | **blog-candidate** | covered → `/notes/econorag` |
 | `jobright-agent` | Automates Jobright job applications end-to-end; the workflow lives in the `jobright-apply` skill. A real unsupervised-automation agent in the fleet. | **blog-candidate** | pending → queued `jobright-agent` |
 | `x-agent` | Two skills drive an X/Twitter account for @ChristophZhang; posting works end-to-end headless via Playwright + seeded cookies. Home of the de-AI **voice gate** (no em-dashes, no AI tells). Downstream consumer of every article's `keyTakes`. | **blog-candidate** | pending → queued `x-agent` |
 | `life-wiki` (the SYSTEM) | LLM-maintained "clone of my life" — years of chat history **compiled** into interlinked, time-aware markdown (Karpathy's LLM-Wiki pattern). **Blog the SYSTEM/mechanism only — NEVER the private corpus** (the compiled life content is personal). | **blog-candidate** | pending → queued `life-wiki` (system only) |

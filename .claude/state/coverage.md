@@ -58,9 +58,12 @@ a `/work` case page or data surface.
   - Two ways to package an agent (repo-level subagents vs. a standing team).
 
 ## EconoRAG (`econorag-frontend` + `my-langgraph-rag`) — `blog-candidate`
-- **Covered:** none.
-- **Open:** the LangGraph RAG architecture over economic data; how it relates to / precedes the
-  FredGPT line. (article: queued `econorag`)
+- **Covered**
+  - The LangGraph ReAct architecture over FRED economic data: the tool-or-no-answer grounding rule,
+    the agent/tools loop with a 4-call cap, the 7 FRED/FRASER/retrieval tools, out-of-band chart
+    attachments, user_id-scoped retrieval, and the FastAPI/Fly.io shape; framed as the predecessor of
+    the FredGPT line. (article: `econorag`)
+- **Open:** none remaining for this source (the architecture aspect is now covered).
 
 ## jobright-agent — `blog-candidate`
 - **Covered:** none. (Touched as a fleet member in `my-agent-teams`, not its own piece.)

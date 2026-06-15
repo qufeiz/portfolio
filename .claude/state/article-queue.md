@@ -24,7 +24,6 @@ Each row: **slug · title · category · source · one-line angle.** `category` 
 ## Queue — write/refresh ONE per loop fire (top = next). Check `coverage.md` for the OPEN aspect.
 
 ### Project posts (`category: projects`) — one per genuinely-bloggable, not-yet-covered source
-- [ ] `econorag` — **EconoRAG: LangGraph over economic data** · `projects` · `econorag-frontend`+`my-langgraph-rag` · a LangGraph RAG assistant for FRED-style economic data; how it precedes/relates to the FredGPT line.
 - [ ] `jobright-agent` — **An agent that applies to jobs while I sleep** · `projects` · `jobright-agent` · end-to-end Jobright application automation packaged as the `jobright-apply` skill; a real unsupervised-automation worker in the fleet.
 - [ ] `x-agent` — **Posting to X, headless, in my own voice** · `projects` · `x-agent` · two skills drive an X account end-to-end via Playwright + seeded cookies, with a de-AI voice gate so the output never reads like a model. (Cross-link: this is the consumer of every article's keyTakes.)
 - [ ] `arxiv2table` — **Can LLMs summarize papers into tables?** · `projects` · `arXiv2Table`/`arxivDIGESTables` · the benchmark + eval-protocol for tabular paper summaries (arXiv 2504.10284). CONFIRM the owner's role before publishing.
@@ -40,6 +39,7 @@ Each row: **slug · title · category · source · one-line angle.** `category` 
 - [ ] `packaging-an-agent` — **Two ways to package an agent** · `agent-systems` · this portfolio repo + the build team · a repo-level capability model (project-level subagents in `.claude/agents/`, each pointed at a `.claude/refs/` how-to) vs. a standing PM/engineer/verifier team; when each shape fits.
 
 ## Done
+- [x] `econorag` — **EconoRAG: a ReAct agent over Federal Reserve data** · `projects` · `econorag-frontend`+`my-langgraph-rag` · a LangGraph ReAct agent that answers economics questions only from live FRED tool calls + a user-scoped retrieved index (never general world knowledge); 7 tools, a 4-call cap, out-of-band chart attachments; predecessor of the FredGPT line. → `/notes/econorag`
 - [x] `contract-retriever` — **From RAG to an agent that reads the files** · `projects` · `Contract-Retriever-RAG`+`-Agentic` · the client rejected vanilla vector search, so v1 was query-routing + hybrid SQL/RAG and v2 a Claude Agent SDK loop that navigates a `knowledge/` tree with no embeddings; same product, swapped retrieval engine. → `/notes/contract-retriever`
 - [x] `my-agent-teams` — **The hub: "My Agent Teams"** · `agent-systems` (`kind: hub`, order 0) → `/notes/my-agent-teams`. The two teams (build team + fleet) + the orchestrate→gate→ratchet thesis; links the concept articles. Deeper per-team sections marked to-be-expanded.
 - [x] `orchestrate-gate-ratchet` → `/notes/orchestrate-gate-ratchet` (migrated to KB)
