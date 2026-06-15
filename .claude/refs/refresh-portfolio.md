@@ -140,6 +140,16 @@ Update all the memory layers you touched:
    coverage update. This is the DETAILED action log; be specific enough that the next run can trust
    it instead of re-deriving.
 
+### Optional — REQUEST a walkthrough/demo video (do NOT render it yourself)
+
+When a scan brings in a fresh set of product screenshots (e.g. new/updated `public/<proj>/*.png`
++ `src/data/<proj>Shots.ts`) that would make a strong walkthrough, you **request** a video — you do
+**NOT** render it. You are a subagent and **cannot spawn another subagent**, and rendering is the
+`make-video` worker's job. Append an **Open** row to
+`/home/codex/Projects/portfolio/.claude/state/video-queue.md` with a small video-spec (title +
+ordered shots `image|fit|caption`, true to the product, no em-dashes + target page/output) and
+**flag it in your report**. The LEAD then spawns `make-video` to render it OFFLINE and embed it.
+
 Then report — this is ALL the lead sees, so be concise and brutally honest:
 - **scanned**: repos checked + how many new commits each had (or "no change").
 - **changed**: the exact site files you edited and the one-line reason for each (or "no edits — nothing portfolio-worthy shipped").
@@ -147,6 +157,7 @@ Then report — this is ALL the lead sees, so be concise and brutally honest:
 - **build**: PASS / FAIL (paste the tail if it failed).
 - **ledger**: confirm cursor advanced + coverage/log updated.
 - **for write-article**: any agent-systems work or newly-open project aspect that should become an article.
+- **video request** (if any): the `video-queue.md` slug you opened, so the lead can fulfill it via `make-video`.
 - **self_check**: did you follow this ref? Anything ambiguous/missing/that you worked around — name it so the lead can ratchet this ref.
 
 ## References

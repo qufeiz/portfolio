@@ -51,7 +51,7 @@ export const projects: Project[] = [
     // `treaxe` surface in this project's "Related writing".
     tags: ['saas', 'full-stack', 'production', 'multi-tenant', 'payments'],
     links: [
-      { label: 'Live product', href: 'https://www.treaxe.io', kind: 'primary', note: 'treaxe.io' },
+      { label: 'Live demo', href: 'https://treaxe-demo.vercel.app', kind: 'primary', note: 'treaxe-demo.vercel.app' },
       // Demo credentials surfaced in the page body, not just here.
       { label: 'Repo (private, co-owned)', href: 'https://github.com/qufeiz/TreAxe', kind: 'secondary' },
     ],

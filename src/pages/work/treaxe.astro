@@ -7,6 +7,7 @@ import RelatedWriting from '../../components/RelatedWriting.astro';
 import { getProject } from '../../data/projects';
 import { treaxeShots } from '../../data/treaxeShots';
 import { site } from '../../data/site';
+import { asset } from '../../lib/url';
 
 const project = getProject('treaxe')!;
 
@@ -35,6 +36,27 @@ const flow = [
           </>
         ))}
       </div>
+    </section>
+
+    <!-- Walkthrough video: a quick animated tour of the real product screens.
+         Offline-rendered MP4 (Hyperframes), committed as a static asset — base-aware via asset(). -->
+    <section id="walkthrough" class="demo-video reveal" aria-label="Product walkthrough">
+      <p class="kicker wt-kicker">/ Walkthrough</p>
+      <div class="dv-frame">
+        <video
+          controls
+          muted
+          playsinline
+          preload="none"
+          poster={asset('treaxe/walkthrough.poster.jpg')}
+          class="dv-el"
+        >
+          <source src={asset('treaxe/walkthrough.mp4')} type="video/mp4" />
+          Your browser does not support the video tag.
+          <a href={asset('treaxe/walkthrough.mp4')}>Download the walkthrough (MP4)</a>.
+        </video>
+      </div>
+      <p class="dv-cap font-mono">▶ A 26-second tour — dashboard, CRM pipeline, estimates, invoices, projects, and an auto-built proposal.</p>
     </section>
 
     <CaseSection num="01" title="The problem">
@@ -119,8 +141,8 @@ const flow = [
         </p>
       </div>
       <div class="demo-cred">
-        <a href="https://www.treaxe.io" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
-          Open www.treaxe.io <span aria-hidden="true">↗</span>
+        <a href="https://treaxe-demo.vercel.app" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
+          Open treaxe-demo.vercel.app <span aria-hidden="true">↗</span>
         </a>
         <dl class="cred-list">
           <div class="cred-row">
@@ -166,6 +188,21 @@ const flow = [
   }
   .flow-step:hover { border-color: var(--color-amber); color: var(--color-paper); }
   .flow-arrow { color: var(--color-amber); opacity: 0.6; font-size: 0.85rem; }
+
+  /* Walkthrough video — amber-toned to match TreAxe (cf. FredGPT's teal demo frame) */
+  .demo-video { margin: clamp(2.5rem, 6vw, 4rem) 0 clamp(1rem, 3vw, 2rem); }
+  .wt-kicker { margin-bottom: 1.2rem; }
+  .dv-frame {
+    border: 1px solid var(--color-line-2); border-radius: 3px; overflow: hidden;
+    background: #000; position: relative;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,0.9), 0 0 0 1px rgba(232,161,60,0.06);
+  }
+  .dv-frame::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    box-shadow: inset 0 0 120px -40px rgba(232,161,60,0.16);
+  }
+  .dv-el { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
+  .dv-cap { margin-top: 0.9rem; font-size: 0.76rem; color: var(--color-paper-mute); letter-spacing: 0.04em; }
 
   .demo-box {
     margin-top: clamp(3rem, 7vw, 5rem);

@@ -62,6 +62,13 @@ points it at its own bundled wisdom. The lead **discovers** the available agents
   — the **ON-DEMAND** scanner (owner-triggered, NOT in the daily loop). Scan the owner's
   `~/Projects/*` for real changes since the cursor and update the site (case studies, `src/data/*`,
   screenshots); proves `npm run build` passes. One scan-and-update pass per invocation.
+- **`make-video`** (`.claude/agents/make-video.md` → reads `.claude/refs/make-video.md`) — a
+  **site-class / on-demand** worker. Render ONE walkthrough/demo MP4 for a project page or article
+  from a data-driven spec (title + ordered screenshots-with-captions), using the **official
+  Hyperframes skill**, then embed it base-aware and prove the build passes. **Renders OFFLINE — never
+  in the Pages build** (the MP4 is a committed static asset). Spawned by the lead to **fulfill a
+  video request** a worker left in `state/video-queue.md` (or an article's `video:` frontmatter) —
+  see "Fulfilling a video request" below. One video per invocation; does NOT deploy.
 
 **The loop discovers "the available agents" at RUNTIME** — it lists whatever `.claude/agents/*.md`
 exist rather than hardcoding names. The DAILY loop is **writer-only**: it spawns the article writer
@@ -201,6 +208,39 @@ no deploy.
 
 ---
 
+## Fulfilling a video request (the request→fulfill handoff — respects the no-nested-spawn rule)
+
+**Why this exists.** A worker subagent **cannot spawn another subagent** ("Agent is not available
+inside subagents"). So a worker that wants a walkthrough/demo video (the writer for an article, the
+scanner for a freshly-synced case study) **does NOT render it** — heavy rendering belongs in the
+dedicated `make-video` worker anyway. Instead the worker **REQUESTS** a video, and the **LEAD**
+(this top-level session, which CAN spawn) fulfills it.
+
+**How a worker requests** (no spawn — just write a small video-spec):
+- **Scanner / general:** append an **Open** row to `state/video-queue.md` (the row carries the
+  title/subtitle/outro + ordered shots `image|fit|caption` + target page + output path).
+- **Writer (article):** add a `video:` block to the article's frontmatter (per `src/content/SCHEMA.md`)
+  AND flag it in its report so the lead sees it. Either way the worker reports "requested a video:
+  <slug>" and does NOT try to render.
+
+**How the LEAD fulfills it** (you, after a worker reports a request):
+1. Read the request — the `state/video-queue.md` Open row (or the article's `video:` block).
+2. **Spawn `make-video`** (`subagent_type: make-video`) with a HIGH-LEVEL goal pointing at the
+   request: e.g. "Render the video requested in `state/video-queue.md` row `<slug>` and embed it on
+   `<page>`." It already knows its job (build from the template via the official Hyperframes skill,
+   render OFFLINE, transcode, poster, ffprobe-verify, embed base-aware, `npm run build`), reads its
+   ref, does ONE video, updates the ledger + moves the queue row to Done, reports — **no deploy**.
+3. **GATE** its output with the SAME gates as the loop (honesty: captions true to the product,
+   collaborations credited; confidentiality; build passes). The render is a static asset, so the
+   build must stay green WITHOUT any render step.
+4. **DEPLOY only if clean** (or hold for owner review if asked) — same deploy + verify-live as the
+   loop/scanner. Append a `deploy` entry to `log.md`.
+
+(This is the model for the other planned media capabilities — `generate-figures`, `enhance-screenshots`,
+`embed-demos`: a worker requests, the lead spawns the media worker to fulfill.)
+
+---
+
 ## The gates (what the lead enforces before anything is published)
 
 | Gate | Rule | Where it bites |
@@ -244,11 +284,12 @@ belongs to when you add it.
 5. **Record it** — append a `ref-add` entry to `state/log.md`; if it was on the roadmap, move its
    row out of `state/roadmap.md`.
 
-**Planned capabilities** the structure already supports (not built in v1) are future agents in
-**`state/roadmap.md`**: `make-demo-video` (hyperframe), `generate-figures` (mermaid diagrams +
-figures), `enhance-screenshots`, `embed-demos`. Each is just a new `.claude/agents/<name>.md` (+ its
-`.claude/refs/<name>.md`), invoked by whichever trigger fits (mostly on-demand/site-class, like the
-scanner) with no orchestration change.
+**Built capabilities beyond the v1 two:** `make-video` (`.claude/agents/make-video.md` +
+`.claude/refs/make-video.md`) — Hyperframes screenshot-walkthrough → MP4, fulfilled via the
+request→fulfill handoff above. **Planned capabilities** still in **`state/roadmap.md`**:
+`generate-figures` (mermaid diagrams + figures), `enhance-screenshots`, `embed-demos`. Each is just
+a new `.claude/agents/<name>.md` (+ its `.claude/refs/<name>.md`), invoked by whichever trigger fits
+(mostly on-demand/site-class, like the scanner) with no orchestration change.
 
 ---
 
@@ -261,6 +302,7 @@ scanner) with no orchestration change.
 | `state/log.md` | Append-only, grep-parseable **DETAILED action log**: `init` / `loop-run` / `loop-adjust` / `ref-add` / `deploy`. Both workers append a dated entry per run (writer: article+aspect; scanner: site files changed). |
 | `state/cursor.json` | `repo → last-scanned commit`. `portfolio-refresh` reads it, then advances each entry to that repo's HEAD. Seeded with the key projects' HEADs. |
 | `state/article-queue.md` | The writing backlog (slug · title · category · source · angle). `portfolio-writer` pulls the next OPEN-aspect item; done rows move to **Done**. |
+| `state/video-queue.md` | The **video request** backlog (the request→fulfill handoff). A worker appends an Open row (a small video-spec); the LEAD spawns `make-video` to fulfill it; done rows move to **Done**. |
 | `state/roadmap.md` | Planned-but-unbuilt capabilities (future agent defs + refs) the system is designed to support. |
 
 > **Two-level writer/scanner memory (read-first, update-after — never re-scan everything):**
@@ -277,6 +319,9 @@ scanner) with no orchestration change.
 | `/home/codex/Projects/portfolio/.claude/agents/portfolio-writer.md` | The article WORKER subagent def (→ points at `refs/write-article.md`) |
 | `/home/codex/Projects/portfolio/.claude/refs/refresh-portfolio.md` | The site-sync how-to (the ref `portfolio-refresh` reads) |
 | `/home/codex/Projects/portfolio/.claude/refs/write-article.md` | The article how-to (the ref `portfolio-writer` reads; dual-purpose → x-agent) |
+| `/home/codex/Projects/portfolio/.claude/agents/make-video.md` | The video WORKER subagent def (→ points at `refs/make-video.md`) |
+| `/home/codex/Projects/portfolio/.claude/refs/make-video.md` | The video how-to (Hyperframes screenshot-walkthrough → MP4, OFFLINE; the ref `make-video` reads) |
+| `/home/codex/Projects/portfolio/.claude/make-video/` | The reusable composition template (`build-composition.mjs` + vendored GSAP/fonts + the TreAxe example spec) |
 | `/home/codex/Projects/portfolio/scripts/deploy.sh` | The deploy: source→main, build→gh-pages, `.nojekyll` |
 | `/home/codex/Projects/portfolio/src/content/articles/` | The three seed articles (migrated from the old build dir's `notes/`) + later pieces |
 | `/home/codex/Projects/x-agent` | Sibling agent + downstream consumer of article `keyTakes` |

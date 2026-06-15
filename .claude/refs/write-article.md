@@ -211,6 +211,16 @@ Update all three layers of your memory so the next run never re-derives this:
    `## YYYY-MM-DD loop-run | wrote <slug>: <project>/<aspect> covered` followed by 1-3 bullets
    (the source you grounded it in, the key takes, build PASS/FAIL). This is the DETAILED action log.
 
+### Optional — REQUEST a walkthrough/demo video (do NOT render it yourself)
+
+If the article would be much stronger with a short walkthrough/demo video (e.g. a project piece
+that walks real product screens), you **request** one — you do **NOT** render it. You are a
+subagent and **cannot spawn another subagent**, and rendering is a separate worker's job. Append an
+**Open** row to `/home/codex/Projects/portfolio/.claude/state/video-queue.md` with a small
+video-spec (title/subtitle/outro + ordered shots `image|fit|caption`, true to the product, no
+em-dashes + target page/output) and **flag it in your report** ("requested a video: `<slug>`"). The
+LEAD then spawns `make-video` to render it OFFLINE and embed it. Do not block the article on it.
+
 Then report — concise and honest:
 - **article**: title + the site path you created/updated; new vs refresh.
 - **source + aspect**: the real repos/docs you grounded it in, and which `coverage.md` aspect it closed.
@@ -218,6 +228,7 @@ Then report — concise and honest:
 - **honesty gate**: the written-out PASS/FAIL for each item above (INCLUDING the no-em-dash / no-AI-tells style check).
 - **build**: PASS / FAIL.
 - **ledger**: confirm you updated queue + coverage + log.
+- **video request** (if any): the `video-queue.md` slug you opened, so the lead can fulfill it.
 - **self_check**: did you follow this ref? Anything ambiguous/missing/worked-around — name it for the ratchet.
 
 ## References

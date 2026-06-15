@@ -1,0 +1,46 @@
+{
+  "title": "TreAxe",
+  "subtitle": "Construction operations, one connected workflow from first lead to final payment",
+  "regLabel": "Product walkthrough",
+  "outro": "treaxe-demo.vercel.app",
+  "outroNote": "A production construction-operations platform. Co-built with a collaborator.",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "shotDuration": 4.2,
+  "transition": 0.8,
+  "titleDuration": 3.0,
+  "outroDuration": 3.4,
+  "shots": [
+    {
+      "image": "assets/dashboard.png",
+      "fit": "cover",
+      "caption": "Role-aware dashboard with AI-detected project risks and live metrics"
+    },
+    {
+      "image": "assets/leads.png",
+      "fit": "cover",
+      "caption": "Lead-to-contract CRM as a drag-and-drop pipeline, with weighted forecast and win rate"
+    },
+    {
+      "image": "assets/estimates.png",
+      "fit": "cover",
+      "caption": "Estimating and bids, with line items, statuses, and win rate across projects"
+    },
+    {
+      "image": "assets/invoices.png",
+      "fit": "cover",
+      "caption": "Invoicing with balance and AR aging tracking"
+    },
+    {
+      "image": "assets/project-overview.png",
+      "fit": "cover",
+      "caption": "Project tracking across the full job lifecycle: budget, takeoff, daily logs and activity"
+    },
+    {
+      "image": "assets/proposal.png",
+      "fit": "contain",
+      "caption": "One click turns an estimate into a professional client proposal: scope, costs, payment schedule, signatures"
+    }
+  ]
+}

@@ -14,3 +14,6 @@ npm-debug.log*
 # temp/scratch output (screenshots, capture scripts) — keep the dir, ignore contents
 .scratch/*
 !.scratch/.gitkeep
+
+# installed AI agent skills (Hyperframes etc.) — tooling, not source
+.agents/
