@@ -1,6 +1,9 @@
-# Portfolio — agent context (local, gitignored)
+# Portfolio — agent context (committed to git; this is the orientation doc a newcomer reads)
 
-Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Featured work: **TreAxe** + **FredGPT** (an "agent team" case study is planned, likely the lead project).
+> This file IS tracked in git (only `.scratch/` is ignored), so anyone who clones the repo gets it.
+> Keep real secrets OUT of it. The demo login below is staging-only and already public on the site.
+
+Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Featured work: **TreAxe** + **FredGPT** case studies, plus a self-maintaining **"Agent Systems" writing section** (see *Writing / content KB* and *Agent system* below).
 
 ## Deploy
 - Host: **GitHub Pages** → https://qufeiz.github.io/portfolio/ (repo `github.com/qufeiz/portfolio`, served from `gh-pages` branch).
@@ -9,11 +12,24 @@ Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Fe
   (pushes source→`main`, build→`gh-pages`, adds `.nojekyll`). Pages takes ~1 min to rebuild; verify with curl/retry.
 
 ## Structure
-- Pages: `src/pages/index.astro` (hero + work + about), `src/pages/work/treaxe.astro`, `work/fredgpt.astro`.
-- Data: `src/data/site.ts` (identity — has TODOs), `src/data/projects.ts` (project meta), `src/data/treaxeShots.ts` (TreAxe gallery; images in `public/treaxe/`).
-- Components: `Case*.astro`, `Gallery.astro`, `Hero.astro`, `About.astro`.
+- Pages: `src/pages/index.astro` (hero + work + about), `src/pages/work/treaxe.astro`, `work/fredgpt.astro`, `src/pages/writing/index.astro` (the **/writing** index), `src/pages/notes/[...slug].astro` (each article at **/notes/<slug>**), `src/pages/404.astro`.
+- Data: `src/data/site.ts` (identity — has TODOs; also `WRITING_SECTION` + `CATEGORIES`), `src/data/projects.ts` (project meta), `src/data/treaxeShots.ts` (TreAxe gallery; images in `public/treaxe/`).
+- Components: `Case*.astro`, `Gallery.astro`, `Hero.astro`, `About.astro`, `WorkIndex.astro`; **writing**: `Writing.astro` (home-page article list) + `RelatedWriting.astro` (related posts on case pages).
 - `src/styles/global.css` — design system + the **global `.shell` gutter**. Keep `.shell` GLOBAL (it was once scoped to Base.astro → case pages went full-bleed; don't reintroduce that).
 - Scroll-reveal: `.reveal` is `opacity:0` until JS adds `.is-in`; there's a `<noscript>` fallback. A no-scroll full-page screenshot looks blank below the fold — scroll first when capturing.
+
+## Writing / content KB (the "Agent Systems" notes — where articles live)
+- **Articles are an Astro content collection, NOT hand-built pages.** They live as markdown at `src/content/articles/<slug>.md`. To add a post you drop ONE `.md` file there; the site renders it automatically. There is no page to wire by hand and no data file to edit.
+- **Schema / conventions:** `src/content/SCHEMA.md` (the human guide) + `src/content.config.ts` (the Zod frontmatter schema, incl. the `category` enum). Read SCHEMA.md before writing an article.
+- **Query helper:** `src/lib/content.ts`. **Renders at:** `/notes/<slug>` via `src/pages/notes/[...slug].astro`; the index is `/writing` (`src/pages/writing/index.astro`); the home-page list is `src/components/Writing.astro`.
+- **Section name + categories** are config in `src/data/site.ts` (`WRITING_SECTION`, `CATEGORIES`) — rename the whole section in one place.
+- **Rendering features** (Mermaid diagrams, `:::note`/`:::tip`/`:::warning` callouts, annotated code blocks) are wired in `astro.config.mjs` and documented in `src/content/SCHEMA.md`.
+
+## Agent system (this site partly maintains itself)
+- `.claude/AGENTS.md` — the **lead loop runbook** (committed): the recurring daily writer loop, the on-demand site refresh, and the gates.
+- `.claude/agents/*.md` — the **worker subagents**: `portfolio-writer` (writes ONE article per run), `portfolio-refresh` (re-syncs the site from projects, on demand), `make-video` (renders a walkthrough MP4 offline). Each points at a how-to in `.claude/refs/`.
+- `.claude/refs/*.md` — the how-tos (`write-article.md`, `refresh-portfolio.md`, `make-video.md`).
+- `.claude/state/*` — the **ledger = the agents' memory**: `coverage.md` (aspect-level "what's covered" index), `article-queue.md` (backlog), `log.md` (append-only run log), `sources.md` (source catalog + HARD confidentiality/PII gates), `video-queue.md`, `cursor.json`, `roadmap.md`. Agents READ the ledger first and UPDATE it after — they never re-scan everything.
 
 ## Content & honesty rules
 - **TreAxe** — co-built/co-owned **with a collaborator**; never imply sole authorship. Live product: www.treaxe.io. Demo login shown on site: `staging-test@treaxe-test.com / TreAxeDemo2026!` (staging only). Gallery uses TreAxe's OWN official screenshots from `~/Projects/TreAxe/docs/features/*/images/` and `docs/product/images/` (prefer these over re-captures).
@@ -23,7 +39,7 @@ Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Fe
 ## Open TODOs (owner)
 - Fill display name / location / socials in `site.ts`; confirm exact role splits on both case pages.
 - Optional: connect Vercel (1-click import) for a nicer URL + custom domain; rotate the TreAxe staging service-role key (it surfaced in a build session).
-- Build the **agent-team** case study (PM → engineer → verifier multi-agent system + the fleet: X-agent, jobright, life-wiki, this portfolio agent). Likely the lead piece; angle: "this portfolio was built by my own agent team."
+- Build the **agent-team** case study (PM → engineer → verifier multi-agent system + the fleet: X-agent, jobright, life-wiki, this portfolio agent). The "Agent Systems" *writing* section already exists; this TODO is the dedicated `/work` case page if still wanted. Angle: "this portfolio was built by my own agent team."
 
 ## Scratch / temp output
 - Temp output (screenshots, capture scripts, scratch builds) goes in `portfolio/.scratch/` (gitignored) — NEVER in `~/Projects` or any sibling `_*-build/` dir.

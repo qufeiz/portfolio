@@ -80,10 +80,11 @@ a `/work` case page or data surface.
   (article: queued `life-wiki` / `compiled-knowledge`)
 
 ## Contract-Retriever (`-RAG` → `-Agentic`) — `blog-candidate`
-- **Covered:** none.
-- **Open:** the RAG → agentic rebuild story — v1 query-routing + hybrid SQL/RAG + cited answers,
-  v2 a Claude Agent SDK loop navigating a `knowledge/` tree with no embeddings; why the client
-  rejected vanilla vector search. (article: queued `contract-retriever`)
+- **Covered**
+  - The RAG → agentic rebuild story — v1 query-routing + hybrid SQL/RAG + cited answers,
+    v2 a Claude Agent SDK loop navigating a `knowledge/` tree with no embeddings; why the client
+    rejected vanilla vector search; the verification strategy that had to change with the engine.
+    (article: `contract-retriever`)
 
 ## arXiv2Table / arxivDIGESTables — `blog-candidate` (confirm role first)
 - **Covered:** none.
