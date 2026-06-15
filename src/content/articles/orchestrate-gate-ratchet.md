@@ -19,12 +19,12 @@ I keep building multi-agent systems that do real, unsupervised work: a PM/engine
 
 ```mermaid
 flowchart LR
-  S["&nbsp;Spec / skill&nbsp;&nbsp;"] --> O["&nbsp;Orchestrate: delegate to subagents&nbsp;&nbsp;"]
-  O --> G{"&nbsp;Gate: deterministic, fail-closed&nbsp;&nbsp;"}
-  G -->|"&nbsp;pass&nbsp;&nbsp;"| Ship["&nbsp;Ship&nbsp;&nbsp;"]
-  G -->|"&nbsp;fail&nbsp;&nbsp;"| O
-  Ship -.->|"&nbsp;a miss slips through&nbsp;&nbsp;"| R["&nbsp;Ratchet: fix the program&nbsp;&nbsp;"]
-  R -->|"&nbsp;raises the floor&nbsp;&nbsp;"| S
+  S["Spec / skill"] --> O["Orchestrate: delegate to subagents"]
+  O --> G{"Gate: deterministic, fail-closed"}
+  G -->|"pass"| Ship["Ship"]
+  G -->|"fail"| O
+  Ship -.->|"a miss slips through"| R["Ratchet: fix the program"]
+  R -->|"raises the floor"| S
 ```
 
 ## Move 1, Orchestrate: bounded context, unbounded work

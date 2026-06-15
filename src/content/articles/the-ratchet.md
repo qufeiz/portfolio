@@ -30,11 +30,11 @@ When a miss gets through, the ratchet runs three steps in order.
 
 ```mermaid
 flowchart TB
-  M["&nbsp;A miss slips through&nbsp;"] --> S["&nbsp;1. Seal the gotcha&nbsp;"]
-  S --> E["&nbsp;2. Strongest enforcement that fits&nbsp;"]
-  E --> L["&nbsp;3. Link gotcha and rule both ways&nbsp;"]
-  L --> F["&nbsp;Floor rises one rung&nbsp;"]
-  E -.->|"&nbsp;climb as high as the rule allows&nbsp;"| Ladder["&nbsp;CI / test  >  self-check  >  prose&nbsp;"]
+  M["A miss slips through"] --> S["1. Seal the gotcha"]
+  S --> E["2. Strongest enforcement that fits"]
+  E --> L["3. Link gotcha and rule both ways"]
+  L --> F["Floor rises one rung"]
+  E -.->|"climb as high as the rule allows"| Ladder["CI / test  >  self-check  >  prose"]
 ```
 
 **1. Seal the gotcha.** Write up the *why*, lead with the lesson, and mark it `SEALED` **only when the fix is tested *and* user-confirmed**, naming who confirmed it and which regression test guards it. If you can't seal it, you write it as *not sealed* and say what's verified vs. open. The reasoning is sharp: "a wrong 'it's fixed' doc is worse than none," because the next agent trusts it.

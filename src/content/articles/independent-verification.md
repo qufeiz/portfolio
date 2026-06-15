@@ -23,10 +23,10 @@ The team is three roles. The **PM** owns the golden bar, the real, non-toy refer
 
 ```mermaid
 flowchart LR
-  E["Engineer: builds + writes tests"] -->|"&nbsp;handoff&nbsp;"| V["Verifier: never wrote the code"]
-  V --> G{"&nbsp;4 gates&nbsp;"}
-  G -->|"&nbsp;fail&nbsp;"| E
-  G -->|"&nbsp;pass&nbsp;"| Ship["Ship"]
+  E["Engineer: builds + writes tests"] -->|"handoff"| V["Verifier: never wrote the code"]
+  V --> G{"4 gates"}
+  G -->|"fail"| E
+  G -->|"pass"| Ship["Ship"]
 ```
 
 This matters because the author is the worst possible grader of their own work. They know what the code is *supposed* to do, so they test the code path they wrote, not the outcome the user needs. An independent checker doesn't share that mental model. It starts from "what does the user see?" and works backward, which is exactly where the author's blind spot lives.

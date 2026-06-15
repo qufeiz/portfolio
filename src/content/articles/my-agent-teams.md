@@ -18,11 +18,11 @@ They look like different things. They aren't. Both shapes run the same architect
 
 ```mermaid
 flowchart TB
-  A["&nbsp;One architecture: orchestrate, gate, ratchet&nbsp;"]
-  A --> T1["&nbsp;Build team (standing, convened)&nbsp;"]
-  A --> T2["&nbsp;Fleet (repo-embedded, on a loop)&nbsp;"]
-  T1 --> R1["&nbsp;PM, engineer, verifier&nbsp;"]
-  T2 --> R2["&nbsp;x-agent, life-wiki, jobright, this portfolio&nbsp;"]
+  A["One architecture: orchestrate, gate, ratchet"]
+  A --> T1["Build team (standing, convened)"]
+  A --> T2["Fleet (repo-embedded, on a loop)"]
+  T1 --> R1["PM, engineer, verifier"]
+  T2 --> R2["x-agent, life-wiki, jobright, this portfolio"]
 ```
 
 ## The thesis, in one paragraph

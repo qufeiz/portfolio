@@ -123,6 +123,43 @@ export default defineConfig({
     mermaid({
       theme: 'dark',
       autoTheme: true,
+      // mermaidConfig is spread into mermaid.initialize() on the client.
+      // CRITICAL: Mermaid sizes every node/edge box by MEASURING its label
+      // text, then renders it. If the measuring font differs from the painting
+      // font, the boxes come out too small and the last glyph (and wrapped
+      // second lines) get clipped — which is exactly what was happening here
+      // (boxes said "Spec / skil", "a miss slips throu", etc.). Pinning BOTH
+      // the top-level fontFamily AND themeVariables.fontFamily to a guaranteed-
+      // available system stack makes measure == paint, so boxes size correctly.
+      // Do NOT use a late-loading web font here — measurement runs before it
+      // loads and the boxes size to the fallback.
+      mermaidConfig: {
+        fontFamily:
+          'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+        themeVariables: {
+          fontFamily:
+            'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+          fontSize: '15px',
+        },
+        // useMaxWidth scales the SVG to its container (no horizontal overflow).
+        // htmlLabels:false is the load-bearing fix. With htmlLabels:true,
+        // Mermaid sizes each box from a foreignObject HTML measurement that
+        // came out too NARROW in this client-render context, so labels either
+        // wrapped-and-clipped at the box bottom or (single-line) spilled past
+        // the box edge. SVG <text> labels are measured with getComputedText-
+        // Length, which is accurate, so boxes size correctly to their text.
+        // useMaxWidth then scales the whole diagram to the container width.
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: false,
+          padding: 12,
+          // diagramPadding adds margin around the whole diagram inside the
+          // viewBox so an edge node's text (e.g. the far-right "Ratchet: fix
+          // the program" on the wide LR flow) is never flush against — and
+          // clipped by — the SVG/container edge.
+          diagramPadding: 24,
+        },
+      },
     }),
     // expressive-code enhances every fenced code block in markdown at BUILD time
     // (Shiki highlighting + frames/titles + copy button + diff/focus markers +

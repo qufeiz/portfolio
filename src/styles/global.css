@@ -278,3 +278,30 @@ a { color: inherit; text-decoration: none; }
   background: linear-gradient(180deg, rgba(201,127,28,0.07), transparent 60%), var(--color-ink-2);
 }
 .callout-important .callout-title { color: var(--color-amber); }
+
+/* ---- Mermaid diagrams (client-rendered SVG) ----
+   astro-mermaid replaces ```mermaid fences with a <pre class="mermaid"> that is
+   swapped for an inline <svg> on the client. GLOBAL because the markup is
+   injected, not authored in a scoped .astro component.
+   - max-width:100% + height:auto keeps the diagram scaled to its container on
+     narrow/mobile widths (no horizontal overflow off the page).
+   - overflow:visible on the label foreignObjects is a belt-and-suspenders guard
+     so a glyph never gets clipped even if Mermaid sizes a box a hair tight. */
+.mermaid {
+  margin: 1.8rem 0;
+  text-align: center;
+}
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+/* Let label text size its own box rather than being clipped by a too-tight
+   foreignObject. Mermaid measures with the (now-matching) system font, so the
+   boxes are sized right; this is a guard so a hair-tight box still shows its
+   last glyph instead of shaving it. Do NOT force white-space here — that makes
+   Mermaid wrap inside a narrow box and clip the wrapped line. */
+.mermaid svg .nodeLabel,
+.mermaid svg .edgeLabel,
+.mermaid svg .label foreignObject {
+  overflow: visible;
+}
