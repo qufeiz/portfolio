@@ -141,17 +141,20 @@ export default defineConfig({
             'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
           fontSize: '15px',
         },
-        // useMaxWidth scales the SVG to its container (no horizontal overflow).
-        // htmlLabels:false is the load-bearing fix. With htmlLabels:true,
-        // Mermaid sizes each box from a foreignObject HTML measurement that
-        // came out too NARROW in this client-render context, so labels either
-        // wrapped-and-clipped at the box bottom or (single-line) spilled past
-        // the box edge. SVG <text> labels are measured with getComputedText-
-        // Length, which is accurate, so boxes size correctly to their text.
-        // useMaxWidth then scales the whole diagram to the container width.
+        // useMaxWidth scales the SVG down to its container (no horizontal page
+        // overflow). htmlLabels:true (HTML labels in a foreignObject) is what
+        // lets a node box GROW to fit MULTI-LINE / wrapped text: the box height
+        // tracks the wrapped HTML, so <br/> + auto-wrapped lines stay CONTAINED
+        // instead of spilling out the bottom. (htmlLabels:false sized each box
+        // to ~the first line, so the contract-retriever <br/> labels overflowed
+        // their boxes — the regression.) The fontFamily pin above (measure ==
+        // paint, no late web font) is the part that actually fixes the single-
+        // line HORIZONTAL clip that first motivated turning htmlLabels off; with
+        // the pin, htmlLabels:true fits both ways and is browser-locally
+        // consistent (measure == paint within whatever font each browser uses).
         flowchart: {
           useMaxWidth: true,
-          htmlLabels: false,
+          htmlLabels: true,
           padding: 12,
           // diagramPadding adds margin around the whole diagram inside the
           // viewBox so an edge node's text (e.g. the far-right "Ratchet: fix

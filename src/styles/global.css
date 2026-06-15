@@ -295,13 +295,19 @@ a { color: inherit; text-decoration: none; }
   max-width: 100%;
   height: auto;
 }
-/* Let label text size its own box rather than being clipped by a too-tight
-   foreignObject. Mermaid measures with the (now-matching) system font, so the
-   boxes are sized right; this is a guard so a hair-tight box still shows its
-   last glyph instead of shaving it. Do NOT force white-space here — that makes
-   Mermaid wrap inside a narrow box and clip the wrapped line. */
-.mermaid svg .nodeLabel,
-.mermaid svg .edgeLabel,
-.mermaid svg .label foreignObject {
-  overflow: visible;
+/* Mermaid renders HTML labels (htmlLabels:true) inside a <foreignObject>, and
+   that HTML INHERITS this page's typography — a larger font-size / line-height
+   than Mermaid assumes when it sizes each node box. So the real text renders
+   taller (and wraps to more lines) than the box Mermaid drew, and the extra
+   line(s) clip at the bottom. Measured proof: a 4-line box (114px) was holding
+   6 lines of content (192px). Fix = pin the label typography back to Mermaid's
+   own metrics (15px / 1.5) so content height == the box height it computed.
+   NOT overflow:visible — that just makes the too-tall text spill OUTSIDE. */
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid .nodeLabel *,
+.mermaid .edgeLabel * {
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
 }
