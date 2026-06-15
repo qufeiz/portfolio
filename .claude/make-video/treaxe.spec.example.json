@@ -7,7 +7,7 @@
   "width": 1920,
   "height": 1080,
   "fps": 30,
-  "shotDuration": 4.2,
+  "shotDuration": 5.6,
   "transition": 0.8,
   "titleDuration": 3.0,
   "outroDuration": 3.4,
@@ -15,32 +15,101 @@
     {
       "image": "assets/dashboard.png",
       "fit": "cover",
-      "caption": "Role-aware dashboard with AI-detected project risks and live metrics"
+      "textPos": "bl",
+      "title": "Your whole business on one screen",
+      "supportText": "AI flags the jobs going cold before they cost you.",
+      "caption": "Role-aware dashboard with AI-detected project risks and live metrics",
+      "effect": {
+        "type": "spotlight",
+        "scale": 1.1,
+        "label": "AI-detected risks",
+        "region": { "x": 0.2, "y": 0.04, "w": 0.785, "h": 0.55 }
+      }
+    },
+    {
+      "image": "assets/ai-assistant-estimates.png",
+      "fit": "cover",
+      "textPos": "tl",
+      "duration": 7.0,
+      "title": "Ask your data anything",
+      "supportText": "Plain-English questions, real answers cited from your own records.",
+      "caption": "AI assistant answers a plain-English question about estimate values, citing the read_estimates tool and real per-estimate and combined totals",
+      "effect": {
+        "type": "spotlight",
+        "scale": 1.14,
+        "label": "read_estimates -> cited answer",
+        "region": { "x": 0.255, "y": 0.37, "w": 0.5, "h": 0.42 }
+      }
     },
     {
       "image": "assets/leads.png",
       "fit": "cover",
-      "caption": "Lead-to-contract CRM as a drag-and-drop pipeline, with weighted forecast and win rate"
+      "textPos": "tl",
+      "title": "Win more work",
+      "supportText": "Move a lead from first touch to signed contract.",
+      "caption": "Lead-to-contract CRM as a drag-and-drop pipeline, with weighted forecast and win rate",
+      "effect": {
+        "type": "sweep",
+        "label": "Pipeline stages",
+        "region": { "x": 0.205, "y": 0.5, "w": 0.78, "h": 0.46 }
+      }
     },
     {
       "image": "assets/estimates.png",
       "fit": "cover",
-      "caption": "Estimating and bids, with line items, statuses, and win rate across projects"
+      "textPos": "bl",
+      "title": "Bid in minutes",
+      "supportText": "Itemized line items, statuses, and e-signatures.",
+      "caption": "Estimating and bids, with line items, statuses, and win rate across projects",
+      "effect": {
+        "type": "spotlight",
+        "scale": 1.12,
+        "label": "Estimate + total",
+        "region": { "x": 0.205, "y": 0.5, "w": 0.78, "h": 0.13 }
+      }
     },
     {
       "image": "assets/invoices.png",
       "fit": "cover",
-      "caption": "Invoicing with balance and AR aging tracking"
+      "textPos": "tl",
+      "title": "Get paid",
+      "supportText": "Invoicing with AR aging and Stripe payments.",
+      "caption": "Invoicing with balance and AR aging tracking",
+      "effect": {
+        "type": "sweep",
+        "label": "Overdue & aging",
+        "region": { "x": 0.63, "y": 0.4, "w": 0.355, "h": 0.56 }
+      }
     },
     {
       "image": "assets/project-overview.png",
       "fit": "cover",
-      "caption": "Project tracking across the full job lifecycle: budget, takeoff, daily logs and activity"
+      "textPos": "bl",
+      "title": "One connected flow",
+      "supportText": "Lead to estimate to project to invoice — nothing re-typed.",
+      "caption": "Project tracking across the full job lifecycle: budget, takeoff, daily logs and activity",
+      "effect": {
+        "type": "reveal-sequence",
+        "regions": [
+          { "x": 0.205, "y": 0.155, "w": 0.185, "h": 0.13, "label": "Duration" },
+          { "x": 0.41, "y": 0.155, "w": 0.185, "h": 0.13, "label": "Budget" },
+          { "x": 0.615, "y": 0.155, "w": 0.185, "h": 0.13, "label": "Client" },
+          { "x": 0.205, "y": 0.555, "w": 0.78, "h": 0.075, "label": "Lifecycle tabs" }
+        ]
+      }
     },
     {
       "image": "assets/proposal.png",
-      "fit": "contain",
-      "caption": "One click turns an estimate into a professional client proposal: scope, costs, payment schedule, signatures"
+      "fit": "width",
+      "textPos": "tr",
+      "duration": 8.0,
+      "title": "From estimate to proposal",
+      "supportText": "One click builds a professional client proposal.",
+      "caption": "One click turns an estimate into a professional client proposal: scope, costs, payment schedule, signatures",
+      "effect": {
+        "type": "scroll-pan",
+        "imageAspect": 2.717
+      }
     }
   ]
 }
