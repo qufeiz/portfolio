@@ -11,3 +11,6 @@ npm-debug.log*
 .env.production
 # os
 .DS_Store
+# temp/scratch output (screenshots, capture scripts) — keep the dir, ignore contents
+.scratch/*
+!.scratch/.gitkeep

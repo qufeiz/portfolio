@@ -101,6 +101,34 @@ page renders `title` as the heading. Start the body with the article's lede para
    - Cross-link is implemented in `src/lib/content.ts` (`relatedArticles(slug)`); the block renders
      nothing when zero articles match.
 
+#### Rendering features available in article bodies (USE them where they clarify)
+
+Article markdown is rendered with three blog-enhancement integrations wired in `astro.config.mjs`
+(all build-time / static-safe — they ship on GitHub Pages). Reach for them when they genuinely help
+a reader; don't decorate.
+
+| Feature | Authoring syntax | When to use |
+|---|---|---|
+| **Mermaid diagram** | a fenced ```` ```mermaid ```` block with Mermaid source | architecture / flow that's clearer as a picture (a fan-out, a loop, a pipeline). Client-rendered, dark-themed (`astro-mermaid`). |
+| **Callouts** | `:::note` · `:::tip{title="…"}` · `:::warning` (also `:::caution`, `:::important`), closed by `:::` | an aside, a heads-up, or a caveat that shouldn't break the prose flow. `remark-directive` → `remarkCallouts` emits a styled `<aside>`. |
+| **Annotated code** | fenced code with an info string: `` ```ts title="loop.ts" {2,5-7} showLineNumbers `` | a real, short snippet worth pointing at. `astro-expressive-code` adds Shiki highlighting, a title frame, a copy button, line highlights/numbers. |
+
+Example callout + annotated block:
+```
+:::tip{title="Why no embeddings"}
+The client rejected vanilla vector search, so the agent reads the real files instead.
+:::
+```
+```ts title="loop.ts" {3}
+const plan = await orchestrate(goal);   // line 3 highlighted
+```
+
+**Style floor (de-AI voice).** Article prose follows the same anti-AI rules as the x-agent's voice
+gate: **no em-dashes (—) anywhere** (use periods, commas, parentheses, or colons), and none of the
+usual AI tells (no "delve/tapestry/realm/landscape", no "it's not just X, it's Y", no significance
+inflation, no parallel triplets). Plain, specific, confident; short sentences welcome. This is part
+of the honesty gate — the `write-article` ref carries the full rule.
+
 ### `projects` — case-study metadata (SCHEMA ONLY — not yet migrated)
 
 The schema is defined in `src/content.config.ts` but **has no entries yet** and is **not wired into
@@ -189,6 +217,26 @@ Gates). Authoring into `src/content/` is **gated**, not free-form:
 - Every substantive claim points to a real repo/doc/mechanism, not a generality. The fleet
   descriptions in `my-agent-teams.md`, for instance, are grounded in the actual `AGENTS.md` /
   `CLAUDE.md` of `x-agent`, `life-wiki`, and `jobright-agent`.
+
+---
+
+## Writer memory: sources + coverage ledger (read-first, update-after — never re-scan)
+
+The portfolio's worker agents (`portfolio-writer` AND `portfolio-refresh`) don't re-discover the
+world each run. They have a **two-level memory** in `.claude/state/`, and the rule is **read the
+index FIRST, update it AFTER** — never re-scan every project + every article each run.
+
+| File | Layer | Role |
+|---|---|---|
+| `.claude/state/sources.md` | catalog | Every source, its `type` (`case-study`/`blog-candidate`/`skip-confidential`/`skip-PII`/`skip-not-mine`) + status, and the **HARD confidentiality/PII gates** (Tessera/Bosch, the zip's personal PII docs, Karpathy's pattern doc — never bloggable). |
+| `.claude/state/coverage.md` | **index** | **Aspect-level** coverage: per project, which ASPECTS are Covered (and by which article/site surface) vs. still Open. Cheap to scan; this is how the writer finds "what's left" and the scanner sees what's already reflected. |
+| `.claude/state/log.md` | **detailed log** | Append-only, dated, grep-parseable. Every run appends one entry (writer: which article + which project/aspect; scanner: the exact site files changed). |
+
+The flow for **both** agents: read `coverage.md` (+ `sources.md` / `cursor.json`) → do ONE unit of
+work → flip the aspect Open→Covered in `coverage.md` → append a DETAILED entry to `log.md`. The
+writer additionally pulls its next item from `.claude/state/article-queue.md` (a queued item whose
+source aspect is still Open and whose source isn't barred). This read-first/update-after loop is what
+lets the agents skip the full re-scan and still stay current.
 
 ---
 

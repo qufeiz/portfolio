@@ -4,7 +4,7 @@
 // project is tagged with that project's slug (e.g. `treaxe`). The article lives
 // ONCE in /writing; it merely SURFACES on the project's case page via
 // `relatedArticles(projectSlug)`. No duplication of content.
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export type Article = CollectionEntry<'articles'>;
 
@@ -22,6 +22,22 @@ export async function publishedArticles(): Promise<Article[]> {
 export async function relatedArticles(projectSlug: string): Promise<Article[]> {
   const articles = await publishedArticles();
   return articles.filter((a) => a.data.tags.includes(projectSlug));
+}
+
+/**
+ * Map of article id → "X min read", computed at build time from each article's
+ * `remarkPluginFrontmatter.minutesRead` (injected by the remarkReadingTime
+ * plugin in astro.config.mjs). Lets the /writing index show reading time
+ * without each page re-deriving it. Articles missing the field are absent.
+ */
+export async function articleReadingTimes(): Promise<Map<string, string>> {
+  const map = new Map<string, string>();
+  for (const a of await publishedArticles()) {
+    const { remarkPluginFrontmatter } = await render(a);
+    const mins = remarkPluginFrontmatter?.minutesRead;
+    if (typeof mins === 'string') map.set(a.id, mins);
+  }
+  return map;
 }
 
 /** Top N articles for the curated home page (hub + lowest order). Fixed size. */
