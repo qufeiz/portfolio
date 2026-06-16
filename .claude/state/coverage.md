@@ -66,9 +66,16 @@ a `/work` case page or data surface.
 - **Open:** none remaining for this source (the architecture aspect is now covered).
 
 ## jobright-agent — `blog-candidate`
-- **Covered:** none. (Touched as a fleet member in `my-agent-teams`, not its own piece.)
-- **Open:** the end-to-end Jobright application automation (the `jobright-apply` skill) as an
-  unsupervised-automation story. (article: queued `jobright-agent`)
+- **Covered**
+  - The end-to-end Jobright application automation (the `jobright-apply` skill) as an
+    unsupervised-automation story: the never-auto-submit human approval gate, the orchestrator +
+    throwaway apply-subagent split (one application per run), two-channel verification with the honest
+    status ladder (confirmed / submitted-no-email / unverified / failed), the ATS dispatcher that
+    routes by host and bails before filling on walled platforms, the CAPTCHA-is-a-hard-stop and
+    never-invent-personal-data lines, and the encoded ATS gotchas (type-don't-inject React inputs,
+    spam-detection stealth at submit, the rotating verification-code handshake). MECHANISM only — no
+    real name/contact/employers (PII held). (article: `jobright-agent`)
+- **Open:** none remaining for this source (the automation story is now covered).
 
 ## x-agent — `blog-candidate`
 - **Covered:** the de-AI voice gate is the STYLE PRECEDENT this portfolio's writer now follows
