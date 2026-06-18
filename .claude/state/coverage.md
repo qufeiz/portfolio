@@ -78,10 +78,18 @@ a `/work` case page or data surface.
 - **Open:** none remaining for this source (the automation story is now covered).
 
 ## x-agent — `blog-candidate`
-- **Covered:** the de-AI voice gate is the STYLE PRECEDENT this portfolio's writer now follows
-  (no em-dashes, no AI tells); x-agent is also the downstream consumer of every article's `keyTakes`.
-- **Open:** the X/Twitter automation as its own piece — headless Playwright posting, the
-  reply/post skills, the voice gate as a quality mechanism. (article: queued `x-agent`)
+- **Covered**
+  - The de-AI voice gate is the STYLE PRECEDENT this portfolio's writer now follows
+    (no em-dashes, no AI tells); x-agent is also the downstream consumer of every article's `keyTakes`.
+  - The X/Twitter automation as its own piece — why it seeds an authenticated cookie session into a
+    Playwright `storageState` instead of logging in (X walls headless logins with SMS); the two skills
+    (replies + life-wiki-grounded original posts); the deterministic fail-closed voice gate
+    (`tweet_composer.py`, rules-as-data, exit 1 on AI tells) as a quality mechanism; the layered
+    privacy stack on original posts (default-deny sweep + fail-closed scanner + meaning-layer
+    self-check + human approval); and the read-the-result-back honest status (POSTED/UNCONFIRMED/ERROR,
+    idempotent-by-url logging). MECHANISM only — no credentials/cookies/handle/personal posts; the
+    posted log characterized qualitatively, no fabricated counts. (article: `x-agent`)
+- **Open:** none remaining for this source (the automation story is now covered).
 
 ## life-wiki — `blog-candidate` (SYSTEM only)
 - **Covered:** none. (Named as a fleet member in `my-agent-teams`.)

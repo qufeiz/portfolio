@@ -13,19 +13,20 @@ const ticker = [
   <div class="shell hero-shell">
     <!-- left rail: spec sheet -->
     <aside class="hero-rail rise" style="animation-delay: .55s">
-      <div class="rail-row"><span class="rail-k">ROLE</span><span class="rail-v">{site.role}</span></div>
-      <div class="rail-row"><span class="rail-k">FOCUS</span><span class="rail-v">Full-stack · AI systems</span></div>
-      <div class="rail-row"><span class="rail-k">STATUS</span><span class="rail-v"><span class="dot" aria-hidden="true"></span>Open to work</span></div>
+      <div class="rail-row"><span class="rail-k">MAKER</span><span class="rail-v">{site.name} · @{site.handle}</span></div>
+      <div class="rail-row"><span class="rail-k">STUDIO</span><span class="rail-v">AI-native software studio</span></div>
+      <div class="rail-row"><span class="rail-k">BUILDS</span><span class="rail-v">Software · AI · automations</span></div>
+      <div class="rail-row"><span class="rail-k">STATUS</span><span class="rail-v"><span class="dot" aria-hidden="true"></span>Taking new projects</span></div>
       {site.location && <div class="rail-row"><span class="rail-k">BASED</span><span class="rail-v">{site.location}</span></div>}
     </aside>
 
     <div class="hero-main">
-      <p class="kicker rise" style="animation-delay: .05s">Portfolio · {site.handle}</p>
+      <p class="kicker rise" style="animation-delay: .05s">Portfolio + studio · {site.handle}</p>
 
       <h1 class="display hero-h">
-        <span class="rise hero-line" style="animation-delay: .12s">Engineer who</span>
-        <span class="rise hero-line hero-em" style="animation-delay: .22s">ships real</span>
-        <span class="rise hero-line" style="animation-delay: .32s">products<span class="hero-dot">.</span></span>
+        <span class="rise hero-line" style="animation-delay: .12s">Engineer running a</span>
+        <span class="rise hero-line hero-em" style="animation-delay: .22s">studio that ships</span>
+        <span class="rise hero-line" style="animation-delay: .32s">real software<span class="hero-dot">.</span></span>
       </h1>
 
       <p class="hero-sub rise" style="animation-delay: .44s">
@@ -33,9 +34,9 @@ const ticker = [
       </p>
 
       <div class="hero-cta rise" style="animation-delay: .58s">
-        <a href="#work" class="btn btn-primary">View work <span aria-hidden="true">↓</span></a>
+        <a href="#contact" class="btn btn-primary">Start a project <span aria-hidden="true">→</span></a>
+        <a href="#work" class="btn btn-ghost">View case studies <span aria-hidden="true">↓</span></a>
         <a href={site.github} target="_blank" rel="noopener" class="btn btn-ghost">GitHub <span aria-hidden="true">↗</span></a>
-        <a href={`mailto:${site.email}`} class="btn btn-ghost">Email <span aria-hidden="true">↗</span></a>
       </div>
     </div>
   </div>

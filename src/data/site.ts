@@ -5,10 +5,12 @@ export const site = {
   // {{TODO: confirm preferred display name}}
   name: 'Qufeiii',
   handle: 'qufeiz',
-  // GitHub `bio` was null → placeholder. Hero tagline below is derived from the
-  // two real case studies (full-stack + AI), not invented credentials.
-  role: 'Full-stack & AI engineer',
-  tagline: 'I build real products that ship — from a construction operating system to an agentic system over Federal Reserve data.',
+  // HYBRID positioning (copy-only): a personal portfolio that ALSO reads as an
+  // AI-native studio — the person stays front and center; "studio" is an additive
+  // layer, not a faceless-agency replacement. `role` is the one-line positioning;
+  // `tagline` is FIRST-PERSON and keeps the two REAL client builds as the proof.
+  role: 'Engineer · AI-native software studio',
+  tagline: "I'm an engineer who builds custom software and automations for clients — shipped to production, not slideware. The proof is below: a construction operating system and an agentic system over Federal Reserve data.",
   // GitHub `location` was null.
   location: '', // optional — set e.g. 'Pittsburgh, PA'; UI hides this when empty
   email: 'qufeizzz@gmail.com',
