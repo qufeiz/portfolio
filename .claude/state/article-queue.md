@@ -24,7 +24,6 @@ Each row: **slug · title · category · source · one-line angle.** `category` 
 ## Queue — write/refresh ONE per loop fire (top = next). Check `coverage.md` for the OPEN aspect.
 
 ### Project posts (`category: projects`) — one per genuinely-bloggable, not-yet-covered source
-- [ ] `arxiv2table` — **Can LLMs summarize papers into tables?** · `projects` · `arXiv2Table`/`arxivDIGESTables` · the benchmark + eval-protocol for tabular paper summaries (arXiv 2504.10284). CONFIRM the owner's role before publishing.
 - [ ] `smartwatch-user-research` — **What people actually want from a smartwatch** · `projects` · `portfolio.zip › SmartWatch用户调研` · a user-research study (interviews + test assignment) as a UX/research write-up.
 - [ ] `startup-experiments` — **Things I tried to start** · `projects` · `portfolio.zip › Startup` · early-venture experiments; lead with zoning-copilot (RAG over zoning code), plus AppraisalOS / n8n / wordpressseo.
 - [ ] `ychack` — **YC hackathon build** · `projects` · `portfolio.zip › YChack` · the hackathon project. CONFIRM what was actually built (only image assets present) before drafting.

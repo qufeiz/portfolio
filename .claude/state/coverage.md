@@ -104,11 +104,6 @@ a `/work` case page or data surface.
     rejected vanilla vector search; the verification strategy that had to change with the engine.
     (article: `contract-retriever`)
 
-## arXiv2Table / arxivDIGESTables — `blog-candidate` (confirm role first)
-- **Covered:** none.
-- **Open:** the "can LLMs make tabular summaries of papers" benchmark + eval protocol. CONFIRM the
-  owner's authorship/role before publishing. (article: queued `arxiv2table`)
-
 ## SmartWatch user research (`portfolio.zip` › `SmartWatch用户调研`) — `blog-candidate`
 - **Covered:** none.
 - **Open:** the user-research study (interviews, test assignment) as a UX/research write-up.
