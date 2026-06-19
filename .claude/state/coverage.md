@@ -50,8 +50,8 @@ a `/work` case page or data surface.
   - Orchestrate → gate → ratchet (article: `orchestrate-gate-ratchet`).
   - Independent verification (article: `independent-verification`).
   - The ratchet (article: `the-ratchet`).
+  - Determinism around stochasticity (gating every stochastic step) (article: `determinism-around-stochasticity`).
 - **Open** (queued concept aspects — see `article-queue.md` › `agent-systems`)
-  - Determinism around stochasticity (gating every stochastic step).
   - Context engineering (bounded context, throwaway subagents).
   - Compiled knowledge & the self-ingest loop (life-wiki as a SYSTEM).
   - Honest automation (fail-closed gates, human-approval floor).
