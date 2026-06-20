@@ -46,6 +46,7 @@ Frontmatter schema:
 |---|---|---|
 | `title` | string | Article title (rendered as the page H1 + in the index). |
 | `deck` | string | One-line framing under the title and in the section list. |
+| `date` | date (`YYYY-MM-DD`) | **REQUIRED — the publish date.** Write it as a bare `date: 2026-06-19` in frontmatter; the schema (`z.coerce.date()`) parses it to a Date. Displayed (formatted `Jun 19, 2026`) on the article page header, the `/writing` index row, and the home list, next to the reading time. Every article MUST have one. |
 | `order` | number | Sort order in the section. **The hub is `0`**, concepts ascend from `1`. |
 | `kind` | `'hub' \| 'concept' \| 'team'` | Structural role *within the agent-systems essay series*: `hub` = the umbrella intro; `concept` = a cross-cutting idea; `team` = a specific team/agent write-up (future). Distinct from `category`. |
 | `category` | `'agent-systems' \| 'projects' \| 'life' \| 'essays'` | **The primary browse axis** — what the piece is broadly ABOUT (see taxonomy below). Defaults to `'essays'`. Rendered as a badge on each article + drives the `/writing` category filter rail. |

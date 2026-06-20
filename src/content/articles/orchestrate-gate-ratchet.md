@@ -1,6 +1,7 @@
 ---
 title: "Orchestrate → Gate → Ratchet"
 deck: "The three moves behind every agent system I build."
+date: 2026-06-14
 order: 1
 kind: concept
 category: agent-systems

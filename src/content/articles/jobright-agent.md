@@ -1,6 +1,7 @@
 ---
 title: "An agent that applies to jobs while I sleep"
 deck: "A real unsupervised worker in the fleet: it reads the Jobright feed, picks roles that actually fit, drives the application through the company's ATS, and stops at a hard gate before any real submit."
+date: 2026-06-16
 order: 8
 kind: concept
 category: projects

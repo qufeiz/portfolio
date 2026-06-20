@@ -28,6 +28,10 @@ const articles = defineCollection({
     title: z.string(),
     // One-line framing shown under the title and in the index list.
     deck: z.string(),
+    // Publish date (YYYY-MM-DD in frontmatter). REQUIRED — every article carries
+    // its real publish date; `z.coerce.date()` parses the bare `date: 2026-06-19`
+    // string into a Date for display/sorting.
+    date: z.coerce.date(),
     // Sort order within the section (hub is 0, then ascending).
     order: z.number(),
     // What kind of article this is:

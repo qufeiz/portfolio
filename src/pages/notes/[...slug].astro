@@ -5,6 +5,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { site, WRITING_SECTION, categoryLabel } from '../../data/site';
+import { formatArticleDate } from '../../lib/content';
 import { link } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -20,6 +21,9 @@ const { Content, remarkPluginFrontmatter } = await render(article);
 // "X min read" — injected at build time by the remarkReadingTime plugin
 // (astro.config.mjs), derived from the rendered markdown body.
 const minutesRead: string | undefined = remarkPluginFrontmatter?.minutesRead;
+// Publish date — formatted "Jun 19, 2026" (see formatArticleDate). Shown in the
+// header meta line alongside the reading time.
+const publishedOn = formatArticleDate(article.data.date);
 
 // "Up next" — the next article by order (wraps to none at the end).
 const all = (await getCollection('articles', ({ data }) => !data.draft)).sort(
@@ -49,9 +53,11 @@ const kindLabel: Record<string, string> = {
           <span class="note-kind font-mono">{kindLabel[article.data.kind] ?? article.data.kind}</span>
           <h1 class="display note-title">{article.data.title}</h1>
           <p class="note-deck">{article.data.deck}</p>
-          {minutesRead && (
-            <p class="note-meta font-mono">{minutesRead}</p>
-          )}
+          <p class="note-meta font-mono">
+            <span>{publishedOn}</span>
+            {minutesRead && <span class="note-meta-sep">·</span>}
+            {minutesRead && <span>{minutesRead}</span>}
+          </p>
           {article.data.tags.length > 0 && (
             <div class="note-tags">
               {article.data.tags.map((t) => <span class="chip">{t}</span>)}
@@ -110,6 +116,7 @@ const kindLabel: Record<string, string> = {
   .note-title { font-size: clamp(2.6rem, 8vw, 5rem); color: var(--color-paper); margin: 1.2rem 0 0; }
   .note-deck { margin: 1.4rem 0 0; font-size: clamp(1.15rem, 2.4vw, 1.6rem); color: var(--color-paper-dim); max-width: 46ch; line-height: 1.3; font-family: var(--font-display); font-style: italic; font-weight: 380; }
   .note-meta { margin: 1.1rem 0 0; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-paper-mute); }
+  .note-meta-sep { margin: 0 0.55rem; opacity: 0.55; }
   .note-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.8rem; }
   .note-rule { margin-top: clamp(3rem, 7vw, 5rem); }
 

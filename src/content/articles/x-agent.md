@@ -1,6 +1,7 @@
 ---
 title: "Posting to X, headless, in my own voice"
 deck: "Two skills drive a real X account end to end: find or seed material, draft it, run it past a de-AI voice gate, post it headless through a seeded browser session, then read the result back and log only what actually shipped."
+date: 2026-06-19
 order: 9
 kind: concept
 category: projects

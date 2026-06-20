@@ -8,6 +8,20 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 
 export type Article = CollectionEntry<'articles'>;
 
+/**
+ * Format an article's publish `date` for display, e.g. "Jun 19, 2026". Uses UTC
+ * so a date-only frontmatter value (`date: 2026-06-19`, parsed at midnight UTC)
+ * renders the same day regardless of the build machine's timezone.
+ */
+export function formatArticleDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+}
+
 /** All published (non-draft) articles, hub first (order 0) then ascending. */
 export async function publishedArticles(): Promise<Article[]> {
   const articles = await getCollection('articles', ({ data }) => !data.draft);

@@ -1,6 +1,7 @@
 ---
 title: "EconoRAG: a ReAct agent over Federal Reserve data"
 deck: "Before the FredGPT practicum I built a LangGraph agent that answers economics questions only from live FRED calls and a retrieved index, never from what the model already thinks it knows."
+date: 2026-06-15
 order: 6
 kind: concept
 category: projects

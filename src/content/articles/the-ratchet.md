@@ -1,6 +1,7 @@
 ---
 title: "The ratchet"
 deck: "Systems that raise their own quality floor, one rung at a time."
+date: 2026-06-14
 order: 3
 kind: concept
 category: agent-systems

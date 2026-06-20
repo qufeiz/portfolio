@@ -154,6 +154,11 @@ Write a single article in the owner's voice — clear, technical, honest, no hyp
 if the article already exists on the site, update it against newer project work rather than
 duplicating it. Keep it grounded in Step 1's source; one piece per invocation.
 
+**Frontmatter MUST include `date: YYYY-MM-DD`** — the publish date (today's date for a new
+article), e.g. `date: 2026-06-19`. It is a REQUIRED field in the `articles` schema; the build fails
+without it. It renders (formatted `Jun 19, 2026`) on the article page, the `/writing` index, and the
+home list next to the reading time. On a refresh, keep the original publish date (don't bump it).
+
 ---
 
 ## Step 3 — Fill `keyTakes` frontmatter (the x-agent seam)

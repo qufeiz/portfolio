@@ -17,7 +17,7 @@
 // pages (e.g. /writing/2). TODO (optional): promote `?category=`/`?tag=` to real
 // static pages if per-facet SEO/landing pages become worth it.
 import Base from '../../layouts/Base.astro';
-import { publishedArticles, articleTagCounts, articleCategoryCounts, articleReadingTimes } from '../../lib/content';
+import { publishedArticles, articleTagCounts, articleCategoryCounts, articleReadingTimes, formatArticleDate } from '../../lib/content';
 import { link } from '../../lib/url';
 import { site, WRITING_SECTION, CATEGORIES, categoryLabel } from '../../data/site';
 
@@ -103,6 +103,7 @@ const categoryHref = (cat?: string) =>
                   <h2 class="display wr-name">{a.data.title}</h2>
                   <span class="wr-cat font-mono">{categoryLabel(a.data.category)}</span>
                   <span class={`wr-kind font-mono kind-${a.data.kind}`}>{kindLabel[a.data.kind] ?? a.data.kind}</span>
+                  <span class="wr-date font-mono">{formatArticleDate(a.data.date)}</span>
                   {readingTimes.get(a.id) && (
                     <span class="wr-read font-mono">{readingTimes.get(a.id)}</span>
                   )}
@@ -292,6 +293,7 @@ const categoryHref = (cat?: string) =>
   }
   .kind-hub { color: var(--color-ink); background: var(--color-amber); border-color: var(--color-amber); }
   .kind-concept { color: var(--color-spark); border-color: var(--color-line-2); }
+  .wr-date { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-paper-mute); }
   .wr-read { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-paper-mute); }
   .wr-deck { margin: 1rem 0 0; color: var(--color-paper); font-size: clamp(1.02rem, 2vw, 1.25rem); max-width: 52ch; line-height: 1.35; }
   .wr-tags { display: flex; flex-wrap: wrap; gap: 0.5rem 0.9rem; margin-top: 1.2rem; }

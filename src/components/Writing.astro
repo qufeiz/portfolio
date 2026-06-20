@@ -8,7 +8,7 @@
 // its name lives in WRITING_SECTION (src/data/site.ts) so it's a one-word swap
 // to "Blog" later. The currently-featured pieces happen to be the agent-systems
 // essays (that's the current content + the thesis), but the framing is general.
-import { recentArticles, publishedArticles } from '../lib/content';
+import { recentArticles, publishedArticles, formatArticleDate } from '../lib/content';
 import { link } from '../lib/url';
 import { WRITING_SECTION, categoryLabel } from '../data/site';
 
@@ -44,6 +44,7 @@ const kindLabel: Record<string, string> = {
                 <h3 class="display ag-name">{a.data.title}</h3>
                 <span class="ag-cat font-mono">{categoryLabel(a.data.category)}</span>
                 <span class={`ag-kind font-mono kind-${a.data.kind}`}>{kindLabel[a.data.kind] ?? a.data.kind}</span>
+                <span class="ag-date font-mono">{formatArticleDate(a.data.date)}</span>
               </div>
               <p class="ag-deck">{a.data.deck}</p>
               {a.data.tags.length > 0 && (
@@ -117,6 +118,7 @@ const kindLabel: Record<string, string> = {
   }
   .kind-hub { color: var(--color-ink); background: var(--color-amber); border-color: var(--color-amber); }
   .kind-concept { color: var(--color-spark); border-color: var(--color-line-2); }
+  .ag-date { font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-paper-mute); }
   .ag-deck { margin: 1rem 0 0; color: var(--color-paper); font-size: clamp(1.02rem, 2vw, 1.25rem); max-width: 50ch; line-height: 1.35; }
   .ag-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.4rem; }
 

@@ -1,6 +1,7 @@
 ---
 title: "Determinism around stochasticity"
 deck: "The model is a probability distribution. You don't trust a run; you gate it."
+date: 2026-06-19
 order: 4
 kind: concept
 category: agent-systems

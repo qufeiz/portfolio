@@ -1,6 +1,7 @@
 ---
 title: "From RAG to an agent that reads the files"
 deck: "A client rejected vector search, so I built the retriever twice: a router plus hybrid SQL/RAG, then a Claude Agent SDK loop with no embeddings at all."
+date: 2026-06-15
 order: 5
 kind: concept
 category: projects

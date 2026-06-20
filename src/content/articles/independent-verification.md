@@ -1,6 +1,7 @@
 ---
 title: "Independent verification"
 deck: "Killing \"looks-done-but-isn't\": why the checker is never the author."
+date: 2026-06-14
 order: 2
 kind: concept
 category: agent-systems
