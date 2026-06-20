@@ -89,14 +89,14 @@ const categoryHref = (cat?: string) =>
       <p class="wr-empty" id="wr-empty" hidden>No articles in <span id="wr-empty-facet" class="font-mono"></span> yet.</p>
 
       <ol class="wr-list" id="wr-list">
-        {articles.map((a) => (
+        {articles.map((a, i) => (
           <li
             class={`wr-item reveal ${a.data.kind === 'hub' ? 'wr-hub' : ''}`}
             data-tags={a.data.tags.join(' ')}
             data-category={a.data.category}
           >
             <a href={link(`notes/${a.id}`)} class="wr-link" aria-label={`Read: ${a.data.title}`}>
-              <div class="wr-index font-mono tnum">{String(a.data.order).padStart(2, '0')}</div>
+              <div class="wr-index font-mono tnum">{String(i + 1).padStart(2, '0')}</div>
 
               <div class="wr-body">
                 <div class="wr-top">

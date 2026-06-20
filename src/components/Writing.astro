@@ -34,10 +34,10 @@ const kindLabel: Record<string, string> = {
     </header>
 
     <ol class="ag-list">
-      {articles.map((a) => (
+      {articles.map((a, i) => (
         <li class={`ag-item reveal ${a.data.kind === 'hub' ? 'ag-hub' : ''}`}>
           <a href={link(`notes/${a.id}`)} class="ag-link" aria-label={`Read: ${a.data.title}`}>
-            <div class="ag-index font-mono tnum">{String(a.data.order).padStart(2, '0')}</div>
+            <div class="ag-index font-mono tnum">{String(i + 1).padStart(2, '0')}</div>
 
             <div class="ag-body">
               <div class="ag-top">
