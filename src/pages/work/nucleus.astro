@@ -1,0 +1,230 @@
+---
+import Base from '../../layouts/Base.astro';
+import CaseHeader from '../../components/CaseHeader.astro';
+import CaseSection from '../../components/CaseSection.astro';
+import Gallery from '../../components/Gallery.astro';
+import RelatedWriting from '../../components/RelatedWriting.astro';
+import { getProject } from '../../data/projects';
+import { asset, link } from '../../lib/url';
+import { site } from '../../data/site';
+
+const project = getProject('nucleus')!;
+
+// Nucleus product screenshots, copied into public/nucleus/. All real captures of
+// the live demo (nucleus-woad.vercel.app) running on synthetic sample data.
+const shots = [
+  { src: 'nucleus/01-landing.png', alt: 'Nucleus landing page — "Ask your documents. Get answers you can trust. Not a PDF chatbot, a grounded knowledge engine."', caption: 'Honest framing: a grounded knowledge engine' },
+  { src: 'nucleus/02-dashboard-cited-answer.png', alt: 'Nucleus dashboard with the documents table and an Ask panel answering a contracts question, each fact carrying a citation', caption: 'Cited answer over structured contract data' },
+  { src: 'nucleus/03-case-file-corroboration.png', alt: 'Nucleus answering a child-support question from a case-file PDF, with page-level citations and a "corroborated across documents" note', caption: 'Document Q&A with page-cited evidence' },
+  { src: 'nucleus/04-hebrew-answer.png', alt: 'Nucleus answering a question in Hebrew with the citation tokens preserved in the Hebrew reply', caption: 'A Hebrew question, answered in Hebrew, citations preserved' },
+  { src: 'nucleus/05-admin-users.png', alt: 'Nucleus admin Users panel showing accounts with Active / Invited / Deactivated states and a Deactivate (kick-out) control', caption: 'Admin: provision and deactivate users' },
+  { src: 'nucleus/06-admin-prompts.png', alt: 'Nucleus admin Prompts panel with an editable system prompt and an editable document-urgency prompt', caption: 'Admin: editable system + urgency prompts' },
+];
+
+// The answer pipeline, visualized — the real path each question takes (answer.ts).
+const flow = [
+  'Question (EN / HE)', 'Route', 'Retrieve (SQL + documents)', 'Ground & cite',
+  'Validate', 'Cited answer',
+];
+
+// How-it-works rows for the diagram-style breakdown — grounded in the real repo.
+const arch = [
+  { layer: 'One app', detail: 'A single Next.js (App Router) application on Vercel — the UI and the retrieval/answer engine run together in-process, same-origin (no second service to deploy). The whole thing is owned and deployed once.' },
+  { layer: 'Auth & access', detail: 'Supabase auth with a profiles table + role trigger (the first signup becomes admin). Each user sees only their OWN uploaded documents; an admin can provision accounts and deactivate ("kick out") anyone, who loses access on their next request.' },
+  { layer: 'Router', detail: 'A real model call decides which source(s) can answer a question — the structured (SQL) lane, the document lane, or both — and reports its decision and rationale, with a guard that keeps unrelated corpora from leaking into each other.' },
+  { layer: 'Document retrieval', detail: 'Google Gemini File Search — managed chunk / embed / retrieve-with-citations for uploaded PDFs, scanned documents, Excel and CSV. Each upload is tagged with its owner so retrieval is scoped per-user; grounding chunks map back to page-level citation tokens.' },
+  { layer: 'Answer model', detail: 'An OpenAI-compatible answer model selected entirely by env — DeepSeek by default in the demo, swappable to Gemini / Azure OpenAI / Vertex in one config change, no code change.' },
+  { layer: 'Validation gate', detail: 'A pure validateAnswer() gate runs before delivery: every citation must resolve to evidence retrieved this turn, every factual claim must be cited, and a stated number must actually be supported by the row or page it points at. A fluent-but-ungrounded answer is rejected, not shown.' },
+];
+---
+<Base
+  title={`Nucleus — Cited AI assistant over documents + data · ${site.name}`}
+  description="An AI business assistant that answers questions over uploaded documents and structured data in one cited reply, with per-user access control and English/Hebrew support. A real, shipped client engagement built solo."
+>
+  <CaseHeader project={project} />
+
+  <div class="shell case-wrap">
+    <!-- Pipeline strip: the route → retrieve → ground → validate thesis, visualized -->
+    <section class="flow reveal" aria-label="Answer pipeline">
+      <p class="kicker flow-kicker">/ Every answer follows one grounded path</p>
+      <div class="flow-track">
+        {flow.map((step, i) => (
+          <>
+            <span class="flow-step font-mono">{step}</span>
+            {i < flow.length - 1 && <span class="flow-arrow" aria-hidden="true">→</span>}
+          </>
+        ))}
+      </div>
+    </section>
+
+    <CaseSection num="01" title="The problem">
+      <p>
+        A business runs on two kinds of knowledge that almost never live together: the
+        <strong>documents</strong> — contracts, notices, scanned case files — and the
+        <strong>structured data</strong> — the spreadsheets and tables of spend, vendors,
+        renewals. Answering one real question often means opening both, reading by hand, and
+        trusting that whoever summarized it didn't get a number wrong.
+      </p>
+      <p>
+        General chatbots make this worse: they answer fluently whether or not the source
+        actually says so. For a business — especially one in a regulated domain — a confident
+        wrong answer with <em>no traceable source</em> is not usable. The need wasn't a PDF
+        chatbot; it was a <strong>grounded</strong> assistant where every fact is checkable.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="02" title="What it does">
+      <p>
+        Nucleus is an AI business assistant that answers a free-form question — in
+        <strong>English or Hebrew</strong> — over <strong>both</strong> uploaded documents
+        <strong>and</strong> structured data, and returns an answer with a
+        <strong>citation on every fact</strong>, so you can always check where it came from.
+      </p>
+      <ul>
+        <li><strong>Cited Q&A across sources</strong> — one reply can pull from a SQLite-backed table of contracts or maintenance spend <em>and</em> from a document corpus (e.g. a case file), each claim carrying its own citation token — a row id or a PDF page.</li>
+        <li><strong>Upload anything, ask immediately</strong> — PDFs, scanned documents, Excel and CSV go to Google Gemini File Search, which reads scanned/image PDFs natively (no separate OCR step), and become query-able right away.</li>
+        <li><strong>Access control</strong> — admins create accounts and can remove anyone instantly; each user sees only their own uploaded documents, scoped at retrieval time, not just hidden in the UI.</li>
+        <li><strong>Honest refusal</strong> — when the data genuinely doesn't contain the answer (e.g. a "who's overdue?" question against a table with no payment-status field), it says so and names the columns that <em>do</em> exist, rather than inventing one.</li>
+      </ul>
+      <p>
+        A logged-in user asks; Nucleus routes to the right source(s), grounds the answer in the
+        retrieved evidence, validates it, and shows the answer with its citations and the
+        routing decision behind it.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="03" title="How it works">
+      <p>
+        Nucleus is a <strong>single Next.js application</strong>: the polished UI and the
+        retrieval/answer engine run together in one deployment. Every question takes the same
+        grounded path — <strong>route → retrieve → ground &amp; cite → validate</strong> — and
+        the engine surfaces its routing decision so the answer is traceable, not a black box.
+      </p>
+      <div class="arch">
+        {arch.map((row, i) => (
+          <div class="arch-row">
+            <span class="arch-num font-mono tnum">{String(i + 1).padStart(2, '0')}</span>
+            <span class="arch-layer font-mono">{row.layer}</span>
+            <span class="arch-detail">{row.detail}</span>
+          </div>
+        ))}
+      </div>
+      <p>
+        The model layer is provider-neutral by design: the document lane is Gemini File Search,
+        and the sentence-writing answer model is a one-line <code>env</code> swap between
+        DeepSeek, Gemini, Azure OpenAI, or Vertex — so the same app can run on a free dev key
+        for a demo or a compliant cloud key for real data.
+      </p>
+    </CaseSection>
+
+    <Gallery shots={shots} label="Product screens" />
+
+    <CaseSection num="04" title="Outcome">
+      <p>
+        Nucleus shipped as a working product: a single Next.js app, live on Vercel, with real
+        Supabase auth and per-user document isolation, real Gemini File Search retrieval, a
+        swappable answer model, and English + Hebrew support — every headline capability
+        verified live against synthetic sample data, never a mock passed off as done.
+      </p>
+      <p>
+        It comes with a non-technical owner's handoff guide so the client can stand up their
+        own copy — their own GitHub repo, their own Vercel, their own Supabase and keys — and,
+        for real regulated data, swap the answer model to a compliant provider without a
+        rebuild. The demo runs on sample data so the whole workflow can be walked end to end.
+      </p>
+    </CaseSection>
+
+    <CaseSection num="05" title="Role & context">
+      <p>
+        A real <strong>client engagement</strong> (a freelance contract), delivered as a
+        shipped product — <strong>built solo</strong>: the engine, the auth and access control,
+        the document and structured retrieval, the answer pipeline, the admin surfaces, and the
+        owner handoff doc. The live demo runs on <strong>synthetic sample data</strong>; no real
+        client records or identities are reproduced here. Demo logins are provided on request,
+        not published.
+      </p>
+    </CaseSection>
+
+    <!-- Live demo callout -->
+    <section class="demo-box reveal" aria-label="Live demo access">
+      <div class="demo-head">
+        <p class="kicker">/ Try it live</p>
+        <h2 class="display demo-h">A fully-seeded demo, no real client data.</h2>
+        <p class="demo-sub">
+          The demo runs on synthetic sample data — contracts, maintenance, a mock case file.
+          Sign in and ask your own questions; every answer comes back with its citations.
+        </p>
+      </div>
+      <div class="demo-cred">
+        <a href="https://nucleus-woad.vercel.app/sign-in" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
+          Open nucleus-woad.vercel.app <span aria-hidden="true">↗</span>
+        </a>
+        <p class="demo-note font-mono">
+          Demo logins (admin + member) are provided on request — kept out of source control.
+        </p>
+      </div>
+    </section>
+
+    <!-- Related writing: articles tagged `nucleus`. Renders nothing until one exists. -->
+    <RelatedWriting slug="nucleus" />
+
+    <nav class="case-next reveal" aria-label="Next project">
+      <a href={link('work/fredgpt')} class="next-link">
+        <span class="next-k font-mono">Next →</span>
+        <span class="next-title display">FredGPT</span>
+      </a>
+    </nav>
+  </div>
+</Base>
+
+<style>
+  .case-wrap { position: relative; z-index: 2; padding-top: clamp(2rem, 5vw, 3.5rem); }
+
+  .flow { padding-bottom: clamp(2.5rem, 6vw, 4rem); border-bottom: 1px solid var(--color-line); margin-bottom: clamp(1rem, 3vw, 2rem); }
+  .flow-kicker { margin-bottom: 1.2rem; }
+  .flow-track { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.7rem; }
+  .flow-step {
+    font-size: 0.78rem; color: var(--color-paper-dim);
+    border: 1px solid var(--color-line-2); border-radius: 2px;
+    padding: 0.4rem 0.7rem; background: var(--color-ink-2);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .flow-step:hover { border-color: var(--color-spark); color: var(--color-paper); }
+  .flow-arrow { color: var(--color-spark); opacity: 0.6; font-size: 0.85rem; }
+
+  .arch { margin: 0.5rem 0 1.6rem; border-top: 1px solid var(--color-line); }
+  .arch-row { display: grid; grid-template-columns: 40px 130px 1fr; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--color-line); align-items: baseline; }
+  @media (max-width: 600px) { .arch-row { grid-template-columns: 1fr; gap: 0.3rem; } }
+  .arch-num { color: var(--color-spark); font-size: 0.74rem; }
+  .arch-layer { color: var(--color-paper); font-size: 0.82rem; letter-spacing: 0.02em; }
+  .arch-detail { color: var(--color-paper-dim); font-size: 0.96rem; line-height: 1.55; }
+
+  .demo-box {
+    margin-top: clamp(3rem, 7vw, 5rem);
+    border: 1px solid var(--color-line-2); border-radius: 3px;
+    background:
+      linear-gradient(180deg, rgba(90,209,196,0.05), transparent 60%),
+      var(--color-ink-2);
+    padding: clamp(1.6rem, 4vw, 2.8rem);
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: center;
+  }
+  @media (max-width: 760px) { .demo-box { grid-template-columns: 1fr; } }
+  .demo-h { font-size: clamp(1.5rem, 3.5vw, 2.3rem); color: var(--color-paper); margin: 0.8rem 0 0; line-height: 1.05; }
+  .demo-sub { color: var(--color-paper-dim); margin: 1rem 0 0; font-size: 1rem; max-width: 44ch; }
+  .demo-cta { margin-bottom: 1.3rem; }
+  .demo-note { font-size: 0.76rem; color: var(--color-paper-mute); letter-spacing: 0.03em; max-width: 40ch; line-height: 1.5; }
+
+  .case-next { margin-top: clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--color-line); padding-top: 2.5rem; }
+  .next-link { display: inline-flex; flex-direction: column; gap: 0.5rem; transition: transform 0.3s ease; }
+  .next-link:hover { transform: translateX(8px); }
+  .next-k { font-size: 0.78rem; color: var(--color-paper-mute); letter-spacing: 0.1em; }
+  .next-title { font-size: clamp(2rem, 5vw, 3rem); color: var(--color-paper); }
+  .next-link:hover .next-title { color: var(--color-spark); }
+
+  /* inline code */
+  .cs-body :global(code), code {
+    font-family: var(--font-mono); font-size: 0.85em;
+    background: var(--color-ink-3); border: 1px solid var(--color-line);
+    padding: 0.08em 0.38em; border-radius: 2px; color: var(--color-paper);
+  }
+</style>

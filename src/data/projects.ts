@@ -59,9 +59,32 @@ export const projects: Project[] = [
     accent: 'amber',
   },
   {
-    slug: 'fredgpt',
+    slug: 'nucleus',
     index: '02',
     order: 2,
+    title: 'Nucleus',
+    tagline: 'Ask your documents and your data in plain English — get an answer with a citation on every fact.',
+    status: 'Client work · shipped',
+    year: '2026',
+    context: 'Real client engagement (freelance contract) — built and delivered solo. Demo runs on synthetic sample data, not the client’s real records.',
+    summary:
+      'An AI business assistant that answers questions over uploaded documents AND structured data in one cited reply — contracts, maintenance, case files. Supabase auth with per-user document isolation and admin kick-out, Gemini File Search for retrieval, a swappable answer model, English + Hebrew. One Next.js app on Vercel.',
+    stack: [
+      'Next.js (App Router)', 'TypeScript', 'React', 'Tailwind CSS',
+      'Supabase (auth + Postgres)', 'Google Gemini File Search',
+      'DeepSeek / Gemini (swappable)', 'Vercel',
+    ],
+    tags: ['ai', 'rag', 'genai', 'client-work', 'full-stack'],
+    links: [
+      { label: 'Live demo', href: 'https://nucleus-woad.vercel.app/sign-in', kind: 'primary', note: 'nucleus-woad.vercel.app (demo logins provided on request)' },
+    ],
+    featured: true,
+    accent: 'spark',
+  },
+  {
+    slug: 'fredgpt',
+    index: '03',
+    order: 3,
     title: 'FredGPT',
     tagline: 'Ask the Federal Reserve a question in plain English — get a charted, cited, source-traceable answer.',
     status: 'Graduate practicum',

@@ -23,16 +23,18 @@ Each row: **slug · title · category · source · one-line angle.** `category` 
 
 ## Queue — write/refresh ONE per loop fire (top = next). Check `coverage.md` for the OPEN aspect.
 
-### Project posts (`category: projects`) — one per genuinely-bloggable, not-yet-covered source
-- [ ] `smartwatch-user-research` — **What people actually want from a smartwatch** · `projects` · `portfolio.zip › SmartWatch用户调研` · a user-research study (interviews + test assignment) as a UX/research write-up.
-- [ ] `startup-experiments` — **Things I tried to start** · `projects` · `portfolio.zip › Startup` · early-venture experiments; lead with zoning-copilot (RAG over zoning code), plus AppraisalOS / n8n / wordpressseo.
-- [ ] `ychack` — **YC hackathon build** · `projects` · `portfolio.zip › YChack` · the hackathon project. CONFIRM what was actually built (only image assets present) before drafting.
+### Project posts (`category: projects`) — `portfolio.zip`, owner GREENLIT (real material confirmed on disk)
+- [ ] `startup-experiments` — **Things I tried to start** · `projects` · `portfolio.zip › Startup` · early-venture experiments; lead with zoning-copilot (real Python — planner/navigator/models — a RAG planner/navigator over zoning code), plus AppraisalOS / n8n / wordpressseo.
+- [ ] `smartwatch-user-research` — **What people actually want from a smartwatch** · `projects` · `portfolio.zip › SmartWatch用户调研` · a user-research study (real docs: Interview / Test Plan / Assignment) as a UX/research write-up.
 
 ### Concept posts (`category: agent-systems`) — the cross-cutting ideas
 - [ ] `context-engineering` — **Bounded context, unbounded work** · `agent-systems` · the lead/worker split across the fleet · the long-lived orchestrator holds the plan; throwaway subagents do the grunt work and are discarded so context never accumulates.
 - [ ] `compiled-knowledge` — **Compiled knowledge & the self-ingest loop** · `agent-systems` · `life-wiki` (the SYSTEM only) · turning years of raw chat logs into a queryable, deduped wiki; knowledge as a compiled, regenerable artifact, not a transcript pile. NEVER the private corpus.
 - [ ] `honest-automation` — **Honest automation** · `agent-systems` · x-agent + this portfolio agent · agents that ship real, unsupervised work without overclaiming: fail-closed gates, "never claim a post you can't see," confidentiality, the human-approval floor.
 - [ ] `packaging-an-agent` — **Two ways to package an agent** · `agent-systems` · this portfolio repo + the build team · a repo-level capability model (project-level subagents in `.claude/agents/`, each pointed at a `.claude/refs/` how-to) vs. a standing PM/engineer/verifier team; when each shape fits.
+
+### Needs owner input before writing
+- [ ] `ychack` — **YC hackathon build** · `projects` · `portfolio.zip › YChack` · only 3 image assets in the zip (no code/text) — owner must describe what was actually built before this can be written honestly.
 
 ## Done
 - [x] `determinism-around-stochasticity` — **Determinism around stochasticity** · `agent-systems` · feature-team + the fleet's gates · an LLM call is a sample from a distribution, so you never trust one run, you gate it with deterministic code: the engineer's pure `validateX()` (passes every golden, fails every toy), the verifier's removable-handler proof (break the handler → red), x-agent's rules-as-data voice gate (`tweet_composer.py`, exit 1 on a tell, `--selftest`), and the fail-closed `privacy_scan.py` (default-deny `--shareable`; empty rule set → exit 2, never 0). Closes with "the LLM proposes, the deterministic layer disposes" + the meta-miss link to the ratchet. Cross-linked to `orchestrate-gate-ratchet` / `independent-verification` / `the-ratchet`. → `/notes/determinism-around-stochasticity`
