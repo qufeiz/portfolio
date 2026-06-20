@@ -66,7 +66,7 @@ export const projects: Project[] = [
     tagline: 'Ask your documents and your data in plain English — get an answer with a citation on every fact.',
     status: 'Client work · shipped',
     year: '2026',
-    context: 'Real client engagement (freelance contract) — built and delivered solo. Demo runs on synthetic sample data, not the client’s real records.',
+    context: 'A private client engagement — designed, built, and shipped end to end. Demo runs on synthetic sample data, not the client’s real records.',
     summary:
       'An AI business assistant that answers questions over uploaded documents AND structured data in one cited reply — contracts, maintenance, case files. Supabase auth with per-user document isolation and admin kick-out, Gemini File Search for retrieval, a swappable answer model, English + Hebrew. One Next.js app on Vercel.',
     stack: [
