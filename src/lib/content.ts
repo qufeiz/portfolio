@@ -22,10 +22,12 @@ export function formatArticleDate(date: Date): string {
   });
 }
 
-/** All published (non-draft) articles, hub first (order 0) then ascending. */
+/** All published (non-draft) articles, NEWEST FIRST by `date` (ties broken by `order` asc). */
 export async function publishedArticles(): Promise<Article[]> {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
-  return articles.sort((a, b) => a.data.order - b.data.order);
+  return articles.sort((a, b) =>
+    b.data.date.getTime() - a.data.date.getTime() || a.data.order - b.data.order,
+  );
 }
 
 /**
@@ -54,7 +56,7 @@ export async function articleReadingTimes(): Promise<Map<string, string>> {
   return map;
 }
 
-/** Top N articles for the curated home page (hub + lowest order). Fixed size. */
+/** Top N articles for the home page — the N newest by date. Fixed size. */
 export async function recentArticles(n = 3): Promise<Article[]> {
   return (await publishedArticles()).slice(0, n);
 }
