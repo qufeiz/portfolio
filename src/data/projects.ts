@@ -76,7 +76,7 @@ export const projects: Project[] = [
     ],
     tags: ['ai', 'rag', 'genai', 'client-work', 'full-stack'],
     links: [
-      { label: 'Live demo', href: 'https://nucleus-woad.vercel.app/sign-in', kind: 'primary', note: 'nucleus-woad.vercel.app (demo logins provided on request)' },
+      { label: 'Live demo', href: 'https://nucleus-woad.vercel.app/', kind: 'primary', note: 'nucleus-woad.vercel.app (public landing; sign-in needs demo logins, on request)' },
     ],
     featured: true,
     accent: 'spark',
