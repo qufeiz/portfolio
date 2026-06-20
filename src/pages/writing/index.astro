@@ -89,15 +89,13 @@ const categoryHref = (cat?: string) =>
       <p class="wr-empty" id="wr-empty" hidden>No articles in <span id="wr-empty-facet" class="font-mono"></span> yet.</p>
 
       <ol class="wr-list" id="wr-list">
-        {articles.map((a, i) => (
+        {articles.map((a) => (
           <li
             class={`wr-item reveal ${a.data.kind === 'hub' ? 'wr-hub' : ''}`}
             data-tags={a.data.tags.join(' ')}
             data-category={a.data.category}
           >
             <a href={link(`notes/${a.id}`)} class="wr-link" aria-label={`Read: ${a.data.title}`}>
-              <div class="wr-index font-mono tnum">{String(i + 1).padStart(2, '0')}</div>
-
               <div class="wr-body">
                 <div class="wr-top">
                   <h2 class="display wr-name">{a.data.title}</h2>
@@ -257,7 +255,7 @@ const categoryHref = (cat?: string) =>
 
   .wr-link {
     display: grid;
-    grid-template-columns: 84px 1fr auto;
+    grid-template-columns: 1fr auto;
     gap: clamp(1rem, 4vw, 3rem);
     align-items: start;
     padding: clamp(1.8rem, 4vw, 3rem) 0;
@@ -272,10 +270,6 @@ const categoryHref = (cat?: string) =>
   .wr-link:hover { padding-left: 1.5rem; }
   .wr-link:hover::before { transform: scaleY(1); }
   .wr-hub .wr-link::before { background: var(--color-amber); }
-
-  .wr-index { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--color-paper-mute); line-height: 1; padding-top: 0.35rem; }
-  .wr-link:hover .wr-index { color: var(--color-spark); }
-  .wr-hub .wr-link:hover .wr-index { color: var(--color-amber); }
 
   .wr-body { min-width: 0; }
   .wr-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
@@ -306,7 +300,6 @@ const categoryHref = (cat?: string) =>
 
   @media (max-width: 720px) {
     .wr-link { grid-template-columns: 1fr; gap: 0.5rem; }
-    .wr-index { font-size: 1.1rem; }
     .wr-go { display: none; }
   }
 </style>

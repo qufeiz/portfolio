@@ -34,11 +34,9 @@ const kindLabel: Record<string, string> = {
     </header>
 
     <ol class="ag-list">
-      {articles.map((a, i) => (
+      {articles.map((a) => (
         <li class={`ag-item reveal ${a.data.kind === 'hub' ? 'ag-hub' : ''}`}>
           <a href={link(`notes/${a.id}`)} class="ag-link" aria-label={`Read: ${a.data.title}`}>
-            <div class="ag-index font-mono tnum">{String(i + 1).padStart(2, '0')}</div>
-
             <div class="ag-body">
               <div class="ag-top">
                 <h3 class="display ag-name">{a.data.title}</h3>
@@ -80,7 +78,7 @@ const kindLabel: Record<string, string> = {
 
   .ag-link {
     display: grid;
-    grid-template-columns: 84px 1fr auto;
+    grid-template-columns: 1fr auto;
     gap: clamp(1rem, 4vw, 3rem);
     align-items: start;
     padding: clamp(1.8rem, 4vw, 3rem) 0;
@@ -97,10 +95,6 @@ const kindLabel: Record<string, string> = {
 
   /* The hub gets a subtle amber spine to read as the umbrella entry. */
   .ag-hub .ag-link::before { background: var(--color-amber); }
-
-  .ag-index { font-size: clamp(1.4rem, 3vw, 2rem); color: var(--color-paper-mute); line-height: 1; padding-top: 0.35rem; }
-  .ag-link:hover .ag-index { color: var(--color-spark); }
-  .ag-hub .ag-link:hover .ag-index { color: var(--color-amber); }
 
   .ag-body { min-width: 0; }
   .ag-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
@@ -136,7 +130,6 @@ const kindLabel: Record<string, string> = {
 
   @media (max-width: 720px) {
     .ag-link { grid-template-columns: 1fr; gap: 0.5rem; }
-    .ag-index { font-size: 1.1rem; }
     .ag-go { display: none; }
   }
 </style>

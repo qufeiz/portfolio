@@ -5,7 +5,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { site, WRITING_SECTION, categoryLabel } from '../../data/site';
-import { formatArticleDate } from '../../lib/content';
+import { formatArticleDate, publishedArticles } from '../../lib/content';
 import { link } from '../../lib/url';
 
 export async function getStaticPaths() {
@@ -31,6 +31,14 @@ const all = (await getCollection('articles', ({ data }) => !data.draft)).sort(
 );
 const idx = all.findIndex((a) => a.id === article.id);
 const next = all[idx + 1];
+
+// "More in <category>" — the OTHER published articles in the same category
+// (newest-first; publishedArticles already returns newest-first), excluding
+// this one, capped at 4. The real replacement for the old order-number
+// 'sequence' — surfaces an article's siblings. Renders nothing when empty.
+const related = (await publishedArticles())
+  .filter((a) => a.data.category === article.data.category && a.id !== article.id)
+  .slice(0, 4);
 
 const kindLabel: Record<string, string> = {
   hub: 'Hub',
@@ -79,6 +87,23 @@ const kindLabel: Record<string, string> = {
           <p class="kicker takes-kicker">/ Key takes</p>
           <ul class="takes-list">
             {article.data.keyTakes.map((t) => <li class="take">{t}</li>)}
+          </ul>
+        </section>
+      )}
+
+      {related.length > 0 && (
+        <section class="note-related reveal" aria-label="Related writing">
+          <p class="kicker related-kicker">/ More in {categoryLabel(article.data.category)}</p>
+          <ul class="related-list">
+            {related.map((a) => (
+              <li class="related-item">
+                <a href={link(`notes/${a.id}`)} class="related-link">
+                  <span class="related-title display">{a.data.title}</span>
+                  <span class="related-deck">{a.data.deck}</span>
+                  <span class="related-date font-mono">{formatArticleDate(a.data.date)}</span>
+                </a>
+              </li>
+            ))}
           </ul>
         </section>
       )}
@@ -177,6 +202,28 @@ const kindLabel: Record<string, string> = {
   .take { position: relative; padding-left: 1.6rem; margin-bottom: 1rem; color: var(--color-paper); font-size: clamp(1rem, 1.5vw, 1.12rem); line-height: 1.55; }
   .take:last-child { margin-bottom: 0; }
   .take::before { content: "→"; position: absolute; left: 0; color: var(--color-spark); }
+
+  /* Related writing — an article's siblings in the same category. A compact,
+     muted related-links list, not a heavy component. */
+  .note-related { margin: clamp(3.5rem, 8vw, 6rem) 0 0; max-width: 72ch; }
+  .related-kicker { margin-bottom: 1.4rem; color: var(--color-paper-mute); }
+  .related-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--color-line); }
+  .related-item { border-bottom: 1px solid var(--color-line); }
+  .related-link {
+    display: block; padding: 1.1rem 0 1.1rem 1.2rem; position: relative;
+    transition: padding-left 0.3s cubic-bezier(0.22,1,0.36,1);
+  }
+  .related-link::before {
+    content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+    background: var(--color-spark); transform: scaleY(0); transform-origin: top;
+    transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
+  }
+  .related-link:hover { padding-left: 1.7rem; }
+  .related-link:hover::before { transform: scaleY(1); }
+  .related-title { display: block; font-size: clamp(1.1rem, 2.4vw, 1.45rem); color: var(--color-paper); line-height: 1.15; }
+  .related-link:hover .related-title { color: var(--color-spark); }
+  .related-deck { display: block; margin-top: 0.4rem; color: var(--color-paper-dim); font-size: 0.95rem; line-height: 1.4; max-width: 56ch; }
+  .related-date { display: block; margin-top: 0.55rem; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-paper-mute); }
 
   .note-next { margin-top: clamp(4rem, 9vw, 7rem); border-top: 1px solid var(--color-line); padding-top: 2.5rem; }
   .next-link { display: inline-flex; flex-direction: column; gap: 0.5rem; transition: transform 0.3s ease; }
