@@ -110,9 +110,15 @@ a `/work` case page or data surface.
   (article: queued `smartwatch-user-research`)
 
 ## Startup experiments (`portfolio.zip` › `Startup`) — `blog-candidate`
-- **Covered:** none.
-- **Open:** early-venture experiments — zoning-copilot (RAG over zoning code) as the lead, plus
-  AppraisalOS / n8n / wordpressseo. (article: queued `startup-experiments`)
+- **Covered**
+  - The early-venture experiments as one "things I tried to start" post led by zoning-copilot: the
+    real FastAPI + Playwright + OpenAI mechanism that walks an LLM down the live Municode TOC (no
+    vector store), borrows the browser's authenticated session to call the codesToc API, and answers
+    only from the fetched sections with citations; the built-but-unshipped `planner.py`/`rag.py`
+    indexing path called out honestly; AppraisalOS framed as a design doc (not code), n8n as
+    screenshots only, wordpressseo as a real 29-node RSS → translate → Telegram-approval → WordPress
+    n8n workflow. (article: `startup-experiments`)
+- **Open:** none remaining for this source (the experiments are now covered).
 
 ## YChack (`portfolio.zip` › `YChack`) — `blog-candidate` (confirm scope first)
 - **Covered:** none.
