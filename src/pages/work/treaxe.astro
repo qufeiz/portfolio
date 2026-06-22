@@ -130,30 +130,26 @@ const flow = [
       </p>
     </CaseSection>
 
-    <!-- Live demo callout -->
-    <section class="demo-box reveal" aria-label="Live demo access">
+    <!-- Demo access callout. NOTE: the hands-on demo is gated on request rather than
+         publishing static credentials — a previously-published staging login stopped
+         authenticating ("Invalid email or password"), and minting/confirming a working
+         demo login lives on the (co-owned) TreAxe side, not in this repo. The walkthrough
+         video above is the always-working way to see the product. -->
+    <section class="demo-box reveal" aria-label="Demo access">
       <div class="demo-head">
-        <p class="kicker">/ Try it live</p>
-        <h2 class="display demo-h">A fully-seeded demo, no real customer data.</h2>
+        <p class="kicker">/ See it live</p>
+        <h2 class="display demo-h">A fully-seeded demo on synthetic data.</h2>
         <p class="demo-sub">
-          The demo runs on an isolated instance populated with synthetic data. Sign in and
-          walk the whole workflow yourself.
+          The 26-second walkthrough above tours the real product end to end. Want to click
+          through it yourself? Hands-on access to an isolated demo instance — synthetic data,
+          no real customer records — is available on request.
         </p>
       </div>
       <div class="demo-cred">
-        <a href="https://treaxe-demo.vercel.app" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
-          Open treaxe-demo.vercel.app <span aria-hidden="true">↗</span>
+        <a href={`mailto:${site.email}?subject=TreAxe%20demo%20access`} class="btn btn-primary demo-cta">
+          Request demo access <span aria-hidden="true">↗</span>
         </a>
-        <dl class="cred-list">
-          <div class="cred-row">
-            <dt class="font-mono">EMAIL</dt>
-            <dd class="font-mono">staging-test@treaxe-test.com</dd>
-          </div>
-          <div class="cred-row">
-            <dt class="font-mono">PASSWORD</dt>
-            <dd class="font-mono">TreAxeDemo2026!</dd>
-          </div>
-        </dl>
+        <a href="#walkthrough" class="demo-secondary link-spark font-mono">Or rewatch the walkthrough ↑</a>
       </div>
     </section>
 
@@ -216,7 +212,8 @@ const flow = [
   @media (max-width: 760px) { .demo-box { grid-template-columns: 1fr; } }
   .demo-h { font-size: clamp(1.5rem, 3.5vw, 2.3rem); color: var(--color-paper); margin: 0.8rem 0 0; line-height: 1.05; }
   .demo-sub { color: var(--color-paper-dim); margin: 1rem 0 0; font-size: 1rem; max-width: 44ch; }
-  .demo-cta { margin-bottom: 1.3rem; }
+  .demo-cta { margin-bottom: 1rem; }
+  .demo-secondary { display: inline-block; font-size: 0.78rem; letter-spacing: 0.02em; color: var(--color-paper-mute); }
   .cred-list { margin: 0; }
   .cred-row { display: grid; grid-template-columns: 90px 1fr; gap: 0.8rem; padding: 0.7rem 0; border-top: 1px solid var(--color-line); align-items: baseline; }
   .cred-row dt { font-size: 0.66rem; letter-spacing: 0.16em; color: var(--color-paper-mute); margin: 0; }
