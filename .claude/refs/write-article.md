@@ -131,6 +131,19 @@ genuinely help; don't decorate.
   ```
   Prefer a short, real excerpt over a long dump.
 
+### Real app screenshots — USE them when the source has them
+
+If the project you are writing about ships **real product screenshots** (a working app UI, a demo capture, a dashboard), **use them** — a real screen beats any amount of prose for "this actually runs." Do not skip them because embedding feels fiddly; the path rules below are mechanical. Four steps:
+
+1. **Screen for PII / confidentiality FIRST (hard gate).** Apply the same `sources.md` HARD GATES to images that you apply to text. Reject any shot that reveals **client identity, sponsor/internal names, budgets/cost dashboards, SOW/TOS, private data, or personal info** — for FredGPT specifically, **only product screens are publishable, never anything from the `Private/` folder or any client-private content** (a billing/cost dashboard counts as confidential). For any project, reject screens showing a real person's data. If in doubt, drop the shot. Prefer clean product-UI frames; skip blurry, transitional, or duplicate frames.
+2. **Copy the chosen shot(s) into `public/<proj>/`** (create the dir), with clear kebab-case names, e.g. `public/startup/zoning-copilot.png`. (Case-study galleries live under `public/<proj>/screenshots/`; an article's inline images can live directly under `public/<proj>/`.)
+3. **Embed with a ROOT-RELATIVE markdown image — NOT a `/portfolio/`-prefixed one.** Write `![descriptive alt](/startup/zoning-copilot.png)`. The site is served under the `/portfolio/` base on GitHub Pages, but the `rehypeBasePaths` rehype pass in `astro.config.mjs` **automatically prepends `/portfolio`** to root-relative `<img src>` (and `<a href>`) authored in markdown bodies — exactly like the root-relative cross-links you already write (`[x](/notes/x)`). So author it base-agnostic as `/<proj>/<file>.png`; **do NOT hardcode `/portfolio/`** (that would double to `/portfolio/portfolio/...`). Add a one-line caption as an `*italic*` paragraph directly under the image (the `.note-body img + p` rule in `src/pages/notes/[...slug].astro` styles it as a caption; inline `img` framing — border, radius, full body width — is styled by `.note-body img` in the same file).
+4. **PROVE the path resolved.** After `npm run build`, confirm the built HTML has the based path, e.g.
+   ```bash
+   grep -o 'src="[^"]*<proj>[^"]*"' dist/notes/<slug>/index.html   # must read /portfolio/<proj>/<file>.png
+   ```
+   A bare `/<proj>/...` (no `/portfolio/`) in the built HTML would 404 on the live GH Pages build — fix it before reporting.
+
 ---
 
 ## Step 1 — Gather REAL source (ground the piece)

@@ -12,12 +12,12 @@ const project = getProject('fredgpt')!;
 
 // FredGPT product screenshots, copied into public/fredgpt/screenshots/.
 const shots = [
-  { src: 'fredgpt/screenshots/01-chat-fomc-policy-answer.png', alt: 'FredGPT chat answering a question about FOMC policy changes', caption: 'Natural-language Q&A on FOMC policy' },
-  { src: 'fredgpt/screenshots/02-demographic-data-exploration.png', alt: 'FredGPT exploring unemployment data by demographic', caption: 'Demographic time-series exploration' },
-  { src: 'fredgpt/screenshots/03-source-citations-provenance.png', alt: 'FredGPT showing source citations and provenance for an answer', caption: 'Source citations & provenance' },
-  { src: 'fredgpt/screenshots/04-agentic-tool-calls.png', alt: 'FredGPT agent showing its tool calls while assembling an answer', caption: 'Agentic tool calls, made visible' },
-  { src: 'fredgpt/screenshots/05-guardrails-in-action.png', alt: 'FredGPT Bedrock guardrails blocking an unsafe request', caption: 'Guardrails in action' },
-  { src: 'fredgpt/screenshots/06-federal-deficit-data.png', alt: 'FredGPT charting federal deficit data', caption: 'Charted federal deficit data' },
+  { src: 'fredgpt/screenshots/01-chat-fomc-policy-answer.png', alt: 'FredGPT chat answering a question about the latest FOMC policy changes, returning rate decisions and the reasoning behind them', caption: 'Natural-language Q&A on FOMC policy' },
+  { src: 'fredgpt/screenshots/03-source-provenance.png', alt: 'FredGPT showing the expandable source tree behind an answer, with series IDs, tool names, and per-result metadata', caption: 'Source provenance, traceable to the series' },
+  { src: 'fredgpt/screenshots/04-agent-reasoning-tool-chain.png', alt: 'FredGPT agent reasoning layer, showing the question routed through fomc_latest_decision and fraser_hybrid_search tool calls before answering', caption: 'The agent reasoning layer, tool by tool' },
+  { src: 'fredgpt/screenshots/05-demographic-tool-calls.png', alt: 'FredGPT issuing several fred_search_series tool calls in parallel to break unemployment down by age, race, and gender', caption: 'Parallel tool calls for a finer breakdown' },
+  { src: 'fredgpt/screenshots/06-guardrails-in-action.png', alt: 'FredGPT guardrails declining two opinion-seeking policy questions while offering the underlying data instead', caption: 'Guardrails in action' },
+  { src: 'fredgpt/screenshots/07-federal-deficit-data.png', alt: 'FredGPT returning federal deficit data, with annual, percent-of-GDP, and monthly series and their FRED series IDs', caption: 'Cited federal deficit data' },
 ];
 
 // Architecture rows for the diagram-style breakdown.

@@ -164,6 +164,27 @@ const kindLabel: Record<string, string> = {
   .note-body :global(a) { color: var(--color-spark); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--color-spark) 45%, transparent); }
   .note-body :global(a:hover) { text-decoration-color: var(--color-spark); }
 
+  /* Inline article images (e.g. a real product screenshot). Frame them like the
+     case-study gallery: full body width, hairline border, design-token radius. */
+  .note-body :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 1.75rem 0 0.75rem;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    background: var(--color-ink-2);
+  }
+  /* The italic line right after an image reads as its caption. */
+  .note-body :global(img + p),
+  .note-body :global(img + p em) {
+    color: var(--color-paper-mute);
+    font-style: normal;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
   .note-body :global(ul), .note-body :global(ol) { margin: 0 0 1.25rem; padding: 0; list-style: none; }
   .note-body :global(li) { position: relative; padding-left: 1.5rem; margin-bottom: 0.85rem; color: var(--color-paper-dim); font-size: clamp(1.02rem, 1.5vw, 1.12rem); line-height: 1.6; }
   .note-body :global(li::before) { content: "▸"; position: absolute; left: 0; color: var(--color-amber); }

@@ -21,6 +21,10 @@ These are things I tried to start. Early-venture experiments, mostly built solo 
 
 The premise: you are looking at a lot in some California city and you want to know whether you can build a duplex on it. The answer is in the city's zoning code, which lives on Municode, which is a giant nested table of contents that nobody enjoys clicking through. I wanted a tool that takes a city, an optional zoning district, and a plain question, then does the clicking for you and answers from the actual code text with section citations.
 
+![The zoning copilot answering a duplex question for San Jose's R-2 district: the live navigation trace on the left, the cited answer with a LIKELY PERMITTED verdict on the right.](/startup/zoning-copilot.png)
+
+*The whole run, on one screen: ask on top, watch the model walk the table of contents on the left, read the cited answer on the right.*
+
 The interesting decision is that there is no vector database. Most RAG systems pre-index a corpus: chunk it, embed it, store the vectors, search at query time. I did not index California's zoning codes. Instead the system opens the live Municode site for the requested city and walks an LLM down the table of contents in real time.
 
 ```mermaid
