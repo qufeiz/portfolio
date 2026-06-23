@@ -105,9 +105,17 @@ a `/work` case page or data surface.
     (article: `contract-retriever`)
 
 ## SmartWatch user research (`portfolio.zip` › `SmartWatch用户调研`) — `blog-candidate`
-- **Covered:** none.
-- **Open:** the user-research study (interviews, test assignment) as a UX/research write-up.
-  (article: queued `smartwatch-user-research`)
+- **Covered**
+  - The CMU smart-fitness-equipment course project as a two-phase UX/research write-up: the discovery
+    half (secondary research on sedentary work + 10 spontaneous in-person interviews surfacing the
+    "sit 6-10h, know it's bad, push through anyway" + the age-split-behavior + "nobody wanted a
+    tracker" findings) and the build/test half (a CPX-based smart dumbbell prototype, water-bottle
+    simulated, deliberately the harder hands-free case; an 8-participant think-aloud test where the
+    no-buttons interaction held but classification of similar lifts failed, and participants silently
+    changed their own form to make the detector read them). Third-party interviewee/participant names
+    + employers anonymized (role + age band only); framed honestly as coursework, no invented metrics.
+    (article: `smartwatch-user-research`)
+- **Open:** none remaining for this source (the study is now covered).
 
 ## Startup experiments (`portfolio.zip` › `Startup`) — `blog-candidate`
 - **Covered**
