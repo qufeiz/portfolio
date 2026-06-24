@@ -39,7 +39,7 @@ export const projects: Project[] = [
     tagline: 'From first lead to final payment: the operating system for small construction firms.',
     status: 'Live in production',
     year: '2025—',
-    context: 'Co-built with a collaborator — co-owned codebase. Not a solo project.',
+    context: 'I built the product end to end (all of the engineering); my collaborators handle sales and marketing.',
     summary:
       'A production construction-operations platform — ~42 screens spanning CRM, estimating with e-signatures, scheduling, procurement, field docs, invoicing and a client portal. Multi-tenant, row-level-secured, continuously deployed.',
     stack: [
@@ -91,7 +91,7 @@ export const projects: Project[] = [
     tagline: 'Ask the Federal Reserve a question in plain English — get a charted, cited, source-traceable answer.',
     status: 'Graduate practicum',
     year: 'Fall 2025',
-    context: 'CMU 14-798 graduate practicum — team project for an industry client in the economic-data space.',
+    context: 'CMU 14-798 graduate practicum for an industry client in the economic-data space. I led the engineering; teammates handled the non-engineering workstreams.',
     summary:
       'An agentic GenAI platform that unifies fragmented Federal Reserve sources (FRED, FRASER, the Fed corpus) behind one chat interface, fusing live time series with policy history into grounded, source-cited answers.',
     stack: [
