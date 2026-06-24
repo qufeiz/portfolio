@@ -51,11 +51,10 @@ export const projects: Project[] = [
     // `treaxe` surface in this project's "Related writing".
     tags: ['saas', 'full-stack', 'production', 'multi-tenant', 'payments'],
     links: [
-      // The production marketing site is public and always reachable. The hands-on demo is
-      // gated on request (see treaxe.astro) — a previously-published staging login stopped
-      // authenticating, so we no longer ship a one-click "sign in" to a dead login wall.
-      { label: 'Live product', href: 'https://www.treaxe.io', kind: 'primary', note: 'www.treaxe.io' },
-      { label: 'Repo (private, co-owned)', href: 'https://github.com/qufeiz/TreAxe', kind: 'secondary' },
+      // Live demo on the owner's OWN Supabase + Vercel (synthetic seed data; login verified
+      // working). Credentials shown in the case-page body. NOT Barrat's prod (www.treaxe.io).
+      { label: 'Live demo', href: 'https://treaxe-demo.vercel.app', kind: 'primary', note: 'treaxe-demo.vercel.app · login on the case page' },
+      { label: 'Repo (private)', href: 'https://github.com/qufeiz/TreAxe', kind: 'secondary' },
     ],
     featured: true,
     accent: 'amber',

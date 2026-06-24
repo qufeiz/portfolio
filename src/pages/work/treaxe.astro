@@ -130,26 +130,32 @@ const flow = [
       </p>
     </CaseSection>
 
-    <!-- Demo access callout. NOTE: the hands-on demo is gated on request rather than
-         publishing static credentials — a previously-published staging login stopped
-         authenticating ("Invalid email or password"), and minting/confirming a working
-         demo login lives on the (co-owned) TreAxe side, not in this repo. The walkthrough
-         video above is the always-working way to see the product. -->
-    <section class="demo-box reveal" aria-label="Demo access">
+    <!-- Live demo callout. Backed by an isolated Supabase project on the OWNER's own
+         account (synthetic seed data, no real customer records), wired to the owner's
+         Vercel `treaxe-demo`. Login verified working (HTTP 200). -->
+    <section class="demo-box reveal" aria-label="Live demo access">
       <div class="demo-head">
-        <p class="kicker">/ See it live</p>
+        <p class="kicker">/ Try it live</p>
         <h2 class="display demo-h">A fully-seeded demo on synthetic data.</h2>
         <p class="demo-sub">
-          The 26-second walkthrough above tours the real product end to end. Want to click
-          through it yourself? Hands-on access to an isolated demo instance — synthetic data,
-          no real customer records — is available on request.
+          Sign in and walk the core workflow yourself — a seeded project with estimates,
+          an invoice, tasks, and daily logs. Synthetic data only, no real customer records.
         </p>
       </div>
       <div class="demo-cred">
-        <a href={`mailto:${site.email}?subject=TreAxe%20demo%20access`} class="btn btn-primary demo-cta">
-          Request demo access <span aria-hidden="true">↗</span>
+        <a href="https://treaxe-demo.vercel.app" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
+          Open treaxe-demo.vercel.app <span aria-hidden="true">↗</span>
         </a>
-        <a href="#walkthrough" class="demo-secondary link-spark font-mono">Or rewatch the walkthrough ↑</a>
+        <dl class="cred-list">
+          <div class="cred-row">
+            <dt class="font-mono">EMAIL</dt>
+            <dd class="font-mono">staging-test@treaxe-test.com</dd>
+          </div>
+          <div class="cred-row">
+            <dt class="font-mono">PASSWORD</dt>
+            <dd class="font-mono">TreAxeDemo2026!</dd>
+          </div>
+        </dl>
       </div>
     </section>
 
