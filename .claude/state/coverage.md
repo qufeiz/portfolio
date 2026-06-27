@@ -52,8 +52,8 @@ a `/work` case page or data surface.
   - The ratchet (article: `the-ratchet`).
   - Determinism around stochasticity (gating every stochastic step) (article: `determinism-around-stochasticity`).
   - Context engineering (bounded context, throwaway subagents) (article: `context-engineering`).
+  - Compiled knowledge & the self-ingest loop (life-wiki as a SYSTEM, mechanism only) (article: `compiled-knowledge`).
 - **Open** (queued concept aspects — see `article-queue.md` › `agent-systems`)
-  - Compiled knowledge & the self-ingest loop (life-wiki as a SYSTEM).
   - Honest automation (fail-closed gates, human-approval floor).
   - Two ways to package an agent (repo-level subagents vs. a standing team).
 
@@ -92,10 +92,21 @@ a `/work` case page or data surface.
 - **Open:** none remaining for this source (the automation story is now covered).
 
 ## life-wiki — `blog-candidate` (SYSTEM only)
-- **Covered:** none. (Named as a fleet member in `my-agent-teams`.)
-- **Open:** the compiled-knowledge SYSTEM — chat history → interlinked time-aware markdown, the
-  self-ingest loop (overlaps the `compiled-knowledge` concept piece). **NEVER the private corpus.**
-  (article: queued `life-wiki` / `compiled-knowledge`)
+- **Covered**
+  - The compiled-knowledge SYSTEM — chat history compiled into interlinked, time-aware,
+    deduplicated markdown by a self-ingest loop, framed as knowledge-as-a-build-output (regenerable,
+    not a hand-maintained doc). Grounded in the SYSTEM/pipeline ONLY: the deterministic no-LLM
+    `extract_chatgpt.py` (zip → per-conversation md + priority-scored `.ingest/queue.jsonl`), the LLM
+    ingest loop (CLAUDE.md triage keep/skip gate, canonical-claim dedup resolve-before-write with
+    extend/new/ambiguous→`_review.md`, content-vs-export dating + `date_confidence`, append-dated-
+    stance-log-on-contradiction, sensitivity = PUBLISH gate), `regen.py` rebuilding by-type index +
+    timeline + coverage report as derived BUILD OUTPUTS, the resumable `queue.py`, and the
+    delegate→review→self-correct loop (throwaway ingest subagent, lean orchestrator). Karpathy's
+    LLM-wiki idea credited as inspiration; the implementation is the owner's. **MECHANISM ONLY — zero
+    private corpus content touched** (never opened `raw/`, `wiki/` pages, `index/`, `log.md`, `_cursor`,
+    or the vault tarball). (article: `compiled-knowledge`)
+- **Open:** none remaining for this source as a SYSTEM piece (mechanism is now covered; the private
+  corpus stays barred forever).
 
 ## Contract-Retriever (`-RAG` → `-Agentic`) — `blog-candidate`
 - **Covered**
