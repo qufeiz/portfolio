@@ -1,0 +1,16 @@
+Portfolio-writer SELF-RENEWING loop fire (cron-fired ~every 2 days at 12:07 UTC / ~5:07 AM PDT). Cron owns the cadence. Do NOT call ScheduleWakeup and do NOT add ticks.
+
+STEP 0 — RE-ARM FIRST (unconditional; do this on EVERY fire BEFORE anything else, even if you later STOP at dedup — it resets the 7-day auto-expiry so the loop never lapses while this session is alive):
+  - Load the cron tools: ToolSearch `select:CronList,CronCreate,CronDelete`.
+  - CronList. Record the job ids of ALL existing recurring jobs that run this loop (their prompt points at this loop-prompt.txt).
+  - CronCreate a FRESH recurring job: cron `7 12 */2 * *`, recurring true, prompt EXACTLY:
+      Portfolio-writer loop fire — read and follow /home/codex/Projects/portfolio/.claude/state/loop-prompt.txt exactly; do not call ScheduleWakeup.
+  - CronDelete each OLD id you recorded above (NOT the new one). End state: exactly ONE fresh job, 7-day clock reset.
+
+STEP 1 — DEDUP (safety against double-fire): now=$(date +%s); t=$(date -d 'TZ="America/Los_Angeles" 05:00 today' +%s); if [ "$t" -gt "$now" ]; then prev5=$(date -d 'TZ="America/Los_Angeles" 05:00 yesterday' +%s); else prev5=$t; fi; last_run=$(cat /home/codex/Projects/portfolio/.claude/state/loop-last-run 2>/dev/null || echo 0). If last_run >= prev5, this 5am cycle already ran -> report "already ran this cycle (re-armed)" and STOP (you already re-armed in STEP 0).
+
+STEP 2 — RUN: execute ONE writer iteration per /home/codex/Projects/portfolio/.claude/AGENTS.md from repo root /home/codex/Projects/portfolio — read the ledger (state/coverage.md + article-queue.md + log.md), spawn the portfolio-writer subagent (if `subagent_type: portfolio-writer` is unavailable, use a `general-purpose` agent told to read+follow `.claude/agents/portfolio-writer.md` AND `.claude/refs/write-article.md` exactly) to write ONE article on the next highest-value real gap (HONESTY FLOOR: skip and write nothing if there is no genuine gap — never filler). `ychack` is NOT writeable yet (only image assets) — skip until the owner describes what was built. Then GATE as the lead (honesty/confidentiality/PII/build), deploy via `bash scripts/deploy.sh`, verify live, update coverage.md + append to log.md.
+
+STEP 3 — MARK: write `date +%s` to /home/codex/Projects/portfolio/.claude/state/loop-last-run.
+
+Report 2-3 lines (re-armed + article shipped or skipped + why). No ScheduleWakeup, no ticks.

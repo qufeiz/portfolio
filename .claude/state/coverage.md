@@ -53,8 +53,8 @@ a `/work` case page or data surface.
   - Determinism around stochasticity (gating every stochastic step) (article: `determinism-around-stochasticity`).
   - Context engineering (bounded context, throwaway subagents) (article: `context-engineering`).
   - Compiled knowledge & the self-ingest loop (life-wiki as a SYSTEM, mechanism only) (article: `compiled-knowledge`).
+  - Honest automation (fail-closed gates, never-claim-an-effect-you-can't-see, the human-approval floor for irreversible actions) (article: `honest-automation`).
 - **Open** (queued concept aspects — see `article-queue.md` › `agent-systems`)
-  - Honest automation (fail-closed gates, human-approval floor).
   - Two ways to package an agent (repo-level subagents vs. a standing team).
 
 ## EconoRAG (`econorag-frontend` + `my-langgraph-rag`) — `blog-candidate`
