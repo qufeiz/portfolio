@@ -54,8 +54,9 @@ a `/work` case page or data surface.
   - Context engineering (bounded context, throwaway subagents) (article: `context-engineering`).
   - Compiled knowledge & the self-ingest loop (life-wiki as a SYSTEM, mechanism only) (article: `compiled-knowledge`).
   - Honest automation (fail-closed gates, never-claim-an-effect-you-can't-see, the human-approval floor for irreversible actions) (article: `honest-automation`).
+  - Two ways to package an agent (repo-level capability model vs. a standing team; the def+ref split, runtime discovery, the capability ratchet, the design-gate + independent-verifier tradeoffs) (article: `packaging-an-agent`).
 - **Open** (queued concept aspects — see `article-queue.md` › `agent-systems`)
-  - Two ways to package an agent (repo-level subagents vs. a standing team).
+  - none remaining in the concept queue.
 
 ## EconoRAG (`econorag-frontend` + `my-langgraph-rag`) — `blog-candidate`
 - **Covered**
