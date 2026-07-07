@@ -42,6 +42,7 @@ in the `skip-PII` zip docs above and must never reach the site.
 |---|---|---|---|
 | `TreAxe` | Construction-ops SaaS: leads → estimates → projects → invoices → payments + client portal (React/Vite/TS + Supabase + Stripe). **Co-built/co-owned with a collaborator.** Live: www.treaxe.io. | **case-study** | covered → `/work/treaxe` case page |
 | `FREDGPT` / `FredSeriesAI` / `Fredgpt-Econograph-official-Backend` | Agentic GenAI over economic data (FRED). **CMU 14-798 Fall-2025 team practicum for an industry client.** 🔒 publish ONLY demo video + public screenshots + public problem statement; never the `Private/` SOW/TOS/budget/sponsor; no public code link. | **case-study** | covered → `/work/fredgpt` case page |
+| `nucleus` (`~/Projects/nucleus`) | AI business assistant — cited answers over uploaded documents AND structured data (Next.js + Supabase + Gemini/DeepSeek, swappable). **Active CLIENT engagement.** Owner did all engineering. Demo on synthetic data; client NOT named. | **case-study** | covered → `/work/nucleus` case page |
 
 ---
 
@@ -61,6 +62,30 @@ in the `skip-PII` zip docs above and must never reach the site.
 | `portfolio.zip` › `Startup` | Early-venture experiments: `zoning-copilot` (RAG planner/navigator over zoning code), `AppraisalOS`, `n8n` automations, `wordpressseo`. Pick the strongest (zoning-copilot) as the lead angle. | **blog-candidate** | pending → queued `startup-experiments` |
 | `portfolio.zip` › `YChack` | YC hackathon project (image assets present; confirm what was built before drafting). | **blog-candidate** | pending → queued `ychack` (confirm scope) |
 | `portfolio` (this repo) | The self-maintaining portfolio agent itself (lead + worker subagents + refs + this ledger). A clean "agent built its own portfolio" story — overlaps the `packaging` concept piece; write as a project post only if it adds beyond the concept article. | **blog-candidate** | pending (overlaps `packaging` concept) |
+
+### Nucleus — mechanism deep-dives (CLIENT WORK — the writer's live, evolving source)
+> The loop TRACKS this repo's updates (`~/Projects/nucleus`, branch `main` — read `git log` for what's
+> new + the mechanism in the actual code). Each fire may turn ONE newly-shipped, non-confidential
+> ENGINEERING mechanism into a `category: projects` article. This is client work, so the gate is strict:
+>
+> **✅ Publishable (mechanism only, from `main`/code):** multi-tenant document isolation (scope-qualified
+> doc ids, per-owner manifest write-lock, no cross-chat filename steal), per-user BYO API keys + admin
+> house-key allowlist + zero-token "test connection", local/Ollama model mode (data stays on the user's
+> machine), Fly scale-to-zero + model-aware cost/usage metering, single-prod-URL preflight + the CI
+> hard-floor gate, the RAG-over-docs-AND-structured-data engine, journey-purity testing.
+>
+> **⛔ NEVER publish:** the client's identity or business; the client contact's name (e.g. "Jenny") or any
+> `message-to-jenny*` / `client-messages-draft` / `CLIENT-AGENT-RUNBOOK` / `clientchat` doc (the commit that ships these is **`82d31f4`** — do NOT read it, even if a queue row cites it); the
+> client-rebrand track (branches `client`, `client-sync`, `ui-redesign`, etc. — see
+> [[nucleus-portfolio-vs-client-branding]]); any keys / service-role / demo logins / Supabase secrets;
+> client-specific dollar figures, budgets, or credit balances; PRD/golden-bar specifics that identify the
+> client. When unsure whether a detail identifies the client, leave it out. **Client-work articles ship in
+> DRAFT (write + build + log, do NOT auto-deploy) until the owner has reviewed the first few for the
+> confidentiality bar**, then auto like the rest.
+
+| name | what | type | status |
+|---|---|---|---|
+| `nucleus` mechanism deep-dives | Per above — one engineering mechanism per article, `category: projects`, MECHANISM ONLY, client never named. | **blog-candidate** | pending → queued (see `article-queue.md` › Nucleus) |
 
 ### Sibling / supporting agents (the fleet — bloggable as the SYSTEM, mostly via the concept pieces)
 | name | what | type | status |

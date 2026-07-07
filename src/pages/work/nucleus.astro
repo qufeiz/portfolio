@@ -11,7 +11,7 @@ import { site } from '../../data/site';
 const project = getProject('nucleus')!;
 
 // Nucleus product screenshots, copied into public/nucleus/. All real captures of
-// the live demo (nucleus-woad.vercel.app) running on synthetic sample data.
+// the live demo (nucleus-770.vercel.app) running on synthetic sample data.
 const shots = [
   { src: 'nucleus/01-landing.png', alt: 'Nucleus landing page — "Ask your documents. Get answers you can trust. Not a PDF chatbot, a grounded knowledge engine."', caption: 'Honest framing: a grounded knowledge engine' },
   { src: 'nucleus/02-dashboard-cited-answer.png', alt: 'Nucleus dashboard with the documents table and an Ask panel answering a contracts question, each fact carrying a citation', caption: 'Cited answer over structured contract data' },
@@ -34,6 +34,7 @@ const arch = [
   { layer: 'Router', detail: 'A real model call decides which source(s) can answer a question — the structured (SQL) lane, the document lane, or both — and reports its decision and rationale, with a guard that keeps unrelated corpora from leaking into each other.' },
   { layer: 'Document retrieval', detail: 'Google Gemini File Search — managed chunk / embed / retrieve-with-citations for uploaded PDFs, scanned documents, Excel and CSV. Each upload is tagged with its owner so retrieval is scoped per-user; grounding chunks map back to page-level citation tokens.' },
   { layer: 'Answer model', detail: 'An OpenAI-compatible answer model selected entirely by env — DeepSeek by default in the demo, swappable to Gemini / Azure OpenAI / Vertex in one config change, no code change.' },
+  { layer: 'Keys & privacy', detail: 'Each user can bring their own model API key, billed to them; a shared "house" key answers only for accounts an admin explicitly allows, so nobody rides it by accident. For regulated data the whole answer path can run against a local model (Ollama), so documents never leave the machine.' },
   { layer: 'Validation gate', detail: 'A pure validateAnswer() gate runs before delivery: every citation must resolve to evidence retrieved this turn, every factual claim must be cited, and a stated number must actually be supported by the row or page it points at. A fluent-but-ungrounded answer is rejected, not shown.' },
 ];
 ---
@@ -157,8 +158,8 @@ const arch = [
         </p>
       </div>
       <div class="demo-cred">
-        <a href="https://nucleus-woad.vercel.app/" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
-          Open nucleus-woad.vercel.app <span aria-hidden="true">↗</span>
+        <a href="https://nucleus-770.vercel.app/" target="_blank" rel="noopener" class="btn btn-primary demo-cta">
+          Open nucleus-770.vercel.app <span aria-hidden="true">↗</span>
         </a>
         <p class="demo-note font-mono">
           Demo logins (admin + member) are provided on request — kept out of source control.

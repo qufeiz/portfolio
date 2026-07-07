@@ -44,6 +44,37 @@ a `/work` case page or data surface.
     SOW/TOS/budget/sponsor; no public code link).
   - The eval / accuracy approach (only if groundable from public material).
 
+## Nucleus — `case-study` + mechanism deep-dives (🔒 CLIENT WORK, mechanism only; client never named)
+- **Covered**
+  - Product overview (site: `/work/nucleus` case page; `src/data/projects.ts`).
+- **Covered**
+  - Multi-tenant document isolation: owner-scoped storage path (`<owner_id>/<sha256(docId)>` + the
+    fail-closed delete-path assertion), scope-qualified doc ids (12 hex of SHA-256(scope) closing the
+    cross-chat filename steal, bug F4), and the per-owner manifest write-lock (settle-safe promise chain
+    closing the lost-update race, bug F5, with the cross-instance limitation stated honestly). Grounded
+    in `main` `cb33230` (`doc-files.ts`, `ingest.ts`, `api/ingest/route.ts` + the RED-first collision +
+    race tests). MECHANISM only, client never named. (article: `nucleus-multi-tenant-isolation`)
+- **Covered**
+  - Per-user BYO API keys + house-key allowlist + zero-token key test: one shared credential
+    resolver (`anthropic-auth.ts` `resolveAnthropicAuth`: own key -> house key -> none, fail-CLOSED
+    on settings-read errors, never fails open onto the shared key) used by both answer engines; the
+    honest answer-shaped `noKeyAnswer` with ZERO upstream calls when unflagged-and-keyless; the shared
+    "house" key as an admin-only allowlist (`house_key_enabled="1"` written solely from the admin Users
+    route `setHouseKey`, never self-grantable; grandfathered additively by migration 018 ON CONFLICT DO
+    NOTHING); write-only key storage (server keeps only name/last4/created, never returns the secret);
+    the agentic-engine per-request `ownKeyEnv` SDK-subprocess env injection (never mutates process.env);
+    and the ZERO-TOKEN "Test connection" that validates a pasted key with `client.models.list()` (a
+    billed-nothing metadata call, NEVER `messages.create`) sharing the same resolver, with key-shaped
+    error redaction + no-500-on-bad-key. Grounded in `main` commits `c1ad91b` + `87e488b`
+    (`anthropic-auth.ts`, `settings.ts`, `answer-agentic.ts`, `answer-messages.ts`, `api/settings/route.ts`,
+    `api/admin/users/route.ts`, `api/test-connection/route.ts`, migration 018). MECHANISM only, client
+    never named; NO key material / house-key value / allowlist contents; `82d31f4` NOT read.
+    (article: `nucleus-byo-keys`)
+- **Open** (mechanism deep-dives, `category: projects` — see `article-queue.md` › Nucleus + the `sources.md` › Nucleus gate; the loop tracks new `~/Projects/nucleus` `main` commits/docs for fresh, non-confidential mechanisms)
+  - Local/Ollama model mode (data stays on the user's machine).
+  - Fly scale-to-zero + model-aware cost/usage metering.
+  - (Future: new mechanisms as they ship on `main`. NEVER the client identity / client-comms / client-rebrand branches / keys.)
+
 ## Agent systems (the fleet + the build team) — the site's thesis
 - **Covered**
   - The umbrella thesis + the two teams (article: `my-agent-teams`, the `hub`).

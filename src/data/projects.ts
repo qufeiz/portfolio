@@ -33,8 +33,8 @@ export interface Project {
 export const projects: Project[] = [
   {
     slug: 'treaxe',
-    index: '01',
-    order: 1,
+    index: '02',
+    order: 2,
     title: 'TreAxe',
     tagline: 'From first lead to final payment: the operating system for small construction firms.',
     status: 'Live in production',
@@ -61,23 +61,23 @@ export const projects: Project[] = [
   },
   {
     slug: 'nucleus',
-    index: '02',
-    order: 2,
+    index: '01',
+    order: 1,
     title: 'Nucleus',
     tagline: 'Ask your documents and your data in plain English — get an answer with a citation on every fact.',
     status: 'Client work · shipped',
     year: '2026',
     context: 'A private client engagement — designed, built, and shipped end to end. Demo runs on synthetic sample data, not the client’s real records.',
     summary:
-      'An AI business assistant that answers questions over uploaded documents AND structured data in one cited reply — contracts, maintenance, case files. Supabase auth with per-user document isolation and admin kick-out, Gemini File Search for retrieval, a swappable answer model, English + Hebrew. One Next.js app on Vercel.',
+      'An AI business assistant that answers questions over uploaded documents AND structured data in one cited reply — contracts, maintenance, case files. Per-user document isolation + admin access control, Gemini File Search retrieval, a swappable answer model with bring-your-own-key and an optional on-device local mode, English + Hebrew. One Next.js app on Vercel.',
     stack: [
       'Next.js (App Router)', 'TypeScript', 'React', 'Tailwind CSS',
       'Supabase (auth + Postgres)', 'Google Gemini File Search',
-      'DeepSeek / Gemini (swappable)', 'Vercel',
+      'DeepSeek / Gemini / Azure / Vertex (swappable)', 'Ollama (local mode)', 'Vercel',
     ],
     tags: ['ai', 'rag', 'genai', 'client-work', 'full-stack'],
     links: [
-      { label: 'Live demo', href: 'https://nucleus-woad.vercel.app/', kind: 'primary', note: 'nucleus-woad.vercel.app (public landing; sign-in needs demo logins, on request)' },
+      { label: 'Live demo', href: 'https://nucleus-770.vercel.app/', kind: 'primary', note: 'nucleus-770.vercel.app (public landing; sign-in needs demo logins, on request)' },
     ],
     featured: true,
     accent: 'spark',
