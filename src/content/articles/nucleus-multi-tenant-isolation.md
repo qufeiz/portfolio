@@ -5,6 +5,7 @@ date: 2026-07-04
 order: 12
 kind: concept
 category: projects
+draft: true
 tags: ["nucleus", "multi-tenant", "rag", "isolation", "storage", "concurrency"]
 keyTakes:
   - "In a multi-tenant document assistant, isolation lives at the data layer, not the prompt. Every stored blob sits under the owner's id, and every retrieval is owner-scoped, so a user only ever sees their own files."
