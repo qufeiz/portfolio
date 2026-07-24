@@ -5,7 +5,7 @@ date: 2026-07-07
 order: 13
 kind: concept
 category: projects
-draft: true
+draft: false
 tags: ["nucleus", "multi-tenant", "api-keys", "billing", "auth", "isolation"]
 keyTakes:
   - "In a multi-tenant AI app, the default of routing every user through one shared model key means one account silently pays for everyone. The honest design is bring-your-own-key: each user saves their own key, billed to them."
