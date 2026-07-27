@@ -70,8 +70,23 @@ a `/work` case page or data surface.
     `api/admin/users/route.ts`, `api/test-connection/route.ts`, migration 018). MECHANISM only, client
     never named; NO key material / house-key value / allowlist contents; `82d31f4` NOT read.
     (article: `nucleus-byo-keys`)
+- **Covered**
+  - Local/Ollama model mode (data stays on the user's machine): a per-owner `model_mode` setting
+    (`getModelMode`, fails SAFE to `cloud` — anything not the literal `local`/`hipaa` → `cloud`) drives the
+    `/api/ask` lane dispatch; `local` runs `answerLocal` IN-PROCESS and is NEVER forwarded to the hosted
+    Fly agent, so a Local question physically can't take the cloud route; `cloud` stays byte-for-byte the
+    prior behavior (one codebase, no fork). `answerLocal` round-trips the question through the owner's OWN
+    OpenAI-compatible endpoint (Ollama, `local_endpoint`/`local_model` per-owner settings) — only outbound
+    call is to the user's own address, no hosted provider. Honest v0.5 scope: chat-only, `grounded:false`,
+    zero citations, `model:local:<name>` attribution, a prompt-level guardrail that names in-scope files but
+    forbids fabricating their contents; `hipaa` returns an honest 503 rather than a silent downgrade;
+    never-500 friendly `localGuidance` results for unset/unreachable endpoint; `$0` cost overwrite (owner's
+    hardware). Verified LIVE by journey `local-mode.mjs` (real browser + box Ollama, zero Claude spend).
+    Grounded in `~/Projects/nucleus` `main` commit `0c19d58` (`src/lib/engine/answer-local.ts`,
+    `src/lib/engine/settings.ts` `getModelMode`, `src/app/api/ask/route.ts`, `src/components/models-panel.tsx`,
+    `docs/LOCAL-MODEL.md`, `tests/journeys/local-mode.mjs`). MECHANISM only, client never named; NO
+    endpoints/hostnames/IPs/secrets; `82d31f4` NOT read. (article: `nucleus-local-mode`)
 - **Open** (mechanism deep-dives, `category: projects` — see `article-queue.md` › Nucleus + the `sources.md` › Nucleus gate; the loop tracks new `~/Projects/nucleus` `main` commits/docs for fresh, non-confidential mechanisms)
-  - Local/Ollama model mode (data stays on the user's machine).
   - Fly scale-to-zero + model-aware cost/usage metering.
   - (Future: new mechanisms as they ship on `main`. NEVER the client identity / client-comms / client-rebrand branches / keys.)
 
