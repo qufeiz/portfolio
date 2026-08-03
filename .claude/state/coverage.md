@@ -86,8 +86,24 @@ a `/work` case page or data surface.
     `src/lib/engine/settings.ts` `getModelMode`, `src/app/api/ask/route.ts`, `src/components/models-panel.tsx`,
     `docs/LOCAL-MODEL.md`, `tests/journeys/local-mode.mjs`). MECHANISM only, client never named; NO
     endpoints/hostnames/IPs/secrets; `82d31f4` NOT read. (article: `nucleus-local-mode`)
+- **Covered**
+  - Fly scale-to-zero + model-aware cost/usage metering: cost engineering for a low-traffic
+    production AI app. (1) Fly suspend-when-idle / resume-on-request (`fly.toml`
+    `auto_stop_machines="suspend"` + `auto_start_machines=true` + `min_machines_running=0`) so the
+    engine bills only while actually serving, with `suspend` (memory-snapshot resume) chosen over
+    `stop` (cold boot) so the wake reads as a small delay, not a broken demo. (2) Model-aware
+    inspector pricing: a per-model price table keyed on the RESOLVED model that answered (fixing the
+    old hardcoded-one-model bug that under-reported the expensive model), local models priced at
+    zero, and an honest-by-construction `buildCost` that returns cost=null-with-a-reason (never a
+    guessed figure) when a provider doesn't report tokens or a model's price isn't tracked. (3) A
+    measured USAGE ledger row per SDK call (resolved model + real reported in/out token counts +
+    computed cost), appended defensively in the lifecycle journey so cost is measured, not estimated.
+    Grounded in `main` commits `07a2f59` (`fly.toml`) + `4f5234d` (`answer-agentic.ts`, `answer.ts`
+    `buildCost`, `answer-local.ts`, `answer-messages.ts`, `tests/journeys/lifecycle.mjs`). MECHANISM
+    only, client never named; ZERO dollar figures / token counts / usage totals / per-model rate
+    numbers; NO Fly app name / hostname / region; `82d31f4` NOT read; no client-comms/rebrand-branch
+    touched. (article: `nucleus-scale-to-zero`)
 - **Open** (mechanism deep-dives, `category: projects` — see `article-queue.md` › Nucleus + the `sources.md` › Nucleus gate; the loop tracks new `~/Projects/nucleus` `main` commits/docs for fresh, non-confidential mechanisms)
-  - Fly scale-to-zero + model-aware cost/usage metering.
   - (Future: new mechanisms as they ship on `main`. NEVER the client identity / client-comms / client-rebrand branches / keys.)
 
 ## Agent systems (the fleet + the build team) — the site's thesis
