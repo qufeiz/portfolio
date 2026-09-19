@@ -123,7 +123,7 @@ scanner is NOT here — it is owner-triggered on demand.)
 Portfolio DAILY writer loop — ORCHESTRATE -> GATE -> RATCHET. You are the LEAD. You hold the plan
 and do NO grunt work: read the ledger, spawn ONE writer subagent, review its report, deploy only if
 it's clean, and FIX the agent def/ref when it falls short. This loop is WRITER-ONLY and publishes AT
-MOST ONE article per fire. Repo: /home/codex/Projects/portfolio. Run from a TOP-LEVEL session AT THE
+MOST ONE article per fire. Repo: ~/Projects/portfolio. Run from a TOP-LEVEL session AT THE
 REPO ROOT (so you can spawn the project-level subagent). Discover agents at runtime — never hardcode.
 Each fire:
 
@@ -151,13 +151,13 @@ Each fire:
      public code link. Co-owned repos OK.
    - REAL, NOT OVERCLAIMED: the article reflects work that actually happened; drop anything the
      writer couldn't ground.
-   - BUILD PASSES: `cd /home/codex/Projects/portfolio && npm run build` exits 0. If the writer
+   - BUILD PASSES: `cd ~/Projects/portfolio && npm run build` exits 0. If the writer
      reported FAIL, do NOT deploy — bounce it back or revert.
    If a gate fails, do NOT deploy; go to step 4 (ratchet) and/or re-delegate.
 
 3) DEPLOY (only if every gate in step 2 passed) — UNLESS THE OWNER SET DRAFT MODE (then skip this
    step: write+build+log only, report "drafted, not deployed (draft mode)"):
-   `cd /home/codex/Projects/portfolio && npm run build && bash scripts/deploy.sh`
+   `cd ~/Projects/portfolio && npm run build && bash scripts/deploy.sh`
    Then VERIFY LIVE: curl-retry https://qufeiz.github.io/portfolio/ (Pages takes ~1 min) and
    confirm the new article is actually live. If it isn't live, say so — never claim a deploy you
    can't see. Append a `deploy` entry to `.claude/state/log.md`.
@@ -313,15 +313,15 @@ a new `.claude/agents/<name>.md` (+ its `.claude/refs/<name>.md`), invoked by wh
 ## References
 | Path | Use |
 |---|---|
-| `/home/codex/Projects/portfolio/CLAUDE.md` | Project facts: deploy command, structure, honesty/confidentiality content rules, design-system gotchas |
-| `/home/codex/Projects/portfolio/src/content/SCHEMA.md` | The KB conventions: collections, frontmatter, asset homes, the baked-in gates. `src/content/` is the source of truth. |
-| `/home/codex/Projects/portfolio/.claude/agents/portfolio-refresh.md` | The site-sync WORKER subagent def (→ points at `refs/refresh-portfolio.md`) |
-| `/home/codex/Projects/portfolio/.claude/agents/portfolio-writer.md` | The article WORKER subagent def (→ points at `refs/write-article.md`) |
-| `/home/codex/Projects/portfolio/.claude/refs/refresh-portfolio.md` | The site-sync how-to (the ref `portfolio-refresh` reads) |
-| `/home/codex/Projects/portfolio/.claude/refs/write-article.md` | The article how-to (the ref `portfolio-writer` reads; dual-purpose → x-agent) |
-| `/home/codex/Projects/portfolio/.claude/agents/make-video.md` | The video WORKER subagent def (→ points at `refs/make-video.md`) |
-| `/home/codex/Projects/portfolio/.claude/refs/make-video.md` | The video how-to (Hyperframes screenshot-walkthrough → MP4, OFFLINE; the ref `make-video` reads) |
-| `/home/codex/Projects/portfolio/.claude/make-video/` | The reusable composition template (`build-composition.mjs` + vendored GSAP/fonts + the TreAxe example spec) |
-| `/home/codex/Projects/portfolio/scripts/deploy.sh` | The deploy: source→main, build→gh-pages, `.nojekyll` |
-| `/home/codex/Projects/portfolio/src/content/articles/` | The three seed articles (migrated from the old build dir's `notes/`) + later pieces |
-| `/home/codex/Projects/x-agent` | Sibling agent + downstream consumer of article `keyTakes` |
+| `~/Projects/portfolio/CLAUDE.md` | Project facts: deploy command, structure, honesty/confidentiality content rules, design-system gotchas |
+| `~/Projects/portfolio/src/content/SCHEMA.md` | The KB conventions: collections, frontmatter, asset homes, the baked-in gates. `src/content/` is the source of truth. |
+| `~/Projects/portfolio/.claude/agents/portfolio-refresh.md` | The site-sync WORKER subagent def (→ points at `refs/refresh-portfolio.md`) |
+| `~/Projects/portfolio/.claude/agents/portfolio-writer.md` | The article WORKER subagent def (→ points at `refs/write-article.md`) |
+| `~/Projects/portfolio/.claude/refs/refresh-portfolio.md` | The site-sync how-to (the ref `portfolio-refresh` reads) |
+| `~/Projects/portfolio/.claude/refs/write-article.md` | The article how-to (the ref `portfolio-writer` reads; dual-purpose → x-agent) |
+| `~/Projects/portfolio/.claude/agents/make-video.md` | The video WORKER subagent def (→ points at `refs/make-video.md`) |
+| `~/Projects/portfolio/.claude/refs/make-video.md` | The video how-to (Hyperframes screenshot-walkthrough → MP4, OFFLINE; the ref `make-video` reads) |
+| `~/Projects/portfolio/.claude/make-video/` | The reusable composition template (`build-composition.mjs` + vendored GSAP/fonts + the TreAxe example spec) |
+| `~/Projects/portfolio/scripts/deploy.sh` | The deploy: source→main, build→gh-pages, `.nojekyll` |
+| `~/Projects/portfolio/src/content/articles/` | The three seed articles (migrated from the old build dir's `notes/`) + later pieces |
+| `~/Projects/x-agent` | Sibling agent + downstream consumer of article `keyTakes` |

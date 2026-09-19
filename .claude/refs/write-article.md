@@ -19,7 +19,7 @@ site's "Agent Systems" section, confirm the build passes, and report. One articl
 do **NOT** run the loop, deploy, or touch the case studies (that's `refresh-portfolio.md`).
 
 > **Dual-purpose output.** Every article is consumed twice: by a human reader on the site, and by
-> the **x-agent** (`/home/codex/Projects/x-agent`) which lifts your `## Key takes` as post seeds.
+> the **x-agent** (`~/Projects/x-agent`) which lifts your `## Key takes` as post seeds.
 > Write the takes so each one stands alone as a sharp, true one-liner.
 
 > You **propose, never overclaim.** Ground every claim in something that actually exists in a repo
@@ -29,7 +29,7 @@ do **NOT** run the loop, deploy, or touch the case studies (that's `refresh-port
 > collection). You **write the article AS a markdown file there**, following
 > `src/content/SCHEMA.md`. The site renders it automatically — there is no separate page to author,
 > no data file to edit. `src/content/` is the source of truth; `src/` only renders it. **Read
-> `/home/codex/Projects/portfolio/src/content/SCHEMA.md` before writing.**
+> `~/Projects/portfolio/src/content/SCHEMA.md` before writing.**
 
 **Before starting, create a TodoWrite list with these steps:**
 ```
@@ -52,12 +52,12 @@ Step 6 — UPDATE THE LEDGER: queue row → Done; flip the aspect Open→Covered
 You have a two-level memory. **Read the cheap index BEFORE doing anything else; never re-read every
 project + every article each run.**
 
-1. **`/home/codex/Projects/portfolio/.claude/state/sources.md`** — the source catalog: every
+1. **`~/Projects/portfolio/.claude/state/sources.md`** — the source catalog: every
    bloggable source, its `type`, and the **HARD confidentiality/PII gates** (which sources are
    barred forever).
-2. **`/home/codex/Projects/portfolio/.claude/state/coverage.md`** — the aspect-level coverage index:
+2. **`~/Projects/portfolio/.claude/state/coverage.md`** — the aspect-level coverage index:
    per project, which ASPECTS are already Covered vs still Open. This is how you choose *what's left*.
-3. **`/home/codex/Projects/portfolio/.claude/state/article-queue.md`** — the backlog.
+3. **`~/Projects/portfolio/.claude/state/article-queue.md`** — the backlog.
 
 **Pick the next item** = the top unchecked **Queue** row whose source aspect is still **Open** in
 `coverage.md` and whose source is NOT barred in `sources.md`. (If the top row's aspect is already
@@ -76,9 +76,9 @@ are Covered in `coverage.md`. New work is the next genuinely-open Queue item.
 
 ## Step 0.5 — Gates
 
-Read `/home/codex/Projects/portfolio/.claude/AGENTS.md` › **Gates**,
-`/home/codex/Projects/portfolio/.claude/state/sources.md` › **HARD GATES**, and
-`/home/codex/Projects/portfolio/src/content/SCHEMA.md` (the KB conventions + the `articles`
+Read `~/Projects/portfolio/.claude/AGENTS.md` › **Gates**,
+`~/Projects/portfolio/.claude/state/sources.md` › **HARD GATES**, and
+`~/Projects/portfolio/src/content/SCHEMA.md` (the KB conventions + the `articles`
 frontmatter). Never draft from a `skip-confidential` / `skip-PII` / `skip-not-mine` source.
 
 ---
@@ -86,7 +86,7 @@ frontmatter). Never draft from a `skip-confidential` / `skip-PII` / `skip-not-mi
 ## STYLE — write like a person, not a model (HARD rules)
 
 Same spirit as the x-agent's de-AI voice gate
-(`/home/codex/Projects/x-agent/.claude/skills/x-twitter-growth/references/voice.md`). The article is
+(`~/Projects/x-agent/.claude/skills/x-twitter-growth/references/voice.md`). The article is
 longer and more technical than a tweet, but the anti-AI floor is identical.
 
 - **NO em-dashes (—), ever.** Not in the body, not in `deck`, not in `keyTakes`. The em-dash is the
@@ -150,11 +150,11 @@ If the project you are writing about ships **real product screenshots** (a worki
 
 An article is about how the owner's agent systems actually work. Pull from what exists:
 - the **agent docs** — `AGENTS.md` / `CLAUDE.md` / ref docs / `loop-prompt.md` across
-  `/home/codex/Projects/{x-agent,life-wiki,feature-team,jobright-agent,portfolio}` and the
+  `~/Projects/{x-agent,life-wiki,feature-team,jobright-agent,portfolio}` and the
   feature-build team refs under `~/.claude/agents/`.
 - the **real project work** — the same repos' code/state (e.g. `posted.jsonl`, the loop prompts,
   the PM/engineer/verifier split). Read enough to be concrete; don't dump whole files.
-- the **already-migrated seed pieces** in `/home/codex/Projects/portfolio/src/content/articles/` for tone/precedent.
+- the **already-migrated seed pieces** in `~/Projects/portfolio/src/content/articles/` for tone/precedent.
 
 The bar is **concrete and true**: cite the real mechanism (the removable-handler proof, the
 fail-closed privacy scanner, the resumable cursor), not a generic "AI is powerful" essay.
@@ -181,7 +181,7 @@ true, standalone claim drawn from the article. The page renders them as a "Key t
 **NOT** also write a `## Key takes` heading in the markdown body (that would duplicate it; see
 SCHEMA.md › body convention). These are the dual-purpose payload — the x-agent lifts them as
 original-post seeds, so each must read well with zero surrounding context and must not overclaim.
-(This is the seam between this ref and `/home/codex/Projects/x-agent`.)
+(This is the seam between this ref and `~/Projects/x-agent`.)
 
 ---
 
@@ -212,7 +212,7 @@ anything by hand:
 
 So your ONLY wiring job is to drop a correct `src/content/articles/<slug>.md` (Step 2). Then:
 ```bash
-cd /home/codex/Projects/portfolio && npm run build   # must exit 0
+cd ~/Projects/portfolio && npm run build   # must exit 0
 ```
 Fix or revert until green — never hand back a red tree. (If you DO need a new section/route — e.g.
 a `team` page shape — follow SCHEMA.md and mirror the existing components.)
@@ -234,7 +234,7 @@ Update all three layers of your memory so the next run never re-derives this:
 If the article would be much stronger with a short walkthrough/demo video (e.g. a project piece
 that walks real product screens), you **request** one — you do **NOT** render it. You are a
 subagent and **cannot spawn another subagent**, and rendering is a separate worker's job. Append an
-**Open** row to `/home/codex/Projects/portfolio/.claude/state/video-queue.md` with a small
+**Open** row to `~/Projects/portfolio/.claude/state/video-queue.md` with a small
 video-spec (title/subtitle/outro + ordered shots `image|fit|caption`, true to the product, no
 em-dashes + target page/output) and **flag it in your report** ("requested a video: `<slug>`"). The
 LEAD then spawns `make-video` to render it OFFLINE and embed it. Do not block the article on it.
@@ -252,15 +252,15 @@ Then report — concise and honest:
 ## References
 | Path | Use |
 |---|---|
-| `/home/codex/Projects/portfolio/.claude/AGENTS.md` | Lead runbook + the Gates |
-| `/home/codex/Projects/portfolio/src/content/SCHEMA.md` | **The KB conventions + the `articles` frontmatter schema + the rendering features (Mermaid/callouts/code) + the writer-memory model — read before writing** |
-| `/home/codex/Projects/portfolio/.claude/state/sources.md` | **Source catalog + the HARD confidentiality/PII gates — READ FIRST (Step 0)** |
-| `/home/codex/Projects/portfolio/.claude/state/coverage.md` | **Aspect-level coverage index — READ FIRST; pick an OPEN aspect; flip it Covered after (Step 0/6)** |
-| `/home/codex/Projects/portfolio/.claude/state/log.md` | The append-only DETAILED action log — append your run entry after (Step 6) |
-| `/home/codex/Projects/x-agent/.claude/skills/x-twitter-growth/references/voice.md` | The de-AI voice gate this article style mirrors (no em-dashes, no AI tells) |
-| `/home/codex/Projects/portfolio/src/content/articles/` | The KB — where you write the new `<slug>.md` (and where the migrated seeds + hub already live) |
-| `/home/codex/Projects/portfolio/.claude/state/article-queue.md` | The backlog — pick the next item, move it to Done |
-| `/home/codex/Projects/portfolio/src/content/articles/` | 00/01/02 seed drafts — already migrated into the KB; read for tone/precedent |
-| `/home/codex/Projects/{x-agent,life-wiki,feature-team,jobright-agent}` | Real agent-system source to ground articles in |
-| `/home/codex/Projects/portfolio/src/components/AgentSystems.astro` · `src/pages/notes/[...slug].astro` | The renderer (collection-driven — no manual wiring) |
-| `/home/codex/Projects/x-agent` | The downstream consumer of `keyTakes` (post seeds) |
+| `~/Projects/portfolio/.claude/AGENTS.md` | Lead runbook + the Gates |
+| `~/Projects/portfolio/src/content/SCHEMA.md` | **The KB conventions + the `articles` frontmatter schema + the rendering features (Mermaid/callouts/code) + the writer-memory model — read before writing** |
+| `~/Projects/portfolio/.claude/state/sources.md` | **Source catalog + the HARD confidentiality/PII gates — READ FIRST (Step 0)** |
+| `~/Projects/portfolio/.claude/state/coverage.md` | **Aspect-level coverage index — READ FIRST; pick an OPEN aspect; flip it Covered after (Step 0/6)** |
+| `~/Projects/portfolio/.claude/state/log.md` | The append-only DETAILED action log — append your run entry after (Step 6) |
+| `~/Projects/x-agent/.claude/skills/x-twitter-growth/references/voice.md` | The de-AI voice gate this article style mirrors (no em-dashes, no AI tells) |
+| `~/Projects/portfolio/src/content/articles/` | The KB — where you write the new `<slug>.md` (and where the migrated seeds + hub already live) |
+| `~/Projects/portfolio/.claude/state/article-queue.md` | The backlog — pick the next item, move it to Done |
+| `~/Projects/portfolio/src/content/articles/` | 00/01/02 seed drafts — already migrated into the KB; read for tone/precedent |
+| `~/Projects/{x-agent,life-wiki,feature-team,jobright-agent}` | Real agent-system source to ground articles in |
+| `~/Projects/portfolio/src/components/AgentSystems.astro` · `src/pages/notes/[...slug].astro` | The renderer (collection-driven — no manual wiring) |
+| `~/Projects/x-agent` | The downstream consumer of `keyTakes` (post seeds) |

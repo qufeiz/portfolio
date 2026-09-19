@@ -6,7 +6,7 @@ run. After it writes an article, it sets the source's **status** here and adds a
 `coverage.md`. New sources get appended; the catalog is not regenerated from scratch.
 
 Enumerated from: `ls ~/Projects`, `gh repo list qufeiz`, and the bloggable folders inside
-`/home/codex/Projects/portfolio.zip` (top-level `portfolio/`). Last enumerated 2026-06-14.
+`~/Projects/portfolio.zip` (top-level `portfolio/`). Last enumerated 2026-06-14.
 
 ## Columns
 - **name** — repo/folder (and any sibling repos that make up one product).

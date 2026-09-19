@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Deploy the Astro portfolio to GitHub Pages (qufeiz/portfolio → https://qufeiz.github.io/portfolio/)
 set -euo pipefail
-SITE=/home/codex/Projects/portfolio
+SITE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"   # repo root, wherever it lives
 DIST="$SITE/dist"
 REPO=qufeiz/portfolio
 

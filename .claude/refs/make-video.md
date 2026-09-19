@@ -101,13 +101,14 @@ where Hyperframes auto-finds them, so set them explicitly:
 
 ```bash
 # FFmpeg / FFprobe live in ~/.local/bin
-export PATH=/home/codex/.local/bin:$PATH
+export PATH=~/.local/bin:$PATH
 
 # Hyperframes wants chrome-headless-shell. Its own downloader is OFFLINE-blocked on this box,
 # so point it at the Playwright Chromium that's already installed:
-export HYPERFRAMES_BROWSER_PATH=/home/codex/.cache/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-linux64/chrome-headless-shell
+# Linux path shown; on macOS the Playwright cache is ~/Library/Caches/ms-playwright/ and the binary dir is *-mac/
+export HYPERFRAMES_BROWSER_PATH=~/.cache/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-linux64/chrome-headless-shell
 # (fallback, full chrome — slower screenshot path, also works:
-#  /home/codex/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome )
+#  ~/.cache/ms-playwright/chromium-1223/chrome-linux64/chrome )
 ```
 
 Sanity-check once: `npx --yes hyperframes doctor` should show ✓ FFmpeg, ✓ FFprobe. Chrome shows ✗
@@ -155,8 +156,8 @@ a starting point.
 Work in `.scratch/` (gitignored), NEVER in `~/Projects` or a sibling dir.
 
 ```bash
-PROJ=/home/codex/Projects/portfolio/.scratch/video-<name>
-TPL=/home/codex/Projects/portfolio/.claude/make-video
+PROJ=~/Projects/portfolio/.scratch/video-<name>
+TPL=~/Projects/portfolio/.claude/make-video
 mkdir -p "$PROJ/assets/fonts"
 cp "$TPL/build-composition.mjs" "$PROJ/"            # the template generator
 cp "$TPL/gsap.min.js" "$PROJ/"                       # vendored GSAP (offline)
@@ -251,8 +252,8 @@ ffprobe -v error -show_entries format=duration,size \
 Deliver into `public/<dir>/` (committed static assets):
 
 ```bash
-cp walkthrough.final.mp4  /home/codex/Projects/portfolio/public/<dir>/walkthrough.mp4
-cp walkthrough.poster.jpg /home/codex/Projects/portfolio/public/<dir>/walkthrough.poster.jpg
+cp walkthrough.final.mp4  ~/Projects/portfolio/public/<dir>/walkthrough.mp4
+cp walkthrough.poster.jpg ~/Projects/portfolio/public/<dir>/walkthrough.poster.jpg
 ```
 
 ## Step 8 — Embed it on the page (base-aware)
@@ -283,7 +284,7 @@ Keep any existing gallery — the video complements it, it doesn't replace it.
 ## Step 9 — `npm run build` must pass (NOT a render step)
 
 ```bash
-cd /home/codex/Projects/portfolio && npm run build
+cd ~/Projects/portfolio && npm run build
 ```
 
 This must exit 0. It copies the committed MP4/poster from `public/` into `dist/` — it does NOT

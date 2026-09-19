@@ -18,7 +18,7 @@ into the portfolio site, run `npm run build`, and return a concise report. You d
 loop, deploy, or write articles (that's `write-article.md`). One pass, then report.
 
 > The owner's other repos are **READ-ONLY** to you — you only read their `git log` / files. You
-> write **only** inside `/home/codex/Projects/portfolio` (and append to `.claude/state/`). Never
+> write **only** inside `~/Projects/portfolio` (and append to `.claude/state/`). Never
 > commit or edit another repo.
 
 > You **propose**, you never overclaim. If a change isn't clearly real and shippable, leave a note
@@ -30,7 +30,7 @@ Step 0 — LEDGER FIRST: read state/coverage.md + state/log.md + state/cursor.js
          what's already covered/done. Load gates (AGENTS.md › Gates + sources.md › HARD GATES).
 Step 1 — Per repo: git log <last>..HEAD — collect REAL changes since the cursor
 Step 2 — Map changes → site edits (case study / src/data/* / screenshots). Skip noise.
-Step 3 — Apply edits in /home/codex/Projects/portfolio ONLY. Honesty + confidentiality/PII on every edit.
+Step 3 — Apply edits in ~/Projects/portfolio ONLY. Honesty + confidentiality/PII on every edit.
 Step 4 — `npm run build` must pass. Fix or revert until green.
 Step 5 — UPDATE THE LEDGER: advance cursor.json; reflect any newly-covered aspect in coverage.md;
          append a DETAILED entry to state/log.md. Report (do NOT deploy).
@@ -43,15 +43,15 @@ Step 5 — UPDATE THE LEDGER: advance cursor.json; reflect any newly-covered asp
 You have a two-level memory shared with the writer. **Read the cheap layers BEFORE scanning** so you
 don't re-derive what's already on the site:
 
-1. **`/home/codex/Projects/portfolio/.claude/state/coverage.md`** — the aspect-level coverage index:
+1. **`~/Projects/portfolio/.claude/state/coverage.md`** — the aspect-level coverage index:
    which project aspects are already reflected on the site / in articles. Use it to recognize what's
    already covered instead of re-deriving it from scratch.
-2. **`/home/codex/Projects/portfolio/.claude/state/log.md`** — the append-only DETAILED action log:
+2. **`~/Projects/portfolio/.claude/state/log.md`** — the append-only DETAILED action log:
    what previous runs changed. Skim the recent entries so you don't repeat work.
-3. **`/home/codex/Projects/portfolio/.claude/state/cursor.json`** — `repo → last-scanned commit`.
+3. **`~/Projects/portfolio/.claude/state/cursor.json`** — `repo → last-scanned commit`.
 
-Then read `/home/codex/Projects/portfolio/.claude/AGENTS.md` › **Gates** (honesty, confidentiality,
-build-must-pass) and `/home/codex/Projects/portfolio/.claude/state/sources.md` › **HARD GATES** (the
+Then read `~/Projects/portfolio/.claude/AGENTS.md` › **Gates** (honesty, confidentiality,
+build-must-pass) and `~/Projects/portfolio/.claude/state/sources.md` › **HARD GATES** (the
 `skip-confidential` / `skip-PII` / `skip-not-mine` walls — e.g. Tessera/Bosch, the zip's personal
 PII docs, Karpathy's pattern doc). They bind every edit you make. Never surface a barred source.
 
@@ -100,7 +100,7 @@ Prefer a project's **own official screenshots** over re-captures (e.g. TreAxe's
 
 ## Step 3 — Apply edits (portfolio repo ONLY) under the gates
 
-Edit only files under `/home/codex/Projects/portfolio/`. On EVERY edit:
+Edit only files under `~/Projects/portfolio/`. On EVERY edit:
 - **Honesty** — no invented metrics, awards, or role specifics. Collaborations stay credited
   (TreAxe co-built/co-owned with a collaborator — never imply sole authorship). If you can't verify a
   number, don't write it; leave a `TODO(owner)` comment.
@@ -118,7 +118,7 @@ your report for the lead to judge. Proposing-not-inventing beats a confident wro
 ## Step 4 — Build must pass (the deterministic gate)
 
 ```bash
-cd /home/codex/Projects/portfolio && npm run build
+cd ~/Projects/portfolio && npm run build
 ```
 This must exit 0. If it fails, fix your edit or revert it — **never** leave the tree red. A green
 build is the floor for handing back to the lead; the lead will not deploy a tree you can't build.
@@ -146,7 +146,7 @@ When a scan brings in a fresh set of product screenshots (e.g. new/updated `publ
 + `src/data/<proj>Shots.ts`) that would make a strong walkthrough, you **request** a video — you do
 **NOT** render it. You are a subagent and **cannot spawn another subagent**, and rendering is the
 `make-video` worker's job. Append an **Open** row to
-`/home/codex/Projects/portfolio/.claude/state/video-queue.md` with a small video-spec (title +
+`~/Projects/portfolio/.claude/state/video-queue.md` with a small video-spec (title +
 ordered shots `image|fit|caption`, true to the product, no em-dashes + target page/output) and
 **flag it in your report**. The LEAD then spawns `make-video` to render it OFFLINE and embed it.
 
@@ -163,10 +163,10 @@ Then report — this is ALL the lead sees, so be concise and brutally honest:
 ## References
 | Path | Use |
 |---|---|
-| `/home/codex/Projects/portfolio/.claude/AGENTS.md` | The lead runbook + the Gates that bind every edit |
-| `/home/codex/Projects/portfolio/CLAUDE.md` | Project context: deploy, structure, honesty/confidentiality content rules, design-system gotchas |
-| `/home/codex/Projects/portfolio/.claude/state/sources.md` | Source catalog + the HARD confidentiality/PII gates — read first; never surface a barred source |
-| `/home/codex/Projects/portfolio/.claude/state/coverage.md` | Aspect-level coverage index — read first (Step 0), update covered aspects after (Step 5) |
-| `/home/codex/Projects/portfolio/.claude/state/log.md` | The append-only DETAILED action log — skim recent entries (Step 0), append your run (Step 5) |
-| `/home/codex/Projects/portfolio/.claude/state/cursor.json` | repo → last-scanned commit (read at Step 0, advance at Step 5) |
-| `/home/codex/Projects/portfolio/src/data/` | `projects.ts`, `site.ts`, `treaxeShots.ts` — the site's data layer |
+| `~/Projects/portfolio/.claude/AGENTS.md` | The lead runbook + the Gates that bind every edit |
+| `~/Projects/portfolio/CLAUDE.md` | Project context: deploy, structure, honesty/confidentiality content rules, design-system gotchas |
+| `~/Projects/portfolio/.claude/state/sources.md` | Source catalog + the HARD confidentiality/PII gates — read first; never surface a barred source |
+| `~/Projects/portfolio/.claude/state/coverage.md` | Aspect-level coverage index — read first (Step 0), update covered aspects after (Step 5) |
+| `~/Projects/portfolio/.claude/state/log.md` | The append-only DETAILED action log — skim recent entries (Step 0), append your run (Step 5) |
+| `~/Projects/portfolio/.claude/state/cursor.json` | repo → last-scanned commit (read at Step 0, advance at Step 5) |
+| `~/Projects/portfolio/src/data/` | `projects.ts`, `site.ts`, `treaxeShots.ts` — the site's data layer |

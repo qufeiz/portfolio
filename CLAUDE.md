@@ -8,7 +8,7 @@ Astro static portfolio for **Qufeiii** (GitHub `qufeiz`, qufeizzz@gmail.com). Fe
 ## Deploy
 - Host: **GitHub Pages** → https://qufeiz.github.io/portfolio/ (repo `github.com/qufeiz/portfolio`, served from `gh-pages` branch).
 - ⚠️ Vercel CLI is NOT authenticated on this box — use GH Pages. To ship:
-  `cd /home/codex/Projects/portfolio && npm run build && bash scripts/deploy.sh`
+  `cd ~/Projects/portfolio && npm run build && bash scripts/deploy.sh`
   (pushes source→`main`, build→`gh-pages`, adds `.nojekyll`). Pages takes ~1 min to rebuild; verify with curl/retry.
 
 ## Structure
